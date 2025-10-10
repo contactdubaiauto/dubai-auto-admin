@@ -1,0 +1,28 @@
+@use 'fonts';
+@use 'primeicons/primeicons.css';
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+:root {
+  --p-font-family: Inter, sans-serif;
+}
+
+#app {
+  font-family: var(--p-font-family);
+}
