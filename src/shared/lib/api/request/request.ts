@@ -35,7 +35,7 @@ export async function request({
   }
 
   if (cookies.get('Authorization')) {
-    headers['Authorization'] = `Bearer ${cookies.get('Authorization')}`
+    headers['Authorization'] = `Bearer ${cookies.get('access_token')}`
   }
 
   try {

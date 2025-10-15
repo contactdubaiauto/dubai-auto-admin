@@ -121,19 +121,9 @@
           route: '/truck-settings/categories'
         },
         {
-          label: 'Brands',
+          label: 'Parameters',
           icon: 'pi pi-database',
-          route: '/truck-settings/brands'
-        },
-        {
-          label: 'Models',
-          icon: 'pi pi-database',
-          route: '/truck-settings/models'
-        },
-        {
-          label: 'Body types',
-          icon: 'pi pi-database',
-          route: '/truck-settings/body-types'
+          route: '/truck-settings/parameters'
         }
       ]
     },

@@ -127,16 +127,34 @@
           id: selectedBrand.value.id,
           data: {
             ...form,
-            moto_category_id: categoryId
+            moto_category_id: categoryId,
+            image: typeof form.image === 'string' ? form.image : ''
           }
         })
+        if (typeof form.image !== 'string') {
+          await api.createBrandImage({
+            id: selectedBrand.value.id,
+            data: {
+              image: form.image
+            }
+          })
+        }
       } else {
-        await api.createBrand({
+        const { id } = await api.createBrand({
           data: {
             ...form,
-            moto_category_id: categoryId
+            moto_category_id: categoryId,
+            image: typeof form.image === 'string' ? form.image : ''
           }
         })
+        if (typeof form.image !== 'string') {
+          await api.createBrandImage({
+            id,
+            data: {
+              image: form.image
+            }
+          })
+        }
       }
       await getBrands()
       closePopUpBrand()

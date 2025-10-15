@@ -15,6 +15,11 @@
       <DataTable :value="categories" stripedRows size="small" @row-click="onRowClick">
         <Column field="index" header="№" class="w-9"></Column>
         <Column field="name" header="Name"></Column>
+        <Column header="Parameters" class="w-9">
+          <template #body="slotProps">
+            <Button @click="openCategoryParameters(slotProps.data)" label="Parameters" size="small" />
+          </template>
+        </Column>
         <Column header="Actions" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
@@ -89,6 +94,10 @@
 
   function onRowClick({ data }: { data: ICategoryItem }) {
     router.push(`/motorcycle-settings/category/${data.id}/brands`)
+  }
+
+  function openCategoryParameters(data: ICategoryItem) {
+    router.push(`/motorcycle-settings/category/${data.id}/parameters`)
   }
 
   async function getCategories() {

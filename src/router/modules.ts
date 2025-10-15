@@ -6,12 +6,14 @@ import motorcycleSettings from '@/modules/motorcycleSettings'
 import truckSettings from '@/modules/truckSettings'
 import settings from '@/modules/settings'
 import user from '@/modules/users'
+import auth from '@/modules/auth'
 
 registerModules({
-  home: home,
+  home,
   carSettings,
   motorcycleSettings,
   truckSettings,
   settings,
-  user
+  user,
+  auth
 })

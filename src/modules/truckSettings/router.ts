@@ -1,9 +1,11 @@
 const Module = () => import('./Module.vue')
 
 const Categories = () => import('./pages/Categories.vue')
+const Parameters = () => import('./pages/Parameters.vue')
 const Brands = () => import('./pages/Brands.vue')
-const Models = () => import('./pages/MOdels.vue')
-const BodyTypes = () => import('./pages/BodyTypes.vue')
+const Models = () => import('./pages/Models.vue')
+const CategoryParameters = () => import('./pages/CategoryParameters.vue')
+const ParameterValues = () => import('./pages/ParameterValues.vue')
 
 const moduleRoute = {
   path: '/truck-settings',
@@ -15,16 +17,24 @@ const moduleRoute = {
       component: Categories
     },
     {
-      path: 'brands',
+      path: 'category/:category/brands',
       component: Brands
     },
     {
-      path: 'models',
+      path: 'category/:category/parameters',
+      component: CategoryParameters
+    },
+    {
+      path: 'category/:category/brand/:model/models',
       component: Models
     },
     {
-      path: 'body-types',
-      component: BodyTypes
+      path: 'parameters',
+      component: Parameters
+    },
+    {
+      path: 'parameter/:parameter/values',
+      component: ParameterValues
     }
   ]
 }

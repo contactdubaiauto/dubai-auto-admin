@@ -1,7 +1,7 @@
 import { request } from '@/shared/lib/api'
 import type { IBrandForm } from '../types'
 
-const URL = '/api/v1/admin/moto-brands'
+const URL = '/api/v1/admin/comtrans-brands'
 
 export default {
   getBrands,

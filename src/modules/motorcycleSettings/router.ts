@@ -1,9 +1,10 @@
 const Module = () => import('./Module.vue')
 
 const Categories = () => import('./pages/Categories.vue')
+const Parameters = () => import('./pages/Parameters.vue')
 const Brands = () => import('./pages/Brands.vue')
 const Models = () => import('./pages/Models.vue')
-const Parameters = () => import('./pages/Parameters.vue')
+const CategoryParameters = () => import('./pages/CategoryParameters.vue')
 const ParameterValues = () => import('./pages/ParameterValues.vue')
 
 const moduleRoute = {
@@ -18,6 +19,10 @@ const moduleRoute = {
     {
       path: 'category/:category/brands',
       component: Brands
+    },
+    {
+      path: 'category/:category/parameters',
+      component: CategoryParameters
     },
     {
       path: 'category/:category/brand/:model/models',

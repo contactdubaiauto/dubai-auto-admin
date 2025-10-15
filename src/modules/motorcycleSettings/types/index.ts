@@ -12,6 +12,22 @@ export interface ICategoryForm {
   name: string
 }
 
+export interface ICategoryParameter {
+  id: number
+  moto_category_id: number
+  moto_parameter_id: number
+  created_at: string
+  moto_parameter_name: string
+}
+
+export interface ICategoryParameterItem extends ICategoryParameter {
+  index: number
+}
+
+export interface ICategoryParameterForm {
+  moto_parameter_id: number
+}
+
 export interface IBrand {
   id: number
   name: string

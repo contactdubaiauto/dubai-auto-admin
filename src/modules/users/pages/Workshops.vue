@@ -1,3 +1,7 @@
-<template>Workshops</template>
+<template>
+  <div>workshops</div>
+</template>
 
-<script setup></script>
+<script setup lang="ts"></script>
+
+<style scoped></style>
