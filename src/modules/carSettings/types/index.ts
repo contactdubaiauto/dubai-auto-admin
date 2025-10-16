@@ -50,6 +50,7 @@ export interface IModelItem extends IModel {
 export interface IModelForm {
   name: string
   popular: boolean
+  brand_id?: number | string
 }
 
 export interface IGeneration {

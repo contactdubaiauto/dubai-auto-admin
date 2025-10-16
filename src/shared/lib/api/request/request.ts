@@ -52,7 +52,8 @@ export async function request({
     return response.data
   } catch (error: any) {
     if (error.response && error.response.status === 401) {
-      cookies.remove('Authorization')
+      cookies.remove('access_token')
+      cookies.remove('refresh_token')
       router.push('/login')
     } else {
       throw error

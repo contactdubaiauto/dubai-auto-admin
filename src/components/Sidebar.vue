@@ -1,6 +1,9 @@
 <template>
   <div class="p-3 h-full w-full scrollbar-hide overflow-y-auto border-r border-gray-200">
-    <div class="w-full text-2xl font-bold text-center mb-4 text-blue-800">Dubai Auto</div>
+    <div class="w-full flex items-center justify-between mb-4">
+      <div class="text-2xl font-bold text-center text-blue-800">Dubai Auto</div>
+      <Button @click="logOut" icon="pi pi-sign-out" severity="secondary" />
+    </div>
     <PanelMenu :model="items" class="w-full" multiple>
       <template #item="{ item }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
@@ -30,7 +33,13 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import PanelMenu from 'primevue/panelmenu'
+  import { Button } from 'primevue'
+  import { useCookies } from 'vue3-cookies'
+
+  const { cookies } = useCookies()
+  const router = useRouter()
 
   const items = ref([
     {
@@ -149,6 +158,12 @@
       ]
     }
   ])
+
+  function logOut() {
+    cookies.remove('access_token')
+    cookies.remove('refresh_token')
+    router.push('/login')
+  }
 </script>
 
 <style scoped lang="scss"></style>

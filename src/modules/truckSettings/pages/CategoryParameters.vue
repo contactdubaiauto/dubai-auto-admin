@@ -112,7 +112,7 @@
       if (selectedCategoryParameter.value) {
         await api.updateCategoryParameter({
           categoryId: categoryId,
-          id: selectedCategoryParameter.value.id,
+          id: selectedCategoryParameter.value.comtrans_parameter_id,
           data: form
         })
       } else {
@@ -137,7 +137,10 @@
     try {
       loadingPopUpDeleteCategoryParameter.value = true
       if (selectedDeleteCategoryParameter.value) {
-        await api.deleteCategoryParameter({ categoryId: categoryId, id: selectedDeleteCategoryParameter.value.id })
+        await api.deleteCategoryParameter({
+          categoryId: categoryId,
+          id: selectedDeleteCategoryParameter.value.comtrans_parameter_id
+        })
       }
       await getCategoryParameters()
       closePopUpDeleteCategoryParameter()

@@ -2,7 +2,15 @@
   <Dialog :visible="true" modal header="Body type" @update:visible="cancel" :style="{ width: '25rem' }">
     <div class="flex gap-4">
       <div class="flex flex-col items-center gap-2">
-        <FileUpload mode="basic" @select="onFileSelect" customUpload auto accept="image/*" class="p-button-outlined" />
+        <FileUpload
+          mode="basic"
+          @select="onFileSelect"
+          customUpload
+          auto
+          accept="image/*"
+          class="p-button-outlined"
+          :disabled="loading"
+        />
         <img
           v-if="previewImage"
           :src="previewImage"
@@ -13,7 +21,7 @@
       <div class="flex-1">
         <div class="flex flex-col gap-1">
           <label for="body-type">Body type name</label>
-          <InputText v-model="form.name" id="body-type" />
+          <InputText v-model="form.name" id="body-type" :disabled="loading" />
         </div>
       </div>
     </div>
@@ -29,6 +37,7 @@
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IBodyTypeForm, IBodyTypeItem } from '../types'
+  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -47,12 +56,16 @@
     image: '',
     name: ''
   })
+  const previewImage = ref('')
 
   if (props.item) {
     form.name = props.item.name
+    form.image = props.item.image
+    if (form.image) {
+      previewImage.value = `${baseURL}${form.image}_l.jpg`
+    }
   }
 
-  const previewImage = ref('')
   function onFileSelect(event: any) {
     const file = event.files[0]
     form.image = file

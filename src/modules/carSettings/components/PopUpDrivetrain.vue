@@ -1,8 +1,8 @@
 <template>
   <Dialog :visible="true" modal header="Drivetrain" @update:visible="cancel" :style="{ width: '25rem' }">
     <div class="flex flex-col gap-1">
-      <label for="body-type">Drivetrain name</label>
-      <InputText v-model="form.name" id="body-type" :disabled="loading" />
+      <label>Drivetrain name</label>
+      <InputText v-model="form.name" :disabled="loading" />
     </div>
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>

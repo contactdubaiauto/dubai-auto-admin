@@ -15,6 +15,7 @@
           optionValue="id"
           data-key="id"
           optionGroupChildren="children"
+          :disabled="loading"
         />
       </div>
     </div>

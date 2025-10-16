@@ -37,6 +37,7 @@
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IColorItem, IColorForm } from '../types'
+  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -52,15 +53,19 @@
   )
 
   const form = reactive<IColorForm>({
-    image: ' ',
+    image: '',
     name: ''
   })
+  const previewImage = ref('')
 
   if (props.item) {
     form.name = props.item.name
+    form.image = props.item.image
+    if (form.image) {
+      previewImage.value = `${baseURL}${form.image}`
+    }
   }
 
-  const previewImage = ref('')
   function onFileSelect(event: any) {
     const file = event.files[0]
     form.image = file

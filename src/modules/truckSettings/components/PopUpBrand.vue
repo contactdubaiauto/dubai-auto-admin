@@ -2,7 +2,15 @@
   <Dialog :visible="true" modal header="Brand" :style="{ width: '25rem' }" @update:visible="cancel">
     <div class="flex gap-4">
       <div class="flex flex-col items-center gap-2">
-        <FileUpload mode="basic" @select="onFileSelect" customUpload auto accept="image/*" class="p-button-outlined" />
+        <FileUpload
+          mode="basic"
+          @select="onFileSelect"
+          customUpload
+          auto
+          accept="image/*"
+          class="p-button-outlined"
+          :disabled="loading"
+        />
         <img
           v-if="previewImage"
           :src="previewImage"

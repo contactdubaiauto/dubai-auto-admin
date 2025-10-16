@@ -76,7 +76,7 @@
   const router = useRouter()
   const route = useRoute()
 
-  const brandId = route.params.brand as string
+  const brandId = Number(route.params.brand) as number
 
   const home = ref({
     icon: 'pi pi-car',
@@ -121,7 +121,14 @@
     try {
       loadingPopUpModel.value = true
       if (selectedModel.value) {
-        await api.updateModel({ brandId: brandId, id: selectedModel.value.id, data: form })
+        await api.updateModel({
+          brandId: brandId,
+          id: selectedModel.value.id,
+          data: {
+            ...form,
+            brand_id: brandId
+          }
+        })
       } else {
         await api.createModel({ brandId: brandId, data: form })
       }

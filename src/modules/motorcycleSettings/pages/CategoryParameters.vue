@@ -6,8 +6,7 @@
     <div class="flex-1 overflow-y-auto">
       <DataTable :value="categoryParameters" stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="moto_category_name" header="Categtory"></Column>
-        <Column field="name" header="Name"></Column>
+        <Column field="moto_parameter_name" header="Name"></Column>
         <Column header="Actions" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
@@ -42,7 +41,7 @@
     @delete="deleteCategoryParameter"
     @cancel="closePopUpDeleteCategoryParameter"
     :loading="loadingPopUpDeleteCategoryParameter"
-    description="Confirm delete categoryParameter!"
+    description="Confirm delete category parameter!"
   />
 </template>
 
@@ -113,7 +112,7 @@
       if (selectedCategoryParameter.value) {
         await api.updateCategoryParameter({
           categoryId: categoryId,
-          id: selectedCategoryParameter.value.id,
+          id: selectedCategoryParameter.value.moto_parameter_id,
           data: form
         })
       } else {
@@ -138,7 +137,10 @@
     try {
       loadingPopUpDeleteCategoryParameter.value = true
       if (selectedDeleteCategoryParameter.value) {
-        await api.deleteCategoryParameter({ categoryId: categoryId, id: selectedDeleteCategoryParameter.value.id })
+        await api.deleteCategoryParameter({
+          categoryId: categoryId,
+          id: selectedDeleteCategoryParameter.value.moto_parameter_id
+        })
       }
       await getCategoryParameters()
       closePopUpDeleteCategoryParameter()

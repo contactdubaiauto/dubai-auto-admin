@@ -9,6 +9,7 @@
           optionLabel="name"
           optionValue="id"
           placeholder="Select a body type"
+          :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
@@ -19,6 +20,7 @@
           optionLabel="name"
           optionValue="id"
           placeholder="Select a drivetrain"
+          :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
@@ -29,6 +31,7 @@
           optionLabel="value"
           optionValue="id"
           placeholder="Select a engine"
+          :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
@@ -39,6 +42,7 @@
           optionLabel="name"
           optionValue="id"
           placeholder="Select a fuel type"
+          :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
@@ -49,6 +53,7 @@
           optionLabel="name"
           optionValue="id"
           placeholder="Select a transmission"
+          :disabled="loading"
         />
       </div>
     </div>

@@ -9,6 +9,7 @@
           optionLabel="name"
           optionValue="id"
           placeholder="Select a parameter"
+          :disabled="loading"
         />
       </div>
     </div>

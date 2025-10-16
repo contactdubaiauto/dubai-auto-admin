@@ -45,7 +45,7 @@
     @delete="deleteGenerationModification"
     @cancel="closePopUpDeleteGenerationModification"
     :loading="loadingPopUpDeleteGenerationModification"
-    description="Confirm delete generationModification!"
+    description="Confirm delete generation modification!"
   />
 </template>
 
