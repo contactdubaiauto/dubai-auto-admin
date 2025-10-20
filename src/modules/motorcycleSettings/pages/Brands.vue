@@ -16,7 +16,7 @@
             <div class="w-6 h-6 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.image"
-                :src="slotProps.data.image"
+                :src="`${baseURL}${slotProps.data.image}`"
                 class="w-full h-full object-contain object-center"
               />
             </div>
@@ -67,6 +67,7 @@
 
   import { api } from '../api'
   import type { IBrand, IBrandForm, IBrandItem } from '../types'
+  import { baseURL } from '@/shared/lib/utils/urls'
 
   const { showPopUp: showPopUpBrand, openPopUp: openPopUpBrand, loading: loadingPopUpBrand } = usePopUp()
   const {
@@ -106,7 +107,7 @@
 
   async function getBrands() {
     try {
-      const data: IBrand[] = await api.getBrands()
+      const data: IBrand[] = await api.getCategoryBrands({ id: categoryId })
 
       brands.value = data.map((brand: IBrand, index: number): IBrandItem => {
         return {

@@ -2,7 +2,15 @@
   <Dialog :visible="true" modal header="Brand" :style="{ width: '25rem' }" @update:visible="cancel">
     <div class="flex gap-4">
       <div class="flex flex-col items-center gap-2">
-        <FileUpload mode="basic" @select="onFileSelect" customUpload auto accept="image/*" class="p-button-outlined" />
+        <FileUpload
+          mode="basic"
+          @select="onFileSelect"
+          customUpload
+          auto
+          accept="image/*"
+          class="p-button-outlined"
+          :disabled="loading"
+        />
         <img
           v-if="previewImage"
           :src="previewImage"
@@ -29,6 +37,7 @@
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IBrandItem, IBrandForm } from '../types'
+  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -44,17 +53,20 @@
   )
 
   const form = reactive<IBrandForm>({
-    image: ' ',
+    image: '',
     name: '',
     moto_category_id: 0
   })
 
+  const previewImage = ref('')
   if (props.item) {
     form.name = props.item.name
     form.image = props.item.image
+    if (form.image) {
+      previewImage.value = `${baseURL}${form.image}`
+    }
   }
 
-  const previewImage = ref('')
   function onFileSelect(event: any) {
     const file = event.files[0]
     form.image = file

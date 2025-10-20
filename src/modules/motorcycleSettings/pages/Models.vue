@@ -94,7 +94,7 @@
 
   async function getModels() {
     try {
-      const data: IModel[] = await api.getModels()
+      const data: IModel[] = await api.getBrandModels({ id: brandId })
 
       models.value = data.map((model: IModel, index: number): IModelItem => {
         return {

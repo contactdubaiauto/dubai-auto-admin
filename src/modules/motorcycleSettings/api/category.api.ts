@@ -5,6 +5,7 @@ const URL = '/api/v1/admin/moto-categories'
 
 export default {
   getCategories,
+  getCategoryBrands,
   createCategory,
   updateCategory,
   deleteCategory
@@ -15,6 +16,14 @@ async function getCategories() {
     return await request({ url: URL, method: 'GET' })
   } catch (e) {
     throw new Error('ERROR ON GET CATEGORIES')
+  }
+}
+
+async function getCategoryBrands({ id }: { id: string | number }) {
+  try {
+    return await request({ url: `${URL}/${id}/brands`, method: 'GET' })
+  } catch (e) {
+    throw new Error('ERROR ON GET CATEGORY BRANDS')
   }
 }
 

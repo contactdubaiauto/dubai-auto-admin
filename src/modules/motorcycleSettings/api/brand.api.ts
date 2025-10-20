@@ -5,6 +5,7 @@ const URL = '/api/v1/admin/moto-brands'
 
 export default {
   getBrands,
+  getBrandModels,
   createBrand,
   updateBrand,
   deleteBrand,
@@ -16,6 +17,14 @@ async function getBrands() {
     return await request({ url: URL, method: 'GET' })
   } catch (e) {
     throw new Error('ERROR ON GET BRANDS')
+  }
+}
+
+async function getBrandModels({ id }: { id: string | number }) {
+  try {
+    return await request({ url: `${URL}/${id}/models`, method: 'GET' })
+  } catch (e) {
+    throw new Error('ERROR ON GET BRAND MODELS')
   }
 }
 
