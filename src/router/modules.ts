@@ -7,6 +7,7 @@ import truckSettings from '@/modules/truckSettings'
 import settings from '@/modules/settings'
 import user from '@/modules/users'
 import auth from '@/modules/auth'
+import application from '@/modules/application'
 
 registerModules({
   home,
@@ -15,5 +16,6 @@ registerModules({
   truckSettings,
   settings,
   user,
-  auth
+  auth,
+  application
 })

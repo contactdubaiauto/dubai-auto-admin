@@ -1,7 +1,7 @@
 <template>
   <div class="p-3 h-full w-full scrollbar-hide overflow-y-auto border-r border-gray-200">
     <div class="w-full flex items-center justify-between mb-4">
-      <div class="text-2xl font-bold text-center text-blue-800">Dubai Auto</div>
+      <div class="text-2xl font-bold text-center text-blue-800">Masynbazar</div>
       <Button @click="logOut" icon="pi pi-sign-out" severity="secondary" />
     </div>
     <PanelMenu :model="items" class="w-full" multiple>
@@ -43,28 +43,59 @@
 
   const items = ref([
     {
+      label: 'Applications',
+      icon: 'pi pi-users',
+      items: [
+        {
+          label: 'Dealers',
+          icon: 'pi pi-user',
+          route: '/application/dealers'
+        },
+        {
+          label: 'Logistics',
+          icon: 'pi pi-user',
+          route: '/application/logistics'
+        },
+        {
+          label: 'Car services',
+          icon: 'pi pi-user',
+          route: '/application/car-services'
+        },
+        {
+          label: 'Brokers',
+          icon: 'pi pi-user',
+          route: '/application/brokers'
+        }
+      ]
+    },
+    {
       label: 'Users',
       icon: 'pi pi-users',
       items: [
         {
           label: 'Clients',
           icon: 'pi pi-user',
-          route: '/users/client'
+          route: '/user/clients'
         },
         {
           label: 'Dealers',
           icon: 'pi pi-user',
-          route: '/users/dealer'
+          route: '/user/dealers'
         },
         {
           label: 'Logistics',
           icon: 'pi pi-user',
-          route: '/users/logistician'
+          route: '/user/logistics'
         },
         {
-          label: 'Workshops',
+          label: 'Car services',
           icon: 'pi pi-user',
-          route: '/users/workshop'
+          route: '/user/car-services'
+        },
+        {
+          label: 'Brokers',
+          icon: 'pi pi-user',
+          route: '/user/brokers'
         }
       ]
     },

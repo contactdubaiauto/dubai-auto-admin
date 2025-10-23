@@ -37,7 +37,7 @@
     label: 'Users'
   })
 
-  const items = ref([{ label: 'Clients' }])
+  const items = ref([{ label: 'Brokers' }])
 
   const applications = ref<IApplication[]>([])
 

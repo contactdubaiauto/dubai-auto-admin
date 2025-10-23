@@ -34,10 +34,10 @@
 
   const home = ref({
     icon: 'pi pi-car',
-    label: 'Users'
+    label: 'Applications'
   })
 
-  const items = ref([{ label: 'Clients' }])
+  const items = ref([{ label: 'Brokers' }])
 
   const applications = ref<IApplication[]>([])
 
@@ -50,7 +50,7 @@
       const data: IApplication[] = await api.getApplications({
         params: {
           type: 4,
-          status: 2
+          status: 1
         }
       })
 

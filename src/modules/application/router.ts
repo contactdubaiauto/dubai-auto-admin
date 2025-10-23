@@ -5,10 +5,9 @@ const CarServices = () => import('./pages/CarServices.vue')
 const Logistics = () => import('./pages/Logistics.vue')
 const Application = () => import('./pages/Application.vue')
 const Brokers = () => import('./pages/Brokers.vue')
-const Clients = () => import('./pages/Clients.vue')
 
 const moduleRoute = {
-  path: '/user',
+  path: '/application',
   component: Module,
   redirect: '',
   children: [
@@ -27,10 +26,6 @@ const moduleRoute = {
     {
       path: 'brokers',
       component: Brokers
-    },
-    {
-      path: 'clients',
-      component: Clients
     },
     {
       path: 'view/:id',

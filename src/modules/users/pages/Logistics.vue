@@ -24,11 +24,11 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import moment from 'moment'
   import { DataTable, Column, Breadcrumb } from 'primevue'
 
   import { api } from '../api'
   import type { IApplication } from '../types'
-  import moment from 'moment'
 
   const router = useRouter()
 
@@ -37,7 +37,7 @@
     label: 'Users'
   })
 
-  const items = ref([{ label: 'Clients' }])
+  const items = ref([{ label: 'Logistics' }])
 
   const applications = ref<IApplication[]>([])
 
@@ -49,7 +49,7 @@
     try {
       const data: IApplication[] = await api.getApplications({
         params: {
-          type: 4,
+          type: 3,
           status: 2
         }
       })
