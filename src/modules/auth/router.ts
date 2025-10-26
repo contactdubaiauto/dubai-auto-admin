@@ -6,7 +6,8 @@ const moduleRoute = {
   path: '/login',
   component: Module,
   meta: {
-    layout: 'empty'
+    layout: 'empty',
+    noAuth: true
   },
   children: [
     {

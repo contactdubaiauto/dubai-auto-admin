@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import { definePreset } from '@primeuix/themes'
 import ToastService from 'primevue/toastservice'
+import ConfirmationService from 'primevue/confirmationservice'
 
 import { i18n } from '@/shared/lib/plugins/i18n'
 import router from '@/router'
@@ -50,5 +51,6 @@ app.use(router)
 app.use(pinia)
 app.use(i18n)
 app.use(ToastService)
+app.use(ConfirmationService)
 
 app.mount('#app')
