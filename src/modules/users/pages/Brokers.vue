@@ -49,7 +49,7 @@
     try {
       const data: IApplication[] = await api.getApplications({
         params: {
-          type: 4,
+          role: 4,
           status: 2
         }
       })
@@ -66,7 +66,7 @@
   }
 
   function onRowClick({ data }: { data: IApplication }) {
-    router.push(`/application/view/${data.id}`)
+    router.push(`/user/view/${data.id}`)
   }
 
   function formatDate(date: string) {

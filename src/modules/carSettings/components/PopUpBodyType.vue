@@ -14,7 +14,7 @@
         <img
           v-if="previewImage"
           :src="previewImage"
-          class="w-32 h-32 rounded-md bg-gray-100 object-cover object-center"
+          class="w-32 h-32 rounded-md bg-gray-100 object-contain object-center"
         />
         <div v-else class="w-32 h-32 bg-gray-100 rounded-md"></div>
       </div>
@@ -37,7 +37,6 @@
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IBodyTypeForm, IBodyTypeItem } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -62,7 +61,7 @@
     form.name = props.item.name
     form.image = props.item.image
     if (form.image) {
-      previewImage.value = `${baseURL}${form.image}_l.jpg`
+      previewImage.value = `${form.image}_l.jpg`
     }
   }
 

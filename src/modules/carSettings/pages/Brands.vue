@@ -11,7 +11,7 @@
             <div class="w-6 h-6 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.logo"
-                :src="`${baseURL}${slotProps.data.logo}`"
+                :src="slotProps.data.logo"
                 class="w-full h-full object-contain object-center"
               />
             </div>
@@ -63,7 +63,6 @@
 
   import { api } from '../api'
   import type { IBrand, IBrandForm, IBrandItem } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const { showPopUp: showPopUpBrand, openPopUp: openPopUpBrand, loading: loadingPopUpBrand } = usePopUp()
   const {

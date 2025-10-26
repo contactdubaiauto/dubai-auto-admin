@@ -11,7 +11,7 @@
             <div class="w-6 h-6 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.image"
-                :src="`${baseURL}${slotProps.data.image}_l.jpg`"
+                :src="`${slotProps.data.image}_l.jpg`"
                 class="w-full h-full object-contain object-center"
               />
             </div>
@@ -63,7 +63,6 @@
   import { usePopUp } from '@/shared/lib/use/usePopUp'
 
   import { api } from '../api'
-  import { baseURL } from '@/shared/lib/utils/urls'
   import type { IGeneration, IGenerationForm, IGenerationItem } from '../types'
 
   const { showPopUp: showPopUpGeneration, openPopUp: openPopUpGeneration, loading: loadingPopUpGeneration } = usePopUp()

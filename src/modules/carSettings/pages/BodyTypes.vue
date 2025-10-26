@@ -21,7 +21,7 @@
             <div class="w-16 h-10 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.image"
-                :src="`${baseURL}${slotProps.data.image}_l.jpg`"
+                :src="`${slotProps.data.image}_l.jpg`"
                 class="w-full h-full object-contain object-center"
               />
             </div>
@@ -71,7 +71,6 @@
 
   import { api } from '../api'
   import type { IBodyType, IBodyTypeForm, IBodyTypeItem } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const { showPopUp: showPopUpBodyType, openPopUp: openPopUpBodyType, loading: loadingPopUpBodyType } = usePopUp()
   const {

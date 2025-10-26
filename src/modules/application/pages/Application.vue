@@ -29,7 +29,7 @@
           <div class="text-gray-500 w-[250px]">License</div>
           <div class="flex-1">
             <a
-              :href="`${baseURL}${application?.licence_url}`"
+              :href="`${application?.licence_url}`"
               target="_blank"
               class="flex items-center gap-2 border rounded-lg p-2 pr-3 shadow bg-gray-50 w-fit hover:shadow-md"
             >
@@ -62,7 +62,7 @@
           <div class="text-gray-500 w-[250px]">Copy of ID (Emirates ID)</div>
           <div class="flex-1">
             <a
-              :href="`${baseURL}${application?.copy_of_id_url}`"
+              :href="`${application?.copy_of_id_url}`"
               target="_blank"
               class="flex items-center gap-2 border rounded-lg p-2 pr-3 shadow bg-gray-50 w-fit hover:shadow-md"
             >
@@ -75,7 +75,7 @@
           <div class="text-gray-500 w-[250px]">Memorandum of Association</div>
           <div class="flex-1">
             <a
-              :href="`${baseURL}${application?.memorandum_url}`"
+              :href="`${application?.memorandum_url}`"
               target="_blank"
               class="flex items-center gap-2 border rounded-lg p-2 pr-3 shadow bg-gray-50 w-fit hover:shadow-md"
             >
@@ -101,6 +101,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import moment from 'moment'
   import { useRoute, useRouter } from 'vue-router'
   import { Button, ConfirmPopup, Toast } from 'primevue'
   import { useConfirm } from 'primevue/useconfirm'
@@ -108,8 +109,6 @@
 
   import { api } from '../api'
   import type { IApplicationItem } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
-  import moment from 'moment'
 
   const route = useRoute()
   const router = useRouter()

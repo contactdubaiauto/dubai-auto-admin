@@ -19,7 +19,7 @@
             <div class="w-6 h-6 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.image"
-                :src="`${baseURL}${slotProps.data.image}`"
+                :src="slotProps.data.image"
                 class="w-full h-full object-contain object-center"
               />
             </div>
@@ -69,7 +69,6 @@
 
   import { api } from '../api'
   import type { IColor, IColorForm, IColorItem } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const { showPopUp: showPopUpColor, openPopUp: openPopUpColor, loading: loadingPopUpColor } = usePopUp()
   const {

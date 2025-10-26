@@ -24,7 +24,7 @@ async function getApplications({ params }: any) {
 
 async function getApplication({ id }: { id: string | number }) {
   try {
-    return await request({ url: `${URL}/${id}`, method: 'GET' })
+    return await request({ url: `${URL}/${id}?status=2`, method: 'GET' })
   } catch (e) {
     throw new Error('ERROR ON GET APPLICATION')
   }

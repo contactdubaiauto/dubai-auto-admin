@@ -49,7 +49,6 @@
   import { Button, InputText, Dialog, FileUpload, Checkbox, InputNumber } from 'primevue'
 
   import type { IGenerationItem, IGenerationForm } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -83,7 +82,7 @@
     form.wheel = props.item.wheel
     form.image = props.item.image
     if (form.image) {
-      previewImage.value = `${baseURL}${form.image}_l.jpg`
+      previewImage.value = `${form.image}_l.jpg`
     }
   }
 

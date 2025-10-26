@@ -6,10 +6,9 @@
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="applications" stripedRows @row-click="onRowClick">
+      <DataTable :value="applications" stripedRows>
         <Column field="index" header="№" class="w-9"></Column>
         <Column field="email" header="Email"></Column>
-        <Column field="company_name" header="Company name"></Column>
         <Column field="phone" header="Phone"></Column>
         <Column field="created_at" header="Date">
           <template #body="{ data }">
@@ -23,14 +22,11 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
   import { DataTable, Column, Breadcrumb } from 'primevue'
 
   import { api } from '../api'
   import type { IApplication } from '../types'
   import moment from 'moment'
-
-  const router = useRouter()
 
   const home = ref({
     icon: 'pi pi-car',
@@ -49,7 +45,7 @@
     try {
       const data: IApplication[] = await api.getApplications({
         params: {
-          type: 4,
+          role: 1,
           status: 2
         }
       })
@@ -63,10 +59,6 @@
     } catch (error) {
       console.error(error)
     }
-  }
-
-  function onRowClick({ data }: { data: IApplication }) {
-    router.push(`/application/view/${data.id}`)
   }
 
   function formatDate(date: string) {

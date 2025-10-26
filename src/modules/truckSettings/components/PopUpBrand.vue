@@ -37,7 +37,6 @@
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IBrandItem, IBrandForm } from '../types'
-  import { baseURL } from '@/shared/lib/utils/urls'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -65,7 +64,7 @@
     form.image = props.item.image
 
     if (form.image) {
-      previewImage.value = `${baseURL}${form.image}`
+      previewImage.value = `${form.image}`
     }
   }
 

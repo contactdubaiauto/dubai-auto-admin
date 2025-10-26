@@ -49,7 +49,7 @@
     try {
       const data: IApplication[] = await api.getApplications({
         params: {
-          type: 3,
+          role: 3,
           status: 1
         }
       })
