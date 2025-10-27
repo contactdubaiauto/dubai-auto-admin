@@ -61,7 +61,7 @@
     form.name = props.item.name
     form.image = props.item.image
     if (form.image) {
-      previewImage.value = `${form.image}_l.jpg`
+      previewImage.value = form.image
     }
   }
 

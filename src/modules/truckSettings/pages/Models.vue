@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="models" stripedRows size="small" @row-click="onRowClick">
+      <DataTable :value="models" stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
         <Column field="name" header="Name"></Column>
         <Column header="Actions" class="w-24">
@@ -47,7 +47,6 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpModel from '../components/PopUpModel.vue'
@@ -64,11 +63,6 @@
     closePopUp: closePopUpDeleteModel,
     loading: loadingPopUpDeleteModel
   } = usePopUp()
-
-  const router = useRouter()
-  const route = useRoute()
-
-  const brandId = route.params.brand as string
 
   const home = ref({
     icon: 'pi pi-car',
@@ -144,9 +138,5 @@
     } finally {
       loadingPopUpDeleteModel.value = false
     }
-  }
-
-  function onRowClick({ data }: { data: IModelItem }) {
-    router.push(`/truck-settings/brand/${brandId}/model/${data.id}/generations`)
   }
 </script>

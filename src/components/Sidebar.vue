@@ -195,12 +195,12 @@
           label: 'Colors',
           icon: 'pi pi-database',
           route: '/settings/colors'
-        },
-        {
-          label: 'Admin users',
-          icon: 'pi pi-database',
-          route: '/settings/admin-users'
         }
+        // {
+        //   label: 'Admin users',
+        //   icon: 'pi pi-database',
+        //   route: '/settings/admin-users'
+        // }
       ]
     }
   ])

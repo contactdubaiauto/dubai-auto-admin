@@ -21,7 +21,7 @@
             <div class="w-16 h-10 bg-gray-100 rounded-md">
               <img
                 v-if="slotProps.data.image"
-                :src="`${slotProps.data.image}_l.jpg`"
+                :src="slotProps.data.image"
                 class="w-full h-full object-contain object-center"
               />
             </div>
