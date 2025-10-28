@@ -10,7 +10,7 @@
       @submit="onFormSubmit"
       class="flex flex-col gap-4 w-full sm:w-80"
     >
-      <div class="w-full text-2xl font-bold text-center mb-4 text-blue-800">Dubai Auto</div>
+      <div class="w-full text-2xl font-bold text-center mb-4 text-blue-800">Masynbazar</div>
       <div class="flex flex-col gap-1">
         <label class="mb-1">Email</label>
         <InputText name="email" type="text" placeholder="Email" fluid :disabled="loading" />
