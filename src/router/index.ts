@@ -20,7 +20,9 @@ router.beforeEach(async (to, from, next) => {
   const { cookies } = useCookies()
   const auth = useAuth()
 
-  if (!auth.isAuth && cookies.get('Authorization')) {
+  console.log()
+
+  if (!auth.isAuth && cookies.get('access_token')) {
     await auth.getProfile()
   }
 
