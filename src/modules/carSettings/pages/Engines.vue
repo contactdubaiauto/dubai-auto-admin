@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { InputGroup, InputGroupAddon, InputText, Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column } from 'primevue'
 
   import PopUpEngine from '../components/PopUpEngine.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
