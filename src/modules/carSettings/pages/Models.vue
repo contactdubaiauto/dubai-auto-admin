@@ -3,14 +3,6 @@
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
         <Button @click="openPopUpModel" icon="pi pi-plus" label="Add model" />
-        <div class="w-100">
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-search"></i>
-            </InputGroupAddon>
-            <InputText v-model="search" placeholder="Search" />
-          </InputGroup>
-        </div>
       </div>
       <div class="flex">
         <Breadcrumb :home="home" :model="items" class="p-0" />
@@ -56,7 +48,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { InputGroup, InputGroupAddon, InputText, Button, DataTable, Column, Breadcrumb } from 'primevue'
+  import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpModel from '../components/PopUpModel.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -85,7 +77,6 @@
 
   const items = ref([{ label: 'Models' }])
 
-  const search = ref('')
   const models = ref<IModelItem[]>([])
 
   onMounted(() => {

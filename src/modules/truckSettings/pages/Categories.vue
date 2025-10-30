@@ -2,14 +2,6 @@
   <div class="h-full flex flex-col">
     <div class="flex justify-between p-4 border-b-2 border-gray-100 mb-2">
       <Button @click="openPopUpCategory" icon="pi pi-plus" label="Add category" />
-      <div class="w-100">
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-search"></i>
-          </InputGroupAddon>
-          <InputText v-model="search" placeholder="Search" />
-        </InputGroup>
-      </div>
     </div>
     <div class="flex-1 overflow-y-auto">
       <DataTable :value="categories" stripedRows size="small" @row-click="onRowClick">
@@ -56,7 +48,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
-  import { InputGroup, InputGroupAddon, InputText, Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column } from 'primevue'
 
   import PopUpCategory from '../components/PopUpCategory.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -75,7 +67,6 @@
 
   const router = useRouter()
 
-  const search = ref('')
   const categories = ref<ICategory[]>([])
 
   onMounted(() => {

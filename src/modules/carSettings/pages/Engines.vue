@@ -3,14 +3,6 @@
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
         <Button @click="openPopUpEngine" icon="pi pi-plus" label="Add engine" />
-        <div class="w-100">
-          <InputGroup>
-            <InputGroupAddon>
-              <i class="pi pi-search"></i>
-            </InputGroupAddon>
-            <InputText v-model="search" placeholder="Search" />
-          </InputGroup>
-        </div>
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
@@ -69,7 +61,6 @@
     loading: loadingPopUpDeleteEngine
   } = usePopUp()
 
-  const search = ref('')
   const engines = ref<IEngineItem[]>([])
 
   onMounted(() => {

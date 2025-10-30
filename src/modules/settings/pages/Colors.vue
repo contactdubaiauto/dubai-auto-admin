@@ -2,14 +2,6 @@
   <div class="h-full flex flex-col">
     <div class="flex justify-between p-4 border-b-2 border-gray-100 mb-2">
       <Button @click="openPopUpColor" icon="pi pi-plus" label="Add color" />
-      <div class="w-100">
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-search"></i>
-          </InputGroupAddon>
-          <InputText v-model="search" placeholder="Search" />
-        </InputGroup>
-      </div>
     </div>
     <div class="flex-1 overflow-y-auto">
       <DataTable :value="colors" stripedRows size="small">
@@ -61,7 +53,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { InputGroup, InputGroupAddon, InputText, Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column } from 'primevue'
 
   import PopUpColor from '../components/PopUpColor.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -78,7 +70,6 @@
     loading: loadingPopUpDeleteColor
   } = usePopUp()
 
-  const search = ref('')
   const colors = ref<IColor[]>([])
 
   onMounted(() => {

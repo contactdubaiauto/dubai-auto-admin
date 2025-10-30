@@ -20,7 +20,7 @@
       </div>
       <div class="flex flex-col gap-1">
         <label class="mb-1">Password</label>
-        <Password name="password" placeholder="Last Name" :feedback="false" toggleMask fluid :disabled="loading" />
+        <Password name="password"  :feedback="false" toggleMask fluid :disabled="loading" />
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
           $form.password.error.message
         }}</Message>
