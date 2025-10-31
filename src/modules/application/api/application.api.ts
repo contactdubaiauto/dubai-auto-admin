@@ -32,7 +32,13 @@ async function getApplication({ id }: { id: string | number }) {
 
 async function acceptApplication({ id }: { id: string | number }) {
   try {
-    return await request({ url: `${URL}/${id}/accept`, method: 'POST' })
+    return await request({
+      url: `${URL}/${id}/accept`,
+      data: {
+        password: '123qweASD!'
+      },
+      method: 'POST'
+    })
   } catch (e) {
     throw new Error('ERROR ON ACCEPT APPLICATION')
   }

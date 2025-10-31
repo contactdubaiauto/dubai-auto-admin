@@ -1,11 +1,15 @@
 <template>
   <Dialog :visible="true" modal header="Parameter" :style="{ width: '25rem' }" @update:visible="cancel">
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-1">
-        <label>Parameter name</label>
+        <label>Name (en)</label>
         <InputText v-model="form.name" :disabled="loading" />
       </div>
-      <div class="flex flex-col gap-1 col-span-2">
+      <div class="flex flex-col gap-1">
+        <label>Name (ru)</label>
+        <InputText v-model="form.name_ru" :disabled="loading" />
+      </div>
+      <div class="flex flex-col gap-1">
         <label>Category</label>
         <CascadeSelect
           v-model="form.comtrans_category_id"
@@ -49,11 +53,13 @@
 
   const form = reactive<IParameterForm>({
     name: '',
+    name_ru: '',
     comtrans_category_id: 0
   })
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
     form.comtrans_category_id = props.item.comtrans_category_id
   }
 

@@ -1,8 +1,14 @@
 <template>
   <Dialog :visible="true" modal header="Model" :style="{ width: '25rem' }" @update:visible="cancel">
-    <div class="flex flex-col gap-1">
-      <label>Model name</label>
-      <InputText v-model="form.name" :disabled="loading" />
+    <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
+        <label>Name (en)</label>
+        <InputText v-model="form.name" :disabled="loading" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label>Name (ru)</label>
+        <InputText v-model="form.name_ru" :disabled="loading" />
+      </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
@@ -32,11 +38,13 @@
 
   const form = reactive<IModelForm>({
     moto_brand_id: 0,
-    name: ''
+    name: '',
+    name_ru: ''
   })
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
   }
 
   function cancel() {

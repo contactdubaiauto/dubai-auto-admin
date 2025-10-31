@@ -27,10 +27,12 @@ export interface IRegionItem extends IRegion {
 export interface IColorForm {
   image: string
   name: string
+  name_ru: string
 }
 export interface IColor {
   id: number
   name: string
+  name_ru: string
   image: string
   created_at: string
 }

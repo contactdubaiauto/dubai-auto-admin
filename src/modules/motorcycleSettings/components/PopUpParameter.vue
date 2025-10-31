@@ -1,22 +1,28 @@
 <template>
   <Dialog :visible="true" modal header="Parameter" :style="{ width: '25rem' }" @update:visible="cancel">
     <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-1">
-        <label>Parameter name</label>
-        <InputText v-model="form.name" :disabled="loading" />
-      </div>
-      <div class="flex flex-col gap-1 col-span-2">
-        <label>Category</label>
-        <CascadeSelect
-          v-model="form.moto_category_id"
-          placeholder="Select a category"
-          :options="categories"
-          optionLabel="name"
-          optionValue="id"
-          data-key="id"
-          optionGroupChildren="children"
-          :disabled="loading"
-        />
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1">
+          <label>Name (en)</label>
+          <InputText v-model="form.name" :disabled="loading" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label>Name (ru)</label>
+          <InputText v-model="form.name_ru" :disabled="loading" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label>Category</label>
+          <CascadeSelect
+            v-model="form.moto_category_id"
+            placeholder="Select a category"
+            :options="categories"
+            optionLabel="name"
+            optionValue="id"
+            data-key="id"
+            optionGroupChildren="children"
+            :disabled="loading"
+          />
+        </div>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
@@ -49,11 +55,13 @@
 
   const form = reactive<IParameterForm>({
     name: '',
+    name_ru: '',
     moto_category_id: 0
   })
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
     form.moto_category_id = props.item.moto_category_id
   }
 

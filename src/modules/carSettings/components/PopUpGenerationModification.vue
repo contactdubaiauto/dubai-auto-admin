@@ -2,7 +2,7 @@
   <Dialog :visible="true" modal header="Generation" :style="{ width: '25rem' }" @update:visible="cancel">
     <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-1">
-        <label>Generation name</label>
+        <label>Body type</label>
         <Select
           v-model="form.body_type_id"
           :options="bodyTypes"

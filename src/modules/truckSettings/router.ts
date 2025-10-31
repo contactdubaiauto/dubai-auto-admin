@@ -25,7 +25,7 @@ const moduleRoute = {
       component: CategoryParameters
     },
     {
-      path: 'category/:category/brand/:model/models',
+      path: 'category/:category/brand/:brand/models',
       component: Models
     },
     {

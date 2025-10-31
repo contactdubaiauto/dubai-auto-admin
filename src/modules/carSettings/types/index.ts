@@ -1,17 +1,16 @@
-export interface IBodyType {
-  id: number
-  name: string
+export interface IBodyTypeForm {
   image: string
+  name: string
+  name_ru: string
+}
+
+export interface IBodyType extends IBodyTypeForm {
+  id: number
   created_at: string
 }
 
 export interface IBodyTypeItem extends IBodyType {
   index: number
-}
-
-export interface IBodyTypeForm {
-  image: string
-  name: string
 }
 
 export interface IBodyTypeImage {
@@ -37,9 +36,17 @@ export interface IBrandForm {
   popular: boolean
 }
 
+export interface IModelForm {
+  name: string
+  name_ru: string
+  popular: boolean
+  brand_id?: number | string
+}
+
 export interface IModel {
   id: number
   name: string
+  name_ru: string
   popular: boolean
 }
 
@@ -47,16 +54,11 @@ export interface IModelItem extends IModel {
   index: number
 }
 
-export interface IModelForm {
-  name: string
-  popular: boolean
-  brand_id?: number | string
-}
-
 export interface IGeneration {
   id: number
   model_id: number
   name: string
+  name_ru: string
   model_name: string
   image: string
   start_year: number
@@ -72,6 +74,7 @@ export interface IGenerationItem extends IGeneration {
 export interface IGenerationForm {
   model_id: number
   name: string
+  name_ru: string
   image: string
   end_year: number
   start_year: number
@@ -105,18 +108,18 @@ export interface IGenerationModificationForm {
   transmission_id: number
 }
 
-export interface IDrivetrain {
-  id: number
+export interface IDrivetrainForm {
   name: string
+  name_ru: string
+}
+
+export interface IDrivetrain extends IDrivetrainForm {
+  id: number
   created_at: string
 }
 
 export interface IDrivetrainItem extends IDrivetrain {
   index: number
-}
-
-export interface IDrivetrainForm {
-  name: string
 }
 
 export interface IEngine {
@@ -133,9 +136,12 @@ export interface IEngineForm {
   value: string
 }
 
-export interface IFuelType {
-  id: number
+export interface IFuelTypeForm {
   name: string
+  name_ru: string
+}
+export interface IFuelType extends IFuelTypeForm {
+  id: number
   created_at: string
 }
 
@@ -143,20 +149,16 @@ export interface IFuelTypeItem extends IFuelType {
   index: number
 }
 
-export interface IFuelTypeForm {
+export interface ITransmissionForm {
   name: string
+  name_ru: string
 }
 
-export interface ITransmission {
+export interface ITransmission extends ITransmissionForm {
   id: number
-  name: string
   created_at: string
 }
 
 export interface ITransmissionItem extends ITransmission {
   index: number
-}
-
-export interface ITransmissionForm {
-  name: string
 }

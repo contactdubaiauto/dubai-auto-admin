@@ -47,6 +47,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpModel from '../components/PopUpModel.vue'
@@ -63,6 +64,10 @@
     closePopUp: closePopUpDeleteModel,
     loading: loadingPopUpDeleteModel
   } = usePopUp()
+
+  const route = useRoute()
+
+  const brandId = Number(route.params.brand) as number
 
   const home = ref({
     icon: 'pi pi-car',
@@ -89,7 +94,7 @@
 
   async function getModels() {
     try {
-      const data: IModel[] = await api.getModels()
+      const data: IModel[] = await api.getBrandModels({ id: brandId })
 
       models.value = data.map((model: IModel, index: number): IModelItem => {
         return {
@@ -106,9 +111,9 @@
     try {
       loadingPopUpModel.value = true
       if (selectedModel.value) {
-        await api.updateModel({ id: selectedModel.value.id, data: form })
+        await api.updateModel({ id: selectedModel.value.id, data: { ...form, comtrans_brand_id: brandId } })
       } else {
-        await api.createModel({ data: form })
+        await api.createModel({ data: { ...form, comtrans_brand_id: brandId } })
       }
       await getModels()
       closePopUpModel()

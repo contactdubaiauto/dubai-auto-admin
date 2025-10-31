@@ -20,8 +20,12 @@
       </div>
       <div class="flex-1 grid grid-cols-2 gap-2">
         <div class="flex flex-col gap-1 col-span-2">
-          <label>Generation name</label>
+          <label>Name (en)</label>
           <InputText v-model="form.name" :disabled="loading" />
+        </div>
+        <div class="flex flex-col gap-1 col-span-2">
+          <label>Name (ru)</label>
+          <InputText v-model="form.name_ru" :disabled="loading" />
         </div>
         <div class="flex flex-col gap-1 col-span-1">
           <label>Start year</label>
@@ -67,6 +71,7 @@
     image: '',
     model_id: 0,
     name: '',
+    name_ru: '',
     end_year: 0,
     start_year: 0,
     wheel: true
@@ -76,6 +81,7 @@
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
     form.model_id = props.item.model_id
     form.end_year = props.item.end_year
     form.start_year = props.item.start_year
