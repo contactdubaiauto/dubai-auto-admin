@@ -51,14 +51,17 @@
   import { api } from '../api'
   import type { ICompanyType, ICompanyTypeForm, ICompanyTypeItem } from '../types'
 
-  const { showPopUp: showPopUpCompanyType, openPopUp: openPopUpCompanyType, loading: loadingPopUpCompanyType } = usePopUp()
+  const {
+    showPopUp: showPopUpCompanyType,
+    openPopUp: openPopUpCompanyType,
+    loading: loadingPopUpCompanyType
+  } = usePopUp()
   const {
     showPopUp: showPopUpDeleteCompanyType,
     openPopUp: openPopUpDeleteCompanyType,
     closePopUp: closePopUpDeleteCompanyType,
     loading: loadingPopUpDeleteCompanyType
   } = usePopUp()
-
 
   const cities = ref<ICompanyType[]>([])
 
@@ -95,7 +98,7 @@
     try {
       loadingPopUpCompanyType.value = true
       if (selectedCompanyType.value) {
-        await api.updateCompanyType({ id: selectedCompanyType.value.ID, data: form })
+        await api.updateCompanyType({ id: selectedCompanyType.value.id, data: form })
       } else {
         await api.createCompanyType({ data: form })
       }
@@ -118,7 +121,7 @@
     try {
       loadingPopUpDeleteCompanyType.value = true
       if (selectedDeleteCompanyType.value) {
-        await api.deleteCompanyType({ id: selectedDeleteCompanyType.value.ID })
+        await api.deleteCompanyType({ id: selectedDeleteCompanyType.value.id })
       }
       await getCompanyTypes()
       closePopUpDeleteCompanyType()

@@ -39,13 +39,12 @@ export interface IColorItem extends IColor {
   index: number
 }
 
-
 export interface IActivityFieldForm {
   name: string
-	name_ru: string
+  name_ru: string
 }
 export interface IActivityField extends IActivityFieldForm {
-  ID: number
+  id: number
   created_at: string
 }
 
@@ -55,10 +54,10 @@ export interface IActivityFieldItem extends IActivityField {
 
 export interface ICompanyTypeForm {
   name: string
-	name_ru: string
+  name_ru: string
 }
 export interface ICompanyType extends ICompanyTypeForm {
-  ID: number
+  id: number
   created_at: string
 }
 

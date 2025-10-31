@@ -10,7 +10,12 @@
         <Column header="Actions" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
-              <Button @click.stop="selectActivityField(slotProps.data)" icon="pi pi-pencil" rounded variant="outlined" />
+              <Button
+                @click.stop="selectActivityField(slotProps.data)"
+                icon="pi pi-pencil"
+                rounded
+                variant="outlined"
+              />
               <Button
                 @click.stop="selectDeleteActivityField(slotProps.data)"
                 icon="pi pi-trash"
@@ -51,14 +56,17 @@
   import { api } from '../api'
   import type { IActivityField, IActivityFieldForm, IActivityFieldItem } from '../types'
 
-  const { showPopUp: showPopUpActivityField, openPopUp: openPopUpActivityField, loading: loadingPopUpActivityField } = usePopUp()
+  const {
+    showPopUp: showPopUpActivityField,
+    openPopUp: openPopUpActivityField,
+    loading: loadingPopUpActivityField
+  } = usePopUp()
   const {
     showPopUp: showPopUpDeleteActivityField,
     openPopUp: openPopUpDeleteActivityField,
     closePopUp: closePopUpDeleteActivityField,
     loading: loadingPopUpDeleteActivityField
   } = usePopUp()
-
 
   const cities = ref<IActivityField[]>([])
 
@@ -95,7 +103,7 @@
     try {
       loadingPopUpActivityField.value = true
       if (selectedActivityField.value) {
-        await api.updateActivityField({ id: selectedActivityField.value.ID, data: form })
+        await api.updateActivityField({ id: selectedActivityField.value.id, data: form })
       } else {
         await api.createActivityField({ data: form })
       }
@@ -118,7 +126,7 @@
     try {
       loadingPopUpDeleteActivityField.value = true
       if (selectedDeleteActivityField.value) {
-        await api.deleteActivityField({ id: selectedDeleteActivityField.value.ID })
+        await api.deleteActivityField({ id: selectedDeleteActivityField.value.id })
       }
       await getActivityFields()
       closePopUpDeleteActivityField()
