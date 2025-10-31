@@ -1,12 +1,14 @@
+
 const Module = () => import('./Module.vue')
 
 const Cities = () => import('./pages/Cities.vue')
-const AdminUsers = () => import('./pages/AdminUsers.vue')
 const Regions = () => import('./pages/Regions.vue')
 const Colors = () => import('./pages/Colors.vue')
+const ActivityFields = () => import('./pages/ActivityFields.vue')
+const CompanyTypes = () => import('./pages/CompanyTypes.vue')
 
 const moduleRoute = {
-  path: '/settings',
+  path: '/general',
   component: Module,
   redirect: '',
   children: [
@@ -22,9 +24,13 @@ const moduleRoute = {
       path: 'colors',
       component: Colors
     },
+		{
+			path: 'activity-fields',
+			component: ActivityFields
+		},
     {
-      path: 'admin-users',
-      component: AdminUsers
+      path: 'company-types',
+      component: CompanyTypes
     }
   ]
 }

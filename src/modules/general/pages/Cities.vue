@@ -79,7 +79,7 @@
   }
 
   function onRowClick({ data }: { data: ICityItem }) {
-    router.push(`/settings/city/${data.id}/regions`)
+    router.push(`/general/city/${data.id}/regions`)
   }
 
   async function getCities() {

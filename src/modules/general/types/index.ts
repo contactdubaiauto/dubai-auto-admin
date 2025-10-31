@@ -38,3 +38,30 @@ export interface IColor {
 export interface IColorItem extends IColor {
   index: number
 }
+
+
+export interface IActivityFieldForm {
+  name: string
+	name_ru: string
+}
+export interface IActivityField extends IActivityFieldForm {
+  ID: number
+  created_at: string
+}
+
+export interface IActivityFieldItem extends IActivityField {
+  index: number
+}
+
+export interface ICompanyTypeForm {
+  name: string
+	name_ru: string
+}
+export interface ICompanyType extends ICompanyTypeForm {
+  ID: number
+  created_at: string
+}
+
+export interface ICompanyTypeItem extends ICompanyType {
+  index: number
+}

@@ -183,23 +183,33 @@
       ]
     },
     {
-      label: 'Settings',
+      label: 'General',
       icon: 'pi pi-cog',
       items: [
         {
           label: 'Cities',
           icon: 'pi pi-database',
-          route: '/settings/cities'
+          route: '/general/cities'
         },
         {
           label: 'Colors',
           icon: 'pi pi-database',
-          route: '/settings/colors'
+          route: '/general/colors'
+        },
+        {
+          label: 'Activity fields',
+          icon: 'pi pi-database',
+          route: '/general/activity-fields'
+        },
+        {
+          label: 'Company types',
+          icon: 'pi pi-database',
+          route: '/general/company-types'
         }
         // {
         //   label: 'Admin users',
         //   icon: 'pi pi-database',
-        //   route: '/settings/admin-users'
+        //   route: '/general/admin-users'
         // }
       ]
     }

@@ -4,7 +4,7 @@ import home from '@/modules/home'
 import carSettings from '@/modules/carSettings'
 import motorcycleSettings from '@/modules/motorcycleSettings'
 import truckSettings from '@/modules/truckSettings'
-import settings from '@/modules/settings'
+import general from '@/modules/general'
 import user from '@/modules/users'
 import auth from '@/modules/auth'
 import application from '@/modules/application'
@@ -14,7 +14,7 @@ registerModules({
   carSettings,
   motorcycleSettings,
   truckSettings,
-  settings,
+  general,
   user,
   auth,
   application
