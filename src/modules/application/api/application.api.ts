@@ -34,9 +34,6 @@ async function acceptApplication({ id }: { id: string | number }) {
   try {
     return await request({
       url: `${URL}/${id}/accept`,
-      data: {
-        password: '123qweASD!'
-      },
       method: 'POST'
     })
   } catch (e) {
