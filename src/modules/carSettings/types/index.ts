@@ -124,7 +124,8 @@ export interface IDrivetrainItem extends IDrivetrain {
 
 export interface IEngine {
   id: number
-  value: string
+  name: string
+  name_ru: string
   created_at: string
 }
 
@@ -133,7 +134,8 @@ export interface IEngineItem extends IEngine {
 }
 
 export interface IEngineForm {
-  value: string
+  name: string
+  name_ru: string
 }
 
 export interface IFuelTypeForm {

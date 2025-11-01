@@ -8,7 +8,7 @@
     <div class="flex-1 overflow-y-auto">
       <DataTable :value="engines" stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="value" header="Value"></Column>
+        <Column field="name" header="Name"></Column>
         <Column header="Actions" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
