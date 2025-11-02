@@ -20,6 +20,7 @@ export interface IBodyTypeImage {
 export interface IBrand {
   id: number
   name: string
+  name_ru: string
   model_count: number
   logo: string
   popular: boolean
@@ -33,6 +34,7 @@ export interface IBrandItem extends IBrand {
 export interface IBrandForm {
   logo: string
   name: string
+  name_ru: string
   popular: boolean
 }
 

@@ -91,12 +91,18 @@
         <div class="flex gap-4 pt-4">
           <Toast />
           <ConfirmPopup></ConfirmPopup>
-          <Button @click="decline($event)" label="Decline" severity="danger" />
+          <Button @click="openPopUpReject" label="Decline" severity="danger" />
           <Button @click="accept($event)" label="Accept" severity="success" />
         </div>
       </div>
     </div>
   </div>
+  <PopUpReject
+    v-if="showPopUpReject"
+    @save="declineApplication"
+    @cancel="closePopUpReject"
+    :loading="loadingPopUpReject"
+  />
 </template>
 
 <script setup lang="ts">
@@ -107,8 +113,18 @@
   import { useConfirm } from 'primevue/useconfirm'
   import { useToast } from 'primevue/usetoast'
 
+  import PopUpReject from '../components/PopUpReject.vue'
+
   import { api } from '../api'
   import type { IApplicationItem } from '../types'
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
+
+  const {
+    showPopUp: showPopUpReject,
+    openPopUp: openPopUpReject,
+    closePopUp: closePopUpReject,
+    loading: loadingPopUpReject
+  } = usePopUp()
 
   const route = useRoute()
   const router = useRouter()
@@ -136,24 +152,6 @@
     })
   }
 
-  const decline = (event: any) => {
-    confirm.require({
-      target: event.currentTarget,
-      message: 'Confirm decline of this application?',
-      icon: 'pi pi-info-circle',
-      rejectProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true
-      },
-      acceptProps: {
-        label: 'Yes',
-        severity: 'danger'
-      },
-      accept: () => declineApplication()
-    })
-  }
-
   getApplication()
 
   const application = ref<IApplicationItem>()
@@ -176,13 +174,16 @@
     }
   }
 
-  async function declineApplication() {
+  async function declineApplication(message: string) {
     try {
-      await api.rejectApplication({ id: applicationID })
+      loadingPopUpReject.value = true
+      await api.rejectApplication({ id: applicationID, message })
       back()
       toast.add({ severity: 'success', summary: 'Application declined', life: 3000 })
     } catch (error) {
       console.error(error)
+    } finally {
+      loadingPopUpReject.value = false
     }
   }
   function back() {

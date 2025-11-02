@@ -26,3 +26,11 @@ body {
 #app {
   font-family: var(--p-font-family);
 }
+
+.p-datatable .p-overlay-mask {
+  background-color: transparent !important;
+}
+
+.p-datatable-tbody > tr {
+  cursor: pointer;
+}

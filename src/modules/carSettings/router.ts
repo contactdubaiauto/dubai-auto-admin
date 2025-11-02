@@ -13,7 +13,7 @@ const GenerationModifications = () => import('./pages/GenerationModifications.vu
 const moduleRoute = {
   path: '/car-settings',
   component: Module,
-  redirect: '',
+  redirect: '/car-settings/brands',
   children: [
     {
       path: 'brands',

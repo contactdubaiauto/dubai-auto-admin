@@ -41,9 +41,9 @@ async function acceptApplication({ id }: { id: string | number }) {
   }
 }
 
-async function rejectApplication({ id }: { id: string | number }) {
+async function rejectApplication({ id, message }: { id: string | number; message: string }) {
   try {
-    return await request({ url: `${URL}/${id}/reject`, method: 'POST' })
+    return await request({ url: `${URL}/${id}/reject?status=3&message=${message}`, method: 'POST' })
   } catch (e) {
     throw new Error('ERROR ON REJECT APPLICATION')
   }

@@ -1,6 +1,7 @@
 <template>
   <div class="p-3 h-full w-full border-r border-gray-200 flex flex-col">
-    <div class="w-full flex items-center justify-between mb-4">
+    <div class="w-full flex items-center gap-3 mb-4">
+      <img class="w-8 h-8 object-contain object-center" src="/logo.png" />
       <div class="text-2xl font-bold text-center text-blue-800">Masynbazar</div>
     </div>
     <div class="flex-1 scrollbar-hide overflow-y-auto">
@@ -29,6 +30,16 @@
         </template>
       </PanelMenu>
     </div>
+    <div class="pt-2 w-full">
+      <SelectButton
+        v-model="selectedLanguage"
+        @change="selectLanguage"
+        option-label="title"
+        option-value="code"
+        :options="languages"
+        fluid
+      />
+    </div>
     <div class="pt-2">
       <div class="flex gap-3 w-full bg-gray-100 px-4 py-2 rounded-md border border-gray-200">
         <div class="flex-1">
@@ -42,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
   import PanelMenu from 'primevue/panelmenu'
-  import { Button } from 'primevue'
+  import { Button, SelectButton } from 'primevue'
   import { useCookies } from 'vue3-cookies'
 
   import { useAuth } from '@/modules/auth/stores'
@@ -53,164 +65,184 @@
   const { cookies } = useCookies()
   const router = useRouter()
   const authStore = useAuth()
+  const { locale, t } = useI18n()
 
   const { user } = authStore
 
-  const items = ref([
+  interface ILanguage {
+    code: string
+    title: string
+  }
+
+  const languages = [
+    { code: 'ru', title: 'Русский' },
+    { code: 'en', title: 'English' }
+  ] as ILanguage[]
+
+  const selectedLanguage = ref<string>(languages[0].code)
+  function selectLanguage(lang: any) {
+    selectedLanguage.value = lang.value
+    locale.value = lang.value
+    cookies.set('language', lang.value, 100000000)
+  }
+
+  if (locale.value) {
+    const findLanguage = languages.find((language) => language.code === locale.value)
+    if (findLanguage) {
+      selectedLanguage.value = findLanguage.code
+    }
+  }
+
+  const items = computed(() => [
     {
-      label: 'Applications',
+      label: t('sidebar.applications'),
       icon: 'pi pi-users',
       items: [
         {
-          label: 'Dealers',
+          label: t('sidebar.dealers'),
           icon: 'pi pi-user',
           route: '/application/dealers'
         },
         {
-          label: 'Logistics',
+          label: t('sidebar.logistics'),
           icon: 'pi pi-user',
           route: '/application/logistics'
         },
         {
-          label: 'Car services',
+          label: t('sidebar.carServices'),
           icon: 'pi pi-user',
           route: '/application/car-services'
         },
         {
-          label: 'Brokers',
+          label: t('sidebar.brokers'),
           icon: 'pi pi-user',
           route: '/application/brokers'
         }
       ]
     },
     {
-      label: 'Users',
+      label: t('sidebar.users'),
       icon: 'pi pi-users',
       items: [
         {
-          label: 'Clients',
+          label: t('sidebar.clients'),
           icon: 'pi pi-user',
           route: '/user/clients'
         },
         {
-          label: 'Dealers',
+          label: t('sidebar.dealers'),
           icon: 'pi pi-user',
           route: '/user/dealers'
         },
         {
-          label: 'Logistics',
+          label: t('sidebar.logistics'),
           icon: 'pi pi-user',
           route: '/user/logistics'
         },
         {
-          label: 'Car services',
+          label: t('sidebar.carServices'),
           icon: 'pi pi-user',
           route: '/user/car-services'
         },
         {
-          label: 'Brokers',
+          label: t('sidebar.brokers'),
           icon: 'pi pi-user',
           route: '/user/brokers'
         }
       ]
     },
     {
-      label: 'Car settings',
+      label: t('sidebar.carSettings'),
       icon: 'pi pi-car',
       items: [
         {
-          label: 'Brands',
+          label: t('sidebar.brands'),
           icon: 'pi pi-database',
           route: '/car-settings/brands'
         },
         {
-          label: 'Body types',
+          label: t('sidebar.bodyTypes'),
           icon: 'pi pi-database',
           route: '/car-settings/body-types'
         },
         {
-          label: 'Drivetrains',
+          label: t('sidebar.drivetrains'),
           icon: 'pi pi-database',
           route: '/car-settings/drivetrains'
         },
         {
-          label: 'Engines',
+          label: t('sidebar.engines'),
           icon: 'pi pi-database',
           route: '/car-settings/engines'
         },
         {
-          label: 'Fuel types',
+          label: t('sidebar.fuelTypes'),
           icon: 'pi pi-database',
           route: '/car-settings/fuel-types'
         },
         {
-          label: 'Transmissions',
+          label: t('sidebar.transmissions'),
           icon: 'pi pi-database',
           route: '/car-settings/transmissions'
         }
       ]
     },
     {
-      label: 'Motorcycle settings',
+      label: t('sidebar.motorcycleSettings'),
       icon: 'pi pi-car',
       items: [
         {
-          label: 'Categories',
+          label: t('sidebar.categories'),
           icon: 'pi pi-database',
           route: '/motorcycle-settings/categories'
         },
         {
-          label: 'Parameters',
+          label: t('sidebar.parameters'),
           icon: 'pi pi-database',
           route: '/motorcycle-settings/parameters'
         }
       ]
     },
     {
-      label: 'Truck settings',
+      label: t('sidebar.truckSettings'),
       icon: 'pi pi-truck',
       items: [
         {
-          label: 'Categories',
+          label: t('sidebar.categories'),
           icon: 'pi pi-database',
           route: '/truck-settings/categories'
         },
         {
-          label: 'Parameters',
+          label: t('sidebar.parameters'),
           icon: 'pi pi-database',
           route: '/truck-settings/parameters'
         }
       ]
     },
     {
-      label: 'General',
+      label: t('sidebar.general'),
       icon: 'pi pi-cog',
       items: [
         {
-          label: 'Cities',
+          label: t('sidebar.cities'),
           icon: 'pi pi-database',
           route: '/general/cities'
         },
         {
-          label: 'Colors',
+          label: t('sidebar.colors'),
           icon: 'pi pi-database',
           route: '/general/colors'
         },
         {
-          label: 'Activity fields',
+          label: t('sidebar.activityFields'),
           icon: 'pi pi-database',
           route: '/general/activity-fields'
         },
         {
-          label: 'Company types',
+          label: t('sidebar.companyTypes'),
           icon: 'pi pi-database',
           route: '/general/company-types'
         }
-        // {
-        //   label: 'Admin users',
-        //   icon: 'pi pi-database',
-        //   route: '/general/admin-users'
-        // }
       ]
     }
   ])
@@ -228,7 +260,7 @@
   }
 
   .scrollbar-hide {
-    -ms-overflow-style: none; /* IE и Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 </style>

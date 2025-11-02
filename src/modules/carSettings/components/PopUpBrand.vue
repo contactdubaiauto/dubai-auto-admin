@@ -1,5 +1,11 @@
 <template>
-  <Dialog :visible="true" modal header="Brand" :style="{ width: '25rem' }" @update:visible="cancel">
+  <Dialog
+    :visible="true"
+    modal
+    :header="t('carSettings.brand.title')"
+    :style="{ width: '25rem' }"
+    @update:visible="cancel"
+  >
     <div class="flex gap-4">
       <div class="flex flex-col items-center gap-2">
         <FileUpload
@@ -7,6 +13,7 @@
           @select="onFileSelect"
           customUpload
           auto
+          :chooseLabel="t('base.choose')"
           accept="image/*"
           class="p-button-outlined"
           :disabled="loading"
@@ -19,25 +26,32 @@
         <div v-else class="w-32 h-32 bg-gray-100 rounded-md"></div>
       </div>
       <div class="flex-1">
-        <div class="flex flex-col gap-1">
-          <label for="brand">Brand</label>
-          <InputText v-model="form.name" id="brand" :disabled="loading" />
-        </div>
-        <div class="flex items-center gap-1 mt-4">
-          <Checkbox v-model="form.popular" inputId="popular" name="popular" binary :disabled="loading" />
-          <label for="popular">Popular</label>
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-1">
+            <label>{{ t('base.name') }} (en)</label>
+            <InputText v-model="form.name" :disabled="loading" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label>{{ t('base.name') }} (ру)</label>
+            <InputText v-model="form.name_ru" :disabled="loading" />
+          </div>
+          <div class="flex items-center gap-1">
+            <Checkbox v-model="form.popular" inputId="popular" name="popular" binary :disabled="loading" />
+            <label for="popular">{{ t('base.popular') }}</label>
+          </div>
         </div>
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
-      <Button type="button" label="Save" :loading="loading" @click="save"></Button>
+      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel"></Button>
+      <Button type="button" :label="t('base.save')" :loading="loading" @click="save"></Button>
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { Button, InputText, Dialog, FileUpload, Checkbox } from 'primevue'
 
   import type { IBrandItem, IBrandForm } from '../types'
@@ -55,9 +69,12 @@
     }
   )
 
+  const { t } = useI18n()
+
   const form = reactive<IBrandForm>({
     logo: '',
     name: '',
+    name_ru: '',
     popular: false
   })
 
@@ -65,6 +82,7 @@
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
     form.popular = props.item.popular
     form.logo = props.item.logo
     if (form.logo) {

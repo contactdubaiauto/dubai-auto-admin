@@ -5,7 +5,12 @@
         <Button @click="openPopUpModel" icon="pi pi-plus" label="Add model" />
       </div>
       <div class="flex">
-        <Breadcrumb :home="home" :model="items" class="p-0" />
+        <Breadcrumb :model="items" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
@@ -70,12 +75,11 @@
 
   const brandId = Number(route.params.brand) as number
 
-  const home = ref({
-    icon: 'pi pi-car',
-    label: 'Brand'
-  })
-
-  const items = ref([{ label: 'Models' }])
+  const items = ref([
+    { label: 'Car settings' },
+    { label: 'Brand', to: '/car-settings/brands' },
+    { label: 'Models', to: `/car-settings/brand/${brandId}/models` }
+  ])
 
   const models = ref<IModelItem[]>([])
 

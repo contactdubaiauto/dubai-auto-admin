@@ -1,7 +1,17 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between p-4 border-b-2 border-gray-100 mb-2">
-      <Button @click="openPopUpGenerationModification" icon="pi pi-plus" label="Add generation modification" />
+    <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
+      <div class="flex justify-between w-full">
+        <Button @click="openPopUpGenerationModification" icon="pi pi-plus" label="Add generation modification" />
+      </div>
+      <div class="flex">
+        <Breadcrumb :model="items" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
+      </div>
     </div>
     <div class="flex-1 overflow-y-auto">
       <DataTable :value="generationModifications" stripedRows size="small">
@@ -52,7 +62,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  import { Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpGenerationModification from '../components/PopUpGenerationModification.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -75,7 +85,20 @@
 
   const route = useRoute()
 
+  const brandId = route.params.brand as string
+  const modelId = Number(route.params.model) as number
   const generationId = Number(route.params.generation) as number
+
+  const items = ref([
+    { label: 'Car settings' },
+    { label: 'Brand', to: '/car-settings/brands' },
+    { label: 'Model', to: `/car-settings/brand/${brandId}/models` },
+    { label: 'Generation', to: `/car-settings/brand/${brandId}/model/${modelId}/generations` },
+    {
+      label: 'Modification',
+      to: `/car-settings/brand/${brandId}/model/${modelId}/generation/${generationId}/modifications`
+    }
+  ])
 
   const generationModifications = ref<IGenerationModification[]>([])
 
