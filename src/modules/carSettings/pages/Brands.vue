@@ -93,7 +93,7 @@
   import { usePopUp } from '@/shared/lib/use/usePopUp'
   import { api } from '../api'
   import type { IBrand, IBrandForm, IBrandItem } from '../types'
-  import { getDataByLang } from '@/shared/lib/utils/lang'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const { showPopUp: showPopUpBrand, openPopUp: openPopUpBrand, loading: loadingPopUpBrand } = usePopUp()
   const {
@@ -105,6 +105,7 @@
 
   const router = useRouter()
   const { t } = useI18n()
+  const { getDataByLang } = useLang()
 
   const items = ref([{ label: t('sidebar.carSettings') }, { label: t('sidebar.brands'), to: '/car-settings/brands' }])
 

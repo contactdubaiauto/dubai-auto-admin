@@ -1,71 +1,78 @@
 <template>
-  <Dialog :visible="true" modal header="Generation" :style="{ width: '25rem' }" @update:visible="cancel">
+  <Dialog
+    :visible="true"
+    modal
+    :header="t('carSettings.modification.title')"
+    :style="{ width: '25rem' }"
+    @update:visible="cancel"
+  >
     <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-1">
-        <label>Body type</label>
+        <label>{{ t('carSettings.modification.bodyType') }}</label>
         <Select
           v-model="form.body_type_id"
           :options="bodyTypes"
           optionLabel="name"
           optionValue="id"
-          placeholder="Select a body type"
+          :placeholder="t('carSettings.modification.selectBodyType')"
           :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label>Drivetrain</label>
+        <label>{{ t('carSettings.modification.drivetrain') }}</label>
         <Select
           v-model="form.drivetrain_id"
           :options="drivetrains"
           optionLabel="name"
           optionValue="id"
-          placeholder="Select a drivetrain"
+          :placeholder="t('carSettings.modification.selectDrivetrain')"
           :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label>Engine</label>
+        <label>{{ t('carSettings.modification.engine') }}</label>
         <Select
           v-model="form.engine_id"
           :options="engines"
-          optionLabel="value"
+          optionLabel="name"
           optionValue="id"
-          placeholder="Select a engine"
+          :placeholder="t('carSettings.modification.selectEngine')"
           :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label>Fuel type</label>
+        <label>{{ t('carSettings.modification.fuelType') }}</label>
         <Select
           v-model="form.fuel_type_id"
           :options="fuelTypes"
           optionLabel="name"
           optionValue="id"
-          placeholder="Select a fuel type"
+          :placeholder="t('carSettings.modification.selectFuelType')"
           :disabled="loading"
         />
       </div>
       <div class="flex flex-col gap-1">
-        <label>Transmission</label>
+        <label>{{ t('carSettings.modification.transmission') }}</label>
         <Select
           v-model="form.transmission_id"
           :options="transmissions"
           optionLabel="name"
           optionValue="id"
-          placeholder="Select a transmission"
+          :placeholder="t('carSettings.modification.selectTransmission')"
           :disabled="loading"
         />
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
-      <Button type="button" label="Save" :loading="loading" @click="save"></Button>
+      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel"></Button>
+      <Button type="button" :label="t('base.save')" :loading="loading" @click="save"></Button>
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { Button, Dialog, Select } from 'primevue'
 
   import type {
@@ -78,6 +85,7 @@
     ITransmission
   } from '../types'
   import { api } from '../api'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const emit = defineEmits(['cancel', 'save'])
 
@@ -91,6 +99,9 @@
       loading: false
     }
   )
+
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
 
   const form = reactive<IGenerationModificationForm>({
     body_type_id: 0,
@@ -112,7 +123,12 @@
   async function getBodyTypes() {
     try {
       const data = await api.getBodyTypes()
-      bodyTypes.value = data
+      bodyTypes.value = data.map((item: IBodyType) => {
+        return {
+          ...item,
+          name: getDataByLang({ data: item })
+        }
+      })
     } catch (error) {
       console.error(error)
     }
@@ -123,7 +139,12 @@
   async function getDrivetrains() {
     try {
       const data = await api.getDrivetrains()
-      drivetrains.value = data
+      drivetrains.value = data.map((item: IDrivetrain) => {
+        return {
+          ...item,
+          name: getDataByLang({ data: item })
+        }
+      })
     } catch (error) {
       console.error(error)
     }
@@ -134,7 +155,12 @@
   async function getEngines() {
     try {
       const data = await api.getEngines()
-      engines.value = data
+      engines.value = data.map((item: IEngine) => {
+        return {
+          ...item,
+          name: getDataByLang({ data: item })
+        }
+      })
     } catch (error) {
       console.error(error)
     }
@@ -145,7 +171,12 @@
   async function getFuelTypes() {
     try {
       const data = await api.getFuelTypes()
-      fuelTypes.value = data
+      fuelTypes.value = data.map((item: IFuelType) => {
+        return {
+          ...item,
+          name: getDataByLang({ data: item })
+        }
+      })
     } catch (error) {
       console.error(error)
     }
@@ -156,7 +187,12 @@
   async function getTransmissions() {
     try {
       const data = await api.getTransmissions()
-      transmissions.value = data
+      transmissions.value = data.map((item: ITransmission) => {
+        return {
+          ...item,
+          name: getDataByLang({ data: item })
+        }
+      })
     } catch (error) {
       console.error(error)
     }

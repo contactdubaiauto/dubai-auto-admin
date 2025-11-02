@@ -2,7 +2,7 @@
   <div class="h-full flex flex-col">
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
-        <Button @click="openPopUpGenerationModification" icon="pi pi-plus" label="Add generation modification" />
+        <Button @click="openPopUpGenerationModification" icon="pi pi-plus" :label="t('carSettings.modification.add')" />
       </div>
       <div class="flex">
         <Breadcrumb :model="items" class="p-0">
@@ -14,14 +14,34 @@
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="generationModifications" stripedRows size="small">
+      <DataTable :value="generationModifications" :loading="loadingModifications" rowHover stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="body_type_name" header="Body type"></Column>
-        <Column field="drivetrain_name" header="Drivetrain"></Column>
-        <Column field="engine_value" header="Engine"></Column>
-        <Column field="fuel_type_name" header="Fuel type"></Column>
-        <Column field="transmission_name" header="Transmission"></Column>
-        <Column header="Actions" class="w-24">
+        <Column :header="t('carSettings.modification.bodyType')">
+          <template #body="slotProps">
+            {{ getDataByLang({ key: 'body_type_name', data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('carSettings.modification.drivetrain')">
+          <template #body="slotProps">
+            {{ getDataByLang({ key: 'drivetrain_name', data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('carSettings.modification.engine')">
+          <template #body="slotProps">
+            {{ getDataByLang({ key: 'engine_name', data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('carSettings.modification.fuelType')">
+          <template #body="slotProps">
+            {{ getDataByLang({ key: 'fuel_type_name', data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('carSettings.modification.transmission')">
+          <template #body="slotProps">
+            {{ getDataByLang({ key: 'transmission_name', data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('base.actions')" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
               <Button
@@ -29,6 +49,7 @@
                 icon="pi pi-pencil"
                 rounded
                 variant="outlined"
+                size="small"
               />
               <Button
                 @click.stop="selectDeleteGenerationModification(slotProps.data)"
@@ -36,10 +57,17 @@
                 severity="danger"
                 rounded
                 variant="outlined"
+                size="small"
               />
             </div>
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -55,21 +83,25 @@
     @delete="deleteGenerationModification"
     @cancel="closePopUpDeleteGenerationModification"
     :loading="loadingPopUpDeleteGenerationModification"
-    description="Confirm delete generation modification!"
+    :description="t('carSettings.modification.confirmDelete')"
   />
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpGenerationModification from '../components/PopUpGenerationModification.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
-  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
   import { api } from '../api'
   import type { IGenerationModification, IGenerationModificationForm, IGenerationModificationItem } from '../types'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const {
     showPopUp: showPopUpGenerationModification,
@@ -84,18 +116,23 @@
   } = usePopUp()
 
   const route = useRoute()
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
 
   const brandId = route.params.brand as string
   const modelId = Number(route.params.model) as number
   const generationId = Number(route.params.generation) as number
 
   const items = ref([
-    { label: 'Car settings' },
-    { label: 'Brand', to: '/car-settings/brands' },
-    { label: 'Model', to: `/car-settings/brand/${brandId}/models` },
-    { label: 'Generation', to: `/car-settings/brand/${brandId}/model/${modelId}/generations` },
+    { label: t('sidebar.carSettings') },
+    { label: t('carSettings.brand.title'), to: '/car-settings/brands' },
+    { label: t('carSettings.model.title'), to: `/car-settings/brand/${brandId}/models` },
     {
-      label: 'Modification',
+      label: t('carSettings.generation.title'),
+      to: `/car-settings/brand/${brandId}/model/${modelId}/generations`
+    },
+    {
+      label: t('carSettings.modification.modifications'),
       to: `/car-settings/brand/${brandId}/model/${modelId}/generation/${generationId}/modifications`
     }
   ])
@@ -116,8 +153,10 @@
     showPopUpGenerationModification.value = false
   }
 
+  const loadingModifications = ref(false)
   async function getGenerationModifications() {
     try {
+      loadingModifications.value = true
       const data: IGenerationModification[] = await api.getGenerationModifications({ generationId })
 
       generationModifications.value = data.map(
@@ -130,6 +169,8 @@
       )
     } catch (error) {
       console.error(error)
+    } finally {
+      loadingModifications.value = false
     }
   }
 
