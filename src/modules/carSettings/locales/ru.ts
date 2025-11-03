@@ -37,5 +37,41 @@ export default {
     selectEngine: 'Выберите двигатель',
     selectFuelType: 'Выберите тип топлива',
     selectTransmission: 'Выберите трансмиссию'
+  },
+  bodyType: {
+    title: 'Тип кузова',
+    bodyTypes: 'Типы кузова',
+    add: 'Добавить тип кузова',
+    confirmDelete: 'Подтвердите удаление типа кузова!',
+    image: 'Изображение',
+    name: 'Название'
+  },
+  drivetrain: {
+    title: 'Привод',
+    drivetrains: 'Приводы',
+    add: 'Добавить привод',
+    confirmDelete: 'Подтвердите удаление привода!',
+    name: 'Название'
+  },
+  engine: {
+    title: 'Двигатель',
+    engines: 'Двигатели',
+    add: 'Добавить двигатель',
+    confirmDelete: 'Подтвердите удаление двигателя!',
+    name: 'Название'
+  },
+  fuelType: {
+    title: 'Тип топлива',
+    fuelTypes: 'Типы топлива',
+    add: 'Добавить тип топлива',
+    confirmDelete: 'Подтвердите удаление типа топлива!',
+    name: 'Название'
+  },
+  transmission: {
+    title: 'Трансмиссия',
+    transmissions: 'Трансмиссии',
+    add: 'Добавить трансмиссию',
+    confirmDelete: 'Подтвердите удаление трансмиссии!',
+    name: 'Название'
   }
 }

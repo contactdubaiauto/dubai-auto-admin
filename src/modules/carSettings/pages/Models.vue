@@ -5,7 +5,7 @@
         <Button @click="openPopUpModel" icon="pi pi-plus" :label="t('carSettings.model.add')" />
       </div>
       <div class="flex">
-        <Breadcrumb :model="items" class="p-0">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
           <template #item="{ item }">
             <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
             <div v-else>{{ item.label }}</div>
@@ -63,7 +63,6 @@
     @delete="deleteModel"
     @cancel="closePopUpDeleteModel"
     :loading="loadingPopUpDeleteModel"
-    :description="t('carSettings.model.confirmDelete')"
   />
 </template>
 
@@ -98,17 +97,35 @@
 
   const brandId = Number(route.params.brand) as number
 
-  const items = ref([
+  const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
     { label: t('carSettings.brand.title'), to: '/car-settings/brands' },
     { label: t('carSettings.model.models'), to: `/car-settings/brand/${brandId}/models` }
   ])
 
-  const models = ref<IModelItem[]>([])
-
   onMounted(() => {
     getModels()
   })
+
+  const models = ref<IModelItem[]>([])
+  const loadingModels = ref(false)
+  async function getModels() {
+    try {
+      loadingModels.value = true
+      const data: IModel[] = await api.getModels({ brandId: brandId })
+
+      models.value = data.map((model: IModel, index: number): IModelItem => {
+        return {
+          ...model,
+          index: index + 1
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loadingModels.value = false
+    }
+  }
 
   const selectedModel = ref<IModelItem | null>(null)
   function selectModel(item: IModelItem) {
@@ -118,25 +135,6 @@
   function closePopUpModel() {
     selectedModel.value = null
     showPopUpModel.value = false
-  }
-
-  const loadingModels = ref(false)
-  async function getModels() {
-    try {
-      loadingModels.value = true
-      const data: IModel[] = await api.getModels({ brandId: brandId })
-
-      models.value = data.map((model: IModel, index: number): IModelItem => {
-        return {
-          index: index + 1,
-          ...model
-        }
-      })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      loadingModels.value = false
-    }
   }
 
   async function saveModel(form: IModelForm) {

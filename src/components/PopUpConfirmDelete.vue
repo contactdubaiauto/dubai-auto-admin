@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="flex justify-end gap-2">
-      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel"></Button>
+      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
       <Button type="button" :label="t('base.delete')" severity="danger" :loading="loading" @click="confirm"></Button>
     </div>
   </Dialog>

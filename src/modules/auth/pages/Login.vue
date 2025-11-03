@@ -13,19 +13,19 @@
       <div class="w-full text-2xl font-bold text-center mb-4 text-blue-800">Masynbazar</div>
       <div class="flex flex-col gap-1">
         <label class="mb-1">Email</label>
-        <InputText name="email" type="text" placeholder="Email" fluid :disabled="loading" />
+        <InputText name="email" type="text" fluid :disabled="loading" />
         <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
           $form.email.error.message
         }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <label class="mb-1">Password</label>
-        <Password name="password"  :feedback="false" toggleMask fluid :disabled="loading" />
+        <Password name="password" :feedback="false" toggleMask fluid :disabled="loading" />
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
           $form.password.error.message
         }}</Message>
       </div>
-      <Button type="submit" label="Submit" :loading="loading" />
+      <Button type="submit" label="Submit" :loading="loading" fluid />
     </Form>
   </div>
 </template>

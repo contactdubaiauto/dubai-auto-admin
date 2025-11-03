@@ -37,5 +37,41 @@ export default {
     selectEngine: 'Select a engine',
     selectFuelType: 'Select a fuel type',
     selectTransmission: 'Select a transmission'
+  },
+  bodyType: {
+    title: 'Body type',
+    bodyTypes: 'Body types',
+    add: 'Add body type',
+    image: 'Image',
+    name: 'Name',
+    confirmDelete: 'Confirm delete body type!'
+  },
+  drivetrain: {
+    title: 'Drivetrain',
+    drivetrains: 'Drivetrains',
+    add: 'Add drivetrain',
+    confirmDelete: 'Confirm delete drivetrain!',
+    name: 'Name'
+  },
+  engine: {
+    title: 'Engine',
+    engines: 'Engines',
+    add: 'Add engine',
+    confirmDelete: 'Confirm delete engine!',
+    name: 'Name'
+  },
+  fuelType: {
+    title: 'Fuel type',
+    fuelTypes: 'Fuel types',
+    add: 'Add fuel type',
+    confirmDelete: 'Confirm delete fuel type!',
+    name: 'Name'
+  },
+  transmission: {
+    title: 'Transmission',
+    transmissions: 'Transmissions',
+    add: 'Add transmission',
+    confirmDelete: 'Confirm delete transmission!',
+    name: 'Name'
   }
 }

@@ -2,27 +2,52 @@
   <div class="h-full flex flex-col">
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
-        <Button @click="openPopUpDrivetrain" icon="pi pi-plus" label="Add drivetrain" />
+        <Button @click="openPopUpDrivetrain" icon="pi pi-plus" :label="t('carSettings.drivetrain.add')" />
+      </div>
+      <div class="flex">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="drivetrains" stripedRows size="small">
+      <DataTable :value="drivetrains" :loading="loadingDrivetrains" rowHover stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="name" header="Name"></Column>
-        <Column header="Actions" class="w-24">
+        <Column :header="t('carSettings.drivetrain.name')">
+          <template #body="slotProps">
+            {{ getDataByLang({ data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('base.actions')" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
-              <Button @click.stop="selectDrivetrain(slotProps.data)" icon="pi pi-pencil" rounded variant="outlined" />
+              <Button
+                @click.stop="selectDrivetrain(slotProps.data)"
+                icon="pi pi-pencil"
+                rounded
+                variant="outlined"
+                size="small"
+              />
               <Button
                 @click.stop="selectDeleteDrivetrain(slotProps.data)"
                 icon="pi pi-trash"
                 severity="danger"
                 rounded
                 variant="outlined"
+                size="small"
               />
             </div>
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -35,7 +60,7 @@
   />
   <PopUpConfirmDelete
     v-if="showPopUpDeleteDrivetrain"
-    description="Confirm delete drivetrain!"
+    :description="t('carSettings.drivetrain.confirmDelete')"
     @delete="deleteDrivetrain"
     @cancel="closePopUpDeleteDrivetrain"
     :loading="loadingPopUpDeleteDrivetrain"
@@ -44,12 +69,16 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import {  Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column, Breadcrumb } from 'primevue'
+  import { useI18n } from 'vue-i18n'
 
   import PopUpDrivetrain from '../components/PopUpDrivetrain.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
-  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import { useLang } from '@/shared/lib/use/useLang'
   import { api } from '../api'
   import type { IDrivetrain, IDrivetrainForm, IDrivetrainItem } from '../types'
 
@@ -60,6 +89,14 @@
     closePopUp: closePopUpDeleteDrivetrain,
     loading: loadingPopUpDeleteDrivetrain
   } = usePopUp()
+
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
+
+  const breadcrumbs = ref([
+    { label: t('sidebar.carSettings') },
+    { label: t('carSettings.drivetrain.drivetrains'), to: '/car-settings/drivetrains' }
+  ])
 
   const drivetrains = ref<IDrivetrainItem[]>([])
 
@@ -77,8 +114,10 @@
     showPopUpDrivetrain.value = false
   }
 
+  const loadingDrivetrains = ref(false)
   async function getDrivetrains() {
     try {
+      loadingDrivetrains.value = true
       const data: IDrivetrain[] = await api.getDrivetrains()
 
       drivetrains.value = data.map((drivetrain: IDrivetrain, index: number): IDrivetrainItem => {
@@ -89,6 +128,8 @@
       })
     } catch (error) {
       console.error(error)
+    } finally {
+      loadingDrivetrains.value = false
     }
   }
 
