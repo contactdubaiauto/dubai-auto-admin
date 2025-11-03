@@ -1,12 +1,18 @@
 <template>
-  <Dialog :visible="true" modal header="Region" :style="{ width: '25rem' }" @update:visible="cancel">
+  <Dialog
+    :visible="true"
+    modal
+    :header="t('general.region.title')"
+    :style="{ width: '25rem' }"
+    @update:visible="cancel"
+  >
     <div class="flex flex-col gap-1">
-      <label for="region">Region</label>
+      <label for="region">{{ t('base.name') }}</label>
       <InputText v-model="form.name" id="region" :disabled="loading" />
     </div>
     <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
-      <Button type="button" label="Save" :loading="loading" @click="save"></Button>
+      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
+      <Button type="button" :label="t('base.save')" :loading="loading" @click="save"></Button>
     </div>
   </Dialog>
 </template>
@@ -14,6 +20,7 @@
 <script setup lang="ts">
   import { reactive } from 'vue'
   import { Button, InputText, Dialog } from 'primevue'
+  import { useI18n } from 'vue-i18n'
 
   import type { IRegionItem, IRegionForm } from '../types'
 
@@ -29,6 +36,8 @@
       loading: false
     }
   )
+
+  const { t } = useI18n()
 
   const form = reactive<IRegionForm>({
     name: ''

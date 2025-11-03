@@ -1,13 +1,27 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between p-4 border-b-2 border-gray-100 mb-2">
-      <Button @click="openPopUpActivityField" icon="pi pi-plus" label="Add activity field" />
+    <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
+      <div class="flex justify-between w-full">
+        <Button @click="openPopUpActivityField" icon="pi pi-plus" :label="t('general.activityField.add')" />
+      </div>
+      <div class="flex">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
+      </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="cities" stripedRows size="small">
+      <DataTable :value="activityFields" :loading="loadingActivityFields" rowHover stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="name" header="Name"></Column>
-        <Column header="Actions" class="w-24">
+        <Column :header="t('base.name')" field="name">
+          <template #body="slotProps">
+            {{ getDataByLang({ data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('base.actions')" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
               <Button
@@ -15,6 +29,7 @@
                 icon="pi pi-pencil"
                 rounded
                 variant="outlined"
+                size="small"
               />
               <Button
                 @click.stop="selectDeleteActivityField(slotProps.data)"
@@ -22,10 +37,17 @@
                 severity="danger"
                 rounded
                 variant="outlined"
+                size="small"
               />
             </div>
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -41,20 +63,24 @@
     @delete="deleteActivityField"
     @cancel="closePopUpDeleteActivityField"
     :loading="loadingPopUpDeleteActivityField"
-    description="Confirm delete activity field!"
+    :description="t('general.activityField.confirmDelete')"
   />
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column, Breadcrumb } from 'primevue'
+  import { useI18n } from 'vue-i18n'
 
   import PopUpActivityField from '../components/PopUpActivityField.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
-  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
   import { api } from '../api'
   import type { IActivityField, IActivityFieldForm, IActivityFieldItem } from '../types'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const {
     showPopUp: showPopUpActivityField,
@@ -68,11 +94,37 @@
     loading: loadingPopUpDeleteActivityField
   } = usePopUp()
 
-  const cities = ref<IActivityField[]>([])
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
+
+  const breadcrumbs = ref([
+    { label: t('sidebar.general') },
+    { label: t('sidebar.activityFields'), to: '/general/activity-fields' }
+  ])
 
   onMounted(() => {
     getActivityFields()
   })
+
+  const activityFields = ref<IActivityField[]>([])
+  const loadingActivityFields = ref(false)
+  async function getActivityFields() {
+    try {
+      loadingActivityFields.value = true
+      const data: IActivityField[] = await api.getActivityFields()
+
+      activityFields.value = data.map((activityField: IActivityField, index: number): IActivityFieldItem => {
+        return {
+          index: index + 1,
+          ...activityField
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loadingActivityFields.value = false
+    }
+  }
 
   const selectedActivityField = ref<IActivityFieldItem | null>(null)
   function selectActivityField(item: IActivityFieldItem) {
@@ -82,21 +134,6 @@
   function closePopUpActivityField() {
     selectedActivityField.value = null
     showPopUpActivityField.value = false
-  }
-
-  async function getActivityFields() {
-    try {
-      const data: IActivityField[] = await api.getActivityFields()
-
-      cities.value = data.map((activityField: IActivityField, index: number): IActivityFieldItem => {
-        return {
-          index: index + 1,
-          ...activityField
-        }
-      })
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   async function saveActivityField(form: IActivityFieldForm) {

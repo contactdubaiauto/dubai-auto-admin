@@ -1,5 +1,5 @@
 <template>
-  <Dialog :visible="true" modal header="Color" :style="{ width: '25rem' }" @update:visible="cancel">
+  <Dialog :visible="true" modal :header="t('general.color.title')" :style="{ width: '25rem' }" @update:visible="cancel">
     <div class="flex gap-4">
       <div class="flex flex-col items-center gap-2">
         <FileUpload
@@ -10,6 +10,7 @@
           accept="image/*"
           class="p-button-outlined"
           :disabled="loading"
+          :chooseLabel="t('base.choose')"
         />
         <img
           v-if="previewImage"
@@ -21,11 +22,11 @@
       <div class="flex-1">
         <div class="flex flex-col gap-2">
           <div class="flex flex-col gap-1">
-            <label>Name (en)</label>
+            <label>{{ t('base.name') }} (en)</label>
             <InputText v-model="form.name" :disabled="loading" />
           </div>
           <div class="flex flex-col gap-1">
-            <label>Name (ru)</label>
+            <label>{{ t('base.name') }} (ру)</label>
             <InputText v-model="form.name_ru" :disabled="loading" />
           </div>
         </div>
@@ -40,6 +41,7 @@
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { Button, InputText, Dialog, FileUpload } from 'primevue'
 
   import type { IColorItem, IColorForm } from '../types'
@@ -57,11 +59,14 @@
     }
   )
 
+  const { t } = useI18n()
+
   const form = reactive<IColorForm>({
     image: '',
     name: '',
     name_ru: ''
   })
+
   const previewImage = ref('')
 
   if (props.item) {

@@ -1,4 +1,6 @@
 import carSettings from '@/modules/carSettings/locales/en'
+import applications from '@/modules/application/locales/en'
+import general from '@/modules/general/locales/en'
 
 export default {
   base: {
@@ -11,7 +13,8 @@ export default {
     save: 'Save',
     cancel: 'Cancel',
     delete: 'Delete',
-    confirmDelete: 'Confirm delete'
+    confirmDelete: 'Confirm delete',
+    back: 'Back'
   },
   sidebar: {
     applications: 'Applications',
@@ -38,5 +41,7 @@ export default {
     activityFields: 'Activity fields',
     companyTypes: 'Company types'
   },
-  carSettings: carSettings
+  carSettings: carSettings,
+  applications: applications,
+  general: general
 }

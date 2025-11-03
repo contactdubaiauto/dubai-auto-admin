@@ -1,26 +1,53 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between p-4 border-b-2 border-gray-100 mb-2">
-      <Button @click="openPopUpCompanyType" icon="pi pi-plus" label="Add company type" />
+    <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
+      <div class="flex justify-between w-full">
+        <Button @click="openPopUpCompanyType" icon="pi pi-plus" :label="t('general.companyType.add')" />
+      </div>
+      <div class="flex">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
+      </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="cities" stripedRows size="small">
+      <DataTable :value="companyTypes" :loading="loadingCompanyTypes" rowHover stripedRows size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="name" header="Name"></Column>
-        <Column header="Actions" class="w-24">
+        <Column :header="t('base.name')" field="name">
+          <template #body="slotProps">
+            {{ getDataByLang({ data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('base.actions')" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
-              <Button @click.stop="selectCompanyType(slotProps.data)" icon="pi pi-pencil" rounded variant="outlined" />
+              <Button
+                @click.stop="selectCompanyType(slotProps.data)"
+                icon="pi pi-pencil"
+                rounded
+                variant="outlined"
+                size="small"
+              />
               <Button
                 @click.stop="selectDeleteCompanyType(slotProps.data)"
                 icon="pi pi-trash"
                 severity="danger"
                 rounded
                 variant="outlined"
+                size="small"
               />
             </div>
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -36,20 +63,24 @@
     @delete="deleteCompanyType"
     @cancel="closePopUpDeleteCompanyType"
     :loading="loadingPopUpDeleteCompanyType"
-    description="Confirm delete company type!"
+    :description="t('general.companyType.confirmDelete')"
   />
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { Button, DataTable, Column } from 'primevue'
+  import { Button, DataTable, Column, Breadcrumb } from 'primevue'
+  import { useI18n } from 'vue-i18n'
 
   import PopUpCompanyType from '../components/PopUpCompanyType.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
-  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
   import { api } from '../api'
   import type { ICompanyType, ICompanyTypeForm, ICompanyTypeItem } from '../types'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const {
     showPopUp: showPopUpCompanyType,
@@ -63,11 +94,37 @@
     loading: loadingPopUpDeleteCompanyType
   } = usePopUp()
 
-  const cities = ref<ICompanyType[]>([])
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
+
+  const breadcrumbs = ref([
+    { label: t('sidebar.general') },
+    { label: t('sidebar.companyTypes'), to: '/general/company-types' }
+  ])
 
   onMounted(() => {
     getCompanyTypes()
   })
+
+  const companyTypes = ref<ICompanyType[]>([])
+  const loadingCompanyTypes = ref(false)
+  async function getCompanyTypes() {
+    try {
+      loadingCompanyTypes.value = true
+      const data: ICompanyType[] = await api.getCompanyTypes()
+
+      companyTypes.value = data.map((companyType: ICompanyType, index: number): ICompanyTypeItem => {
+        return {
+          index: index + 1,
+          ...companyType
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loadingCompanyTypes.value = false
+    }
+  }
 
   const selectedCompanyType = ref<ICompanyTypeItem | null>(null)
   function selectCompanyType(item: ICompanyTypeItem) {
@@ -77,21 +134,6 @@
   function closePopUpCompanyType() {
     selectedCompanyType.value = null
     showPopUpCompanyType.value = false
-  }
-
-  async function getCompanyTypes() {
-    try {
-      const data: ICompanyType[] = await api.getCompanyTypes()
-
-      cities.value = data.map((companyType: ICompanyType, index: number): ICompanyTypeItem => {
-        return {
-          index: index + 1,
-          ...companyType
-        }
-      })
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   async function saveCompanyType(form: ICompanyTypeForm) {

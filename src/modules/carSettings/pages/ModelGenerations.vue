@@ -5,7 +5,7 @@
         <Button @click="openPopUpGeneration" icon="pi pi-plus" :label="t('carSettings.generation.add')" />
       </div>
       <div class="flex">
-        <Breadcrumb :model="items" class="p-0">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
           <template #item="{ item }">
             <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
             <div v-else>{{ item.label }}</div>
@@ -119,7 +119,7 @@
   const brandId = route.params.brand as string
   const modelId = Number(route.params.model) as number
 
-  const items = ref([
+  const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
     { label: t('carSettings.brand.title'), to: '/car-settings/brands' },
     { label: t('carSettings.model.title'), to: `/car-settings/brand/${brandId}/models` },

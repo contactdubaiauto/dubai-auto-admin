@@ -1,18 +1,24 @@
 <template>
-  <Dialog :visible="true" modal header="Company type" :style="{ width: '25rem' }" @update:visible="cancel">
+  <Dialog
+    :visible="true"
+    modal
+    :header="t('general.companyType.title')"
+    :style="{ width: '25rem' }"
+    @update:visible="cancel"
+  >
     <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-1">
-        <label>Name (en)</label>
+        <label>{{ t('base.name') }} (en)</label>
         <InputText v-model="form.name" :disabled="loading" />
       </div>
       <div class="flex flex-col gap-1">
-        <label>Name (ru)</label>
+        <label>{{ t('base.name') }} (ру)</label>
         <InputText v-model="form.name_ru" :disabled="loading" />
       </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
-      <Button type="button" label="Save" :loading="loading" @click="save"></Button>
+      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
+      <Button type="button" :label="t('base.save')" :loading="loading" @click="save"></Button>
     </div>
   </Dialog>
 </template>
@@ -20,6 +26,7 @@
 <script setup lang="ts">
   import { reactive } from 'vue'
   import { Button, InputText, Dialog } from 'primevue'
+  import { useI18n } from 'vue-i18n'
 
   import type { ICompanyTypeItem, ICompanyTypeForm } from '../types'
 
@@ -35,6 +42,8 @@
       loading: false
     }
   )
+
+  const { t } = useI18n()
 
   const form = reactive<ICompanyTypeForm>({
     name: '',

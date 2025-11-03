@@ -5,7 +5,7 @@
         <Button @click="openPopUpBrand" icon="pi pi-plus" :label="t('carSettings.brand.add')" />
       </div>
       <div class="flex">
-        <Breadcrumb :model="items" class="p-0">
+        <Breadcrumb :model="breadcrumbs" class="p-0">
           <template #item="{ item }">
             <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
             <div v-else>{{ item.label }}</div>
@@ -107,7 +107,10 @@
   const { t } = useI18n()
   const { getDataByLang } = useLang()
 
-  const items = ref([{ label: t('sidebar.carSettings') }, { label: t('sidebar.brands'), to: '/car-settings/brands' }])
+  const breadcrumbs = ref([
+    { label: t('sidebar.carSettings') },
+    { label: t('sidebar.brands'), to: '/car-settings/brands' }
+  ])
 
   const brands = ref<IBrand[]>([])
 

@@ -2,20 +2,31 @@
   <div class="h-full flex flex-col">
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex">
-        <Breadcrumb :home="home" :model="items" class="p-0" />
+        <Breadcrumb :model="breadcrumbs" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="applications" stripedRows @row-click="onRowClick">
+      <DataTable :value="applications" :loading="loadingApplications" rowHover stripedRows @row-click="onRowClick">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column field="email" header="Email"></Column>
-        <Column field="company_name" header="Company name"></Column>
-        <Column field="phone" header="Phone"></Column>
-        <Column field="created_at" header="Date">
+        <Column field="email" :header="t('applications.email')"></Column>
+        <Column field="company_name" :header="t('applications.companyName')"></Column>
+        <Column field="phone" :header="t('applications.phone')"></Column>
+        <Column field="created_at" :header="t('applications.date')">
           <template #body="{ data }">
             {{ formatDate(data.created_at) }}
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -24,29 +35,34 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
   import moment from 'moment'
   import { DataTable, Column, Breadcrumb } from 'primevue'
+
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
   import { api } from '../api'
   import type { IApplication } from '../types'
 
   const router = useRouter()
 
-  const home = ref({
-    icon: 'pi pi-car',
-    label: 'Applications'
-  })
+  const { t } = useI18n()
 
-  const items = ref([{ label: 'Dealers' }])
-
-  const applications = ref<IApplication[]>([])
+  const breadcrumbs = ref([
+    { label: t('sidebar.applications') },
+    { label: t('sidebar.dealers'), to: '/application/dealers' }
+  ])
 
   onMounted(() => {
     getApplications()
   })
 
+  const applications = ref<IApplication[]>([])
+  const loadingApplications = ref(false)
   async function getApplications() {
     try {
+      loadingApplications.value = true
       const data: IApplication[] = await api.getApplications({
         params: {
           role: 2,
@@ -62,6 +78,8 @@
       })
     } catch (error) {
       console.error(error)
+    } finally {
+      loadingApplications.value = false
     }
   }
 
