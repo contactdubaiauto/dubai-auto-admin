@@ -35,6 +35,10 @@
             <label>{{ t('base.name') }} (ру)</label>
             <InputText v-model="form.name_ru" :disabled="loading" />
           </div>
+					<div class="flex flex-col gap-1">
+            <label>{{ t('base.name') }} (ae)</label>
+            <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+          </div>
           <div class="flex items-center gap-1">
             <Checkbox v-model="form.popular" inputId="popular" name="popular" binary :disabled="loading" />
             <label for="popular">{{ t('base.popular') }}</label>
@@ -75,6 +79,7 @@
     logo: '',
     name: '',
     name_ru: '',
+    name_ae: '',
     popular: false
   })
 
@@ -83,6 +88,7 @@
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+		form.name_ae = props.item.name_ae
     form.popular = props.item.popular
     form.logo = props.item.logo
     if (form.logo) {

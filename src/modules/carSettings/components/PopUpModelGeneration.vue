@@ -34,6 +34,10 @@
           <label>{{ t('base.name') }} (ру)</label>
           <InputText v-model="form.name_ru" :disabled="loading" />
         </div>
+        <div class="flex flex-col gap-1 col-span-2">
+          <label>{{ t('base.name') }} (ae)</label>
+          <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+        </div>
         <div class="flex flex-col gap-1 col-span-1">
           <label>{{ t('carSettings.generation.startYear') }}</label>
           <InputNumber v-model="form.start_year" inputId="startyear" fluid :disabled="loading" />
@@ -81,6 +85,7 @@
     model_id: 0,
     name: '',
     name_ru: '',
+    name_ae: '',
     end_year: 0,
     start_year: 0,
     wheel: true
@@ -91,6 +96,7 @@
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
     form.model_id = props.item.model_id
     form.end_year = props.item.end_year
     form.start_year = props.item.start_year

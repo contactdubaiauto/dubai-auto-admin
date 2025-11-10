@@ -6,9 +6,19 @@
     :style="{ width: '25rem' }"
     @update:visible="cancel"
   >
-    <div class="flex flex-col gap-1">
-      <label for="region">{{ t('base.name') }}</label>
-      <InputText v-model="form.name" id="region" :disabled="loading" />
+    <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
+        <label for="region">{{ t('base.name') }} (en)</label>
+        <InputText v-model="form.name" id="region" :disabled="loading" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label>{{ t('base.name') }} (ру)</label>
+        <InputText v-model="form.name_ru" :disabled="loading" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label>{{ t('base.name') }} (ae)</label>
+        <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+      </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
@@ -40,11 +50,15 @@
   const { t } = useI18n()
 
   const form = reactive<IRegionForm>({
-    name: ''
+    name: '',
+    name_ru: '',
+    name_ae: ''
   })
 
   if (props.item) {
     form.name = props.item.name
+    form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
   }
 
   function cancel() {

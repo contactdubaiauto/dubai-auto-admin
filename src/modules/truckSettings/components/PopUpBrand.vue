@@ -28,6 +28,10 @@
             <label>Name (ru)</label>
             <InputText v-model="form.name_ru" :disabled="loading" />
           </div>
+          <div class="flex flex-col gap-1">
+            <label>Name (ae)</label>
+            <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+          </div>
         </div>
       </div>
     </div>
@@ -61,6 +65,7 @@
     image: '',
     name: '',
     name_ru: '',
+    name_ae: '',
     comtrans_category_id: 0
   })
 
@@ -69,6 +74,7 @@
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
     form.image = props.item.image
 
     if (form.image) {

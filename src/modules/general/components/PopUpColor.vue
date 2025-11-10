@@ -29,6 +29,10 @@
             <label>{{ t('base.name') }} (ру)</label>
             <InputText v-model="form.name_ru" :disabled="loading" />
           </div>
+          <div class="flex flex-col gap-1">
+            <label>{{ t('base.name') }} (ae)</label>
+            <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+          </div>
         </div>
       </div>
     </div>
@@ -64,7 +68,8 @@
   const form = reactive<IColorForm>({
     image: '',
     name: '',
-    name_ru: ''
+    name_ru: '',
+    name_ae: ''
   })
 
   const previewImage = ref('')
@@ -72,6 +77,7 @@
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
     form.image = props.item.image
     if (form.image) {
       previewImage.value = `${form.image}`

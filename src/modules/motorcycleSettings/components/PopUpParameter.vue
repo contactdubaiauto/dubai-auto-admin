@@ -11,6 +11,10 @@
           <InputText v-model="form.name_ru" :disabled="loading" />
         </div>
         <div class="flex flex-col gap-1">
+          <label>Name (ae)</label>
+          <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+        </div>
+        <div class="flex flex-col gap-1">
           <label>Category</label>
           <CascadeSelect
             v-model="form.moto_category_id"
@@ -56,12 +60,14 @@
   const form = reactive<IParameterForm>({
     name: '',
     name_ru: '',
+    name_ae: '',
     moto_category_id: 0
   })
 
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
     form.moto_category_id = props.item.moto_category_id
   }
 

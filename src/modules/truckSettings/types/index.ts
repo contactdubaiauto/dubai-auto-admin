@@ -2,6 +2,7 @@ export interface ICategory {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   created_at: string
 }
 
@@ -12,6 +13,7 @@ export interface ICategoryItem extends ICategory {
 export interface ICategoryForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface ICategoryParameter {
@@ -34,6 +36,7 @@ export interface IBrand {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   image: string
   comtrans_category_id: number
   comtrans_category_name: string
@@ -48,12 +51,14 @@ export interface IBrandForm {
   comtrans_category_id: number
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IModel {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   comtrans_brand_id: number
   comtrans_brand_name: string
   comtrans_brand_name_ru: string
@@ -67,12 +72,14 @@ export interface IModelForm {
   comtrans_brand_id: number | string
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IParameter {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   comtrans_category_id: number
   comtrans_category_name: string
   created_at: string
@@ -85,12 +92,14 @@ export interface IParameterForm {
   comtrans_category_id: number
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IParameterValue {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   comtrans_parameter_id: number
   created_at: string
 }
@@ -100,4 +109,6 @@ export interface IParameterValueItem extends IParameterValue {
 }
 export interface IParameterValueForm {
   name: string
+  name_ru: string
+  name_ae: string
 }

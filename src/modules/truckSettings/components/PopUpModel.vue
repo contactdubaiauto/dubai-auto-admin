@@ -9,6 +9,10 @@
         <label>Name (ru)</label>
         <InputText v-model="form.name_ru" :disabled="loading" />
       </div>
+      <div class="flex flex-col gap-1">
+        <label>Name (ae)</label>
+        <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+      </div>
     </div>
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
@@ -39,12 +43,14 @@
   const form = reactive<IModelForm>({
     comtrans_brand_id: 0,
     name: '',
-    name_ru: ''
+    name_ru: '',
+    name_ae: ''
   })
 
   if (props.item) {
     form.name = props.item.name
     form.name_ru = props.item.name_ru
+    form.name_ae = props.item.name_ae
   }
 
   function cancel() {

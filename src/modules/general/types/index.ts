@@ -1,9 +1,13 @@
 export interface ICityForm {
   name: string
+  name_ru: string
+  name_ae: string
 }
 export interface ICity {
   id: number
   name: string
+  name_ru: string
+  name_ae: string
   created_at: string
 }
 
@@ -13,10 +17,14 @@ export interface ICityItem extends ICity {
 
 export interface IRegionForm {
   name: string
+  name_ru: string
+  name_ae: string
 }
 export interface IRegion {
   id: number
   name: string
+  name_ru: string
+  name_ae: string
   created_at: string
 }
 
@@ -28,11 +36,13 @@ export interface IColorForm {
   image: string
   name: string
   name_ru: string
+  name_ae: string
 }
 export interface IColor {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   image: string
   created_at: string
 }
@@ -44,6 +54,7 @@ export interface IColorItem extends IColor {
 export interface IActivityFieldForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 export interface IActivityField extends IActivityFieldForm {
   id: number
@@ -57,6 +68,7 @@ export interface IActivityFieldItem extends IActivityField {
 export interface ICompanyTypeForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 export interface ICompanyType extends ICompanyTypeForm {
   id: number

@@ -2,6 +2,7 @@ export interface IBodyTypeForm {
   image: string
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IBodyType extends IBodyTypeForm {
@@ -21,6 +22,7 @@ export interface IBrand {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   model_count: number
   logo: string
   popular: boolean
@@ -35,12 +37,14 @@ export interface IBrandForm {
   logo: string
   name: string
   name_ru: string
+  name_ae: string
   popular: boolean
 }
 
 export interface IModelForm {
   name: string
   name_ru: string
+  name_ae: string
   popular: boolean
   brand_id?: number | string
 }
@@ -49,6 +53,7 @@ export interface IModel {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   popular: boolean
 }
 
@@ -61,6 +66,7 @@ export interface IGeneration {
   model_id: number
   name: string
   name_ru: string
+  name_ae: string
   model_name: string
   image: string
   start_year: number
@@ -77,6 +83,7 @@ export interface IGenerationForm {
   model_id: number
   name: string
   name_ru: string
+  name_ae: string
   image: string
   end_year: number
   start_year: number
@@ -113,6 +120,7 @@ export interface IGenerationModificationForm {
 export interface IDrivetrainForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IDrivetrain extends IDrivetrainForm {
@@ -128,6 +136,7 @@ export interface IEngine {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   created_at: string
 }
 
@@ -138,11 +147,13 @@ export interface IEngineItem extends IEngine {
 export interface IEngineForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IFuelTypeForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 export interface IFuelType extends IFuelTypeForm {
   id: number
@@ -156,6 +167,7 @@ export interface IFuelTypeItem extends IFuelType {
 export interface ITransmissionForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface ITransmission extends ITransmissionForm {

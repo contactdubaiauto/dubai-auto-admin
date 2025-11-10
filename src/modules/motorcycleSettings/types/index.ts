@@ -1,6 +1,7 @@
 export interface ICategoryForm {
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface ICategory extends ICategoryForm {
@@ -32,6 +33,7 @@ export interface IBrand {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   image: string
   moto_category_id: number
   moto_category_name: string
@@ -46,12 +48,14 @@ export interface IBrandForm {
   moto_category_id: number
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IModel {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   moto_brand_id: number
   moto_brand_name: string
   created_at: string
@@ -64,12 +68,14 @@ export interface IModelForm {
   moto_brand_id: number
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IParameter {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   moto_category_id: number
   moto_category_name: string
   created_at: string
@@ -82,12 +88,14 @@ export interface IParameterForm {
   moto_category_id: number
   name: string
   name_ru: string
+  name_ae: string
 }
 
 export interface IParameterValue {
   id: number
   name: string
   name_ru: string
+  name_ae: string
   moto_parameter_id: number
   created_at: string
 }
@@ -98,4 +106,5 @@ export interface IParameterValueItem extends IParameterValue {
 export interface IParameterValueForm {
   name: string
   name_ru: string
+  name_ae: string
 }
