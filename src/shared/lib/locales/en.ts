@@ -1,6 +1,7 @@
 import carSettings from '@/modules/carSettings/locales/en'
 import applications from '@/modules/application/locales/en'
 import general from '@/modules/general/locales/en'
+import settings from '@/modules/settings/locales/en'
 
 export default {
   base: {
@@ -14,7 +15,13 @@ export default {
     cancel: 'Cancel',
     delete: 'Delete',
     confirmDelete: 'Confirm delete',
-    back: 'Back'
+    back: 'Back',
+    error: 'Error',
+    optional: 'optional',
+    commaSeparated: 'Comma separated values',
+    pageNotFound: 'Page Not Found',
+    pageNotFoundDescription: 'The page you are looking for does not exist or you do not have access',
+    backToHome: 'Back to Home'
   },
   sidebar: {
     applications: 'Applications',
@@ -24,6 +31,7 @@ export default {
     brokers: 'Brokers',
     users: 'Users',
     clients: 'Clients',
+    chat: 'Chat',
     carSettings: 'Car settings',
     brands: 'Brands',
     bodyTypes: 'Body types',
@@ -39,9 +47,11 @@ export default {
     cities: 'Cities',
     colors: 'Colors',
     activityFields: 'Activity fields',
-    companyTypes: 'Company types'
+    companyTypes: 'Company types',
+    settings: 'Settings'
   },
   carSettings: carSettings,
   applications: applications,
-  general: general
+  general: general,
+  settings: settings
 }

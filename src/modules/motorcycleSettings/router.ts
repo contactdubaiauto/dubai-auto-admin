@@ -11,30 +11,37 @@ const moduleRoute = {
   path: '/motorcycle-settings',
   component: Module,
   redirect: '',
+  meta: { permission: 'motorcycles' },
   children: [
     {
       path: 'categories',
-      component: Categories
+      component: Categories,
+      meta: { permission: 'motorcycles' }
     },
     {
       path: 'category/:category/brands',
-      component: Brands
+      component: Brands,
+      meta: { permission: 'motorcycles' }
     },
     {
       path: 'category/:category/parameters',
-      component: CategoryParameters
+      component: CategoryParameters,
+      meta: { permission: 'motorcycles' }
     },
     {
       path: 'category/:category/brand/:brand/models',
-      component: Models
+      component: Models,
+      meta: { permission: 'motorcycles' }
     },
     {
       path: 'parameters',
-      component: Parameters
+      component: Parameters,
+      meta: { permission: 'motorcycles' }
     },
     {
       path: 'parameter/:parameter/values',
-      component: ParameterValues
+      component: ParameterValues,
+      meta: { permission: 'motorcycles' }
     }
   ]
 }

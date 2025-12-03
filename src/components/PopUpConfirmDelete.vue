@@ -3,7 +3,7 @@
     <div class="flex mb-4">
       <div class="flex flex-col justify-center items-center gap-2 w-full">
         <i class="pi pi-exclamation-triangle text-4xl text-red-500"></i>
-        <div class="text-lg">{{ description }}</div>
+        <div class="text-lg text-center">{{ description }}</div>
       </div>
     </div>
     <div class="flex justify-end gap-2">

@@ -8,6 +8,8 @@ import general from '@/modules/general'
 import user from '@/modules/users'
 import auth from '@/modules/auth'
 import application from '@/modules/application'
+import chat from '@/modules/chat'
+import settings from '@/modules/settings'
 
 registerModules({
   home,
@@ -17,5 +19,7 @@ registerModules({
   general,
   user,
   auth,
-  application
+  application,
+  chat,
+  settings
 })

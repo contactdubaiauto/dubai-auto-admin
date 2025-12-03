@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
 import { loadLayoutMiddleware } from '@/router/middleware/loadLayout.middleware'
+import { permissionsMiddleware } from '@/router/middleware/permissions.middleware'
 import { useAuth } from '@/modules/auth/stores'
 
 const routes: Array<RouteRecordRaw> = []
@@ -34,5 +35,6 @@ router.beforeEach(async (to, from, next) => {
 })
 
 router.beforeEach(loadLayoutMiddleware)
+router.beforeEach(permissionsMiddleware)
 
 export default router

@@ -1,6 +1,7 @@
 import carSettings from '@/modules/carSettings/locales/ru'
 import applications from '@/modules/application/locales/ru'
 import general from '@/modules/general/locales/ru'
+import settings from '@/modules/settings/locales/ru'
 
 export default {
   base: {
@@ -14,7 +15,13 @@ export default {
     cancel: 'Отмена',
     delete: 'Удалить',
     confirmDelete: 'Подтвердите удаление',
-    back: 'Назад'
+    back: 'Назад',
+    error: 'Ошибка',
+    optional: 'необязательно',
+    commaSeparated: 'Значения через запятую',
+    pageNotFound: 'Страница не найдена',
+    pageNotFoundDescription: 'Страница, которую вы ищете, не существует или у вас нет доступа',
+    backToHome: 'На главную'
   },
   sidebar: {
     applications: 'Заявки',
@@ -24,6 +31,7 @@ export default {
     brokers: 'Брокеры',
     users: 'Пользователи',
     clients: 'Клиенты',
+    chat: 'Чат',
     carSettings: 'Настройки авто',
     brands: 'Бренды',
     bodyTypes: 'Типы кузова',
@@ -39,9 +47,11 @@ export default {
     cities: 'Города',
     colors: 'Цвета',
     activityFields: 'Сферы деятельности',
-    companyTypes: 'Типы компаний'
+    companyTypes: 'Типы компаний',
+    settings: 'Настройки'
   },
   carSettings: carSettings,
   applications: applications,
-  general: general
+  general: general,
+  settings: settings
 }

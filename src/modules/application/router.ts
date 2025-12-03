@@ -10,26 +10,32 @@ const moduleRoute = {
   path: '/application',
   component: Module,
   redirect: '',
+  meta: { permission: 'application' },
   children: [
     {
       path: 'dealers',
-      component: Dealers
+      component: Dealers,
+      meta: { permission: 'application' }
     },
     {
       path: 'car-services',
-      component: CarServices
+      component: CarServices,
+      meta: { permission: 'application' }
     },
     {
       path: 'logistics',
-      component: Logistics
+      component: Logistics,
+      meta: { permission: 'application' }
     },
     {
       path: 'brokers',
-      component: Brokers
+      component: Brokers,
+      meta: { permission: 'application' }
     },
     {
       path: 'view/:id',
-      component: Application
+      component: Application,
+      meta: { permission: 'application' }
     }
   ]
 }

@@ -1,7 +1,7 @@
 const Module = () => import('./Module.vue')
 
 const Home = () => import('./pages/Home.vue')
-
+const NotFound = () => import('./pages/NotFound.vue')
 const moduleRoute = {
   path: '/',
   component: Module,
@@ -9,6 +9,10 @@ const moduleRoute = {
     {
       path: '',
       component: Home
+    },
+    {
+      path: '404',
+      component: NotFound
     }
   ]
 }

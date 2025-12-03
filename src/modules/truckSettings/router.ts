@@ -11,30 +11,37 @@ const moduleRoute = {
   path: '/truck-settings',
   component: Module,
   redirect: '',
+  meta: { permission: 'trucks' },
   children: [
     {
       path: 'categories',
-      component: Categories
+      component: Categories,
+      meta: { permission: 'trucks' }
     },
     {
       path: 'category/:category/brands',
-      component: Brands
+      component: Brands,
+      meta: { permission: 'trucks' }
     },
     {
       path: 'category/:category/parameters',
-      component: CategoryParameters
+      component: CategoryParameters,
+      meta: { permission: 'trucks' }
     },
     {
       path: 'category/:category/brand/:brand/models',
-      component: Models
+      component: Models,
+      meta: { permission: 'trucks' }
     },
     {
       path: 'parameters',
-      component: Parameters
+      component: Parameters,
+      meta: { permission: 'trucks' }
     },
     {
       path: 'parameter/:parameter/values',
-      component: ParameterValues
+      component: ParameterValues,
+      meta: { permission: 'trucks' }
     }
   ]
 }

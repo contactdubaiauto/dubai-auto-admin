@@ -11,30 +11,37 @@ const moduleRoute = {
   path: '/user',
   component: Module,
   redirect: '',
+  meta: { permission: 'user' },
   children: [
     {
       path: 'dealers',
-      component: Dealers
+      component: Dealers,
+      meta: { permission: 'user' }
     },
     {
       path: 'car-services',
-      component: CarServices
+      component: CarServices,
+      meta: { permission: 'user' }
     },
     {
       path: 'logistics',
-      component: Logistics
+      component: Logistics,
+      meta: { permission: 'user' }
     },
     {
       path: 'brokers',
-      component: Brokers
+      component: Brokers,
+      meta: { permission: 'user' }
     },
     {
       path: 'clients',
-      component: Clients
+      component: Clients,
+      meta: { permission: 'user' }
     },
     {
       path: 'view/:id',
-      component: Application
+      component: Application,
+      meta: { permission: 'user' }
     }
   ]
 }

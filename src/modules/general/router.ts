@@ -11,26 +11,32 @@ const moduleRoute = {
   path: '/general',
   component: Module,
   redirect: '',
+  meta: { permission: 'general' },
   children: [
     {
       path: 'cities',
-      component: Cities
+      component: Cities,
+      meta: { permission: 'general' }
     },
     {
       path: 'city/:city/regions',
-      component: Regions
+      component: Regions,
+      meta: { permission: 'general' }
     },
     {
       path: 'colors',
-      component: Colors
+      component: Colors,
+      meta: { permission: 'general' }
     },
 		{
 			path: 'activity-fields',
-			component: ActivityFields
+			component: ActivityFields,
+			meta: { permission: 'general' }
 		},
     {
       path: 'company-types',
-      component: CompanyTypes
+      component: CompanyTypes,
+      meta: { permission: 'general' }
     }
   ]
 }

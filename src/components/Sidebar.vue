@@ -93,10 +93,17 @@
     }
   }
 
-  const items = computed(() => [
+  const allItems = [
+    {
+      label: t('sidebar.chat'),
+      icon: 'pi pi-comments',
+      route: '/chat',
+      permission: 'chat'
+    },
     {
       label: t('sidebar.applications'),
       icon: 'pi pi-users',
+      permission: 'application',
       items: [
         {
           label: t('sidebar.dealers'),
@@ -123,6 +130,7 @@
     {
       label: t('sidebar.users'),
       icon: 'pi pi-users',
+      permission: 'user',
       items: [
         {
           label: t('sidebar.clients'),
@@ -154,6 +162,7 @@
     {
       label: t('sidebar.carSettings'),
       icon: 'pi pi-car',
+      permission: 'car',
       items: [
         {
           label: t('sidebar.brands'),
@@ -190,6 +199,7 @@
     {
       label: t('sidebar.motorcycleSettings'),
       icon: 'pi pi-car',
+      permission: 'motorcycles',
       items: [
         {
           label: t('sidebar.categories'),
@@ -206,6 +216,7 @@
     {
       label: t('sidebar.truckSettings'),
       icon: 'pi pi-truck',
+      permission: 'trucks',
       items: [
         {
           label: t('sidebar.categories'),
@@ -222,6 +233,7 @@
     {
       label: t('sidebar.general'),
       icon: 'pi pi-cog',
+      permission: 'general',
       items: [
         {
           label: t('sidebar.cities'),
@@ -244,8 +256,29 @@
           route: '/general/company-types'
         }
       ]
+    },
+    {
+      label: t('sidebar.settings'),
+      icon: 'pi pi-cog',
+      permission: 'settings',
+      items: [
+        {
+          label: t('sidebar.users'),
+          icon: 'pi pi-users',
+          route: '/settings/admin-users'
+        }
+      ]
     }
-  ])
+  ]
+
+  const items = computed(() => {
+    return allItems.filter(item => {
+      if (item.permission) {
+        return authStore.hasPermission(item.permission)
+      }
+      return true
+    })
+  })
 
   function logOut() {
     cookies.remove('access_token')

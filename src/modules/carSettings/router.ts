@@ -14,42 +14,52 @@ const moduleRoute = {
   path: '/car-settings',
   component: Module,
   redirect: '/car-settings/brands',
+  meta: { permission: 'car' },
   children: [
     {
       path: 'brands',
-      component: Brands
+      component: Brands,
+      meta: { permission: 'car' }
     },
     {
       path: 'brand/:brand/models',
-      component: Models
+      component: Models,
+      meta: { permission: 'car' }
     },
     {
       path: 'brand/:brand/model/:model/generations/',
-      component: ModelGenerations
+      component: ModelGenerations,
+      meta: { permission: 'car' }
     },
     {
       path: 'brand/:brand/model/:model/generation/:generation/modifications',
-      component: GenerationModifications
+      component: GenerationModifications,
+      meta: { permission: 'car' }
     },
     {
       path: 'body-types',
-      component: BodyTypes
+      component: BodyTypes,
+      meta: { permission: 'car' }
     },
     {
       path: 'drivetrains',
-      component: Drivetrains
+      component: Drivetrains,
+      meta: { permission: 'car' }
     },
     {
       path: 'engines',
-      component: Engines
+      component: Engines,
+      meta: { permission: 'car' }
     },
     {
       path: 'fuel-types',
-      component: FuelTypes
+      component: FuelTypes,
+      meta: { permission: 'car' }
     },
     {
       path: 'transmissions',
-      component: Transmissions
+      component: Transmissions,
+      meta: { permission: 'car' }
     }
   ]
 }
