@@ -123,9 +123,9 @@ export class WebSocketService {
         if (this.onMessageCallback) {
           this.onMessageCallback(data)
         }
-        if (data.data && data.target_user_id) {
-          console.log(data.target_user_id)
-          this.sendAck(data.target_user_id)
+        if (data.data && data.data.target_user_id) {
+          console.log(data.data.target_user_id)
+          this.sendAck(data.data.target_user_id)
         }
         break
 

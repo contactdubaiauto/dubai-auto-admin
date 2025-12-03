@@ -9,18 +9,19 @@ export function permissionsMiddleware(
   const auth = useAuth()
   const requiredPermission = to.meta.permission as string | undefined
 
-  // Если маршрут не требует разрешения, разрешаем доступ
+  if (from.path === '/404') {
+    next()
+    return
+  }
+
   if (!requiredPermission) {
     next()
     return
   }
 
-  // Проверяем, есть ли у пользователя необходимое разрешение
   if (auth.hasPermission(requiredPermission)) {
     next()
   } else {
-    // Перенаправляем на страницу 404
     next('/404')
   }
 }
-

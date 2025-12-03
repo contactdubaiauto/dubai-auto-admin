@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import type { Ref, ComputedRef } from 'vue'
 import { WebSocketService } from '../services/websocket.service'
 import { api } from '../api'
-import type { Message, ChatRoom, MessageType, WSMessageReceived, MessageData } from '../types'
+import type { Message, ChatRoom, WSMessageReceived, MessageData } from '../types'
 import { useAuth } from '@/modules/auth/stores'
 
 interface IChatStore {
@@ -16,7 +16,7 @@ interface IChatStore {
   initializeWebSocket: () => Promise<void>
   disconnect: () => void
   sendTextMessage: (userId: number, text: string) => Promise<void>
-  sendFileMessage: (userId: number, file: File, type: MessageType) => Promise<void>
+  sendFileMessage: (userId: number, file: File, type: number) => Promise<void>
   setCurrentChat: (userId: number) => void
   markAsRead: (userId: number) => void
 }
@@ -166,7 +166,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
           message: messageItem.message,
           type: messageItem.type,
           status: 1,
-          username: messageData.username,
           created_at: messageItem.created_at
         }
         console.log(message)
@@ -231,7 +230,7 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
     }
   }
 
-  async function sendFileMessage(userId: number, file: File, type: MessageType): Promise<void> {
+  async function sendFileMessage(userId: number, file: File, type: number): Promise<void> {
     try {
       const response = await api.uploadFile(file)
       const filePath = response.message
@@ -285,7 +284,7 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
     }
   }
 
-  function updateChatRoom(userId: number, lastMessage: Message, isIncoming: boolean): void {
+  function updateChatRoom(userId: number, lastMessage: any, isIncoming: boolean): void {
     let room = chatRooms.value.get(userId)
 
     if (!room) {

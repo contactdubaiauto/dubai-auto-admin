@@ -1,16 +1,3 @@
-export enum MessageType {
-  TEXT = 1,
-  ITEM = 2,
-  VIDEO = 3,
-  IMAGE = 4,
-  FILE = 5
-}
-
-export enum MessageStatus {
-  UNREAD = 1,
-  READ = 2
-}
-
 export interface WSMessage {
   event: 'private_message' | 'ack' | 'ping'
   target_user_id?: number
@@ -24,7 +11,7 @@ export interface WSMessageReceived {
 
 export interface MessageData {
   message: string
-  type: MessageType
+  type: number
   time: string
 }
 
@@ -33,8 +20,8 @@ export interface Message {
   sender_id: number
   receiver_id: number
   message: string
-  type: MessageType
-  status: MessageStatus
+  type: number
+  status: number
   created_at: string
   sending?: boolean
   error?: boolean

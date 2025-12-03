@@ -86,7 +86,6 @@
   import { useI18n } from 'vue-i18n'
   import { Button, DataTable, Column, Breadcrumb, Tag, Toast } from 'primevue'
   import { useToast } from 'primevue/usetoast'
-  import moment from 'moment'
 
   import PopUpAdminUser from '../components/PopUpAdminUser.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -235,10 +234,6 @@
     } finally {
       loadingPopUpDeleteAdminUser.value = false
     }
-  }
-
-  function formatDate(date: string) {
-    return date ? moment(date).format('DD.MM.YYYY HH:mm') : '-'
   }
 
   const permissionLabels: Record<string, string> = {
