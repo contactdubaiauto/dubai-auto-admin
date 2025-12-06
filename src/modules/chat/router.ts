@@ -10,12 +10,14 @@ const moduleRoute = {
     {
       path: '',
       component: ChatList,
-      meta: { permission: 'chat' }
-    },
-    {
-      path: ':id',
-      component: ChatRoom,
-      meta: { permission: 'chat' }
+      meta: { permission: 'chat' },
+      children: [
+        {
+          path: ':id',
+          component: ChatRoom,
+          meta: { permission: 'chat' }
+        }
+      ]
     }
   ]
 }

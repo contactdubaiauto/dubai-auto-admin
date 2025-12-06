@@ -32,15 +32,6 @@ export const useAuth = defineStore(NAMESPACE, (): IAuthStore => {
       const data = await api.getProfile()
 
       user.value = data
-
-      try {
-        if (!chatStore.isConnected) {
-          await chatStore.initializeWebSocket()
-          console.log('Chat WebSocket initialized after profile load')
-        }
-      } catch (error) {
-        console.error('Failed to initialize chat WebSocket:', error)
-      }
     } catch (error) {
       console.error(error)
     }

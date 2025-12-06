@@ -42,9 +42,9 @@
     </div>
     <div class="pt-2">
       <div class="flex gap-3 w-full bg-gray-100 px-4 py-2 rounded-md border border-gray-200">
-        <div class="flex-1">
-          <div class="font-semibold text-gray-800">{{ user.username }}</div>
-          <div class="mt-1 font-semibold text-gray-400">{{ user.email }}</div>
+        <div class="flex-1 w-0">
+          <div class="font-semibold text-gray-800 truncate">{{ user.username }}</div>
+          <div class="mt-1 font-semibold text-gray-400 truncate">{{ user.email }}</div>
         </div>
         <Button @click="logOut" icon="pi pi-sign-out" severity="secondary" />
       </div>
@@ -272,7 +272,7 @@
   ]
 
   const items = computed(() => {
-    return allItems.filter(item => {
+    return allItems.filter((item) => {
       if (item.permission) {
         return authStore.hasPermission(item.permission)
       }
