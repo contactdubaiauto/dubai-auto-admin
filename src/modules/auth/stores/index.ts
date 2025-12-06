@@ -38,12 +38,6 @@ export const useAuth = defineStore(NAMESPACE, (): IAuthStore => {
   }
 
   async function logout() {
-    try {
-      chatStore.disconnect()
-    } catch (error) {
-      console.error('Failed to disconnect chat:', error)
-    }
-
     cookies.remove('access_token')
     router.push('/login')
     user.value = null
