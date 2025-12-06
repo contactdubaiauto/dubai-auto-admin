@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ComputedRef, Ref } from 'vue'
 import { useCookies } from 'vue3-cookies'
-import { useChatStore } from '@/modules/chat/stores'
 
 import { api } from '../api'
 
@@ -20,8 +19,6 @@ const NAMESPACE = 'auth'
 export const useAuth = defineStore(NAMESPACE, (): IAuthStore => {
   const { cookies } = useCookies()
   const router = useRouter()
-
-  const chatStore = useChatStore()
 
   const user = ref<any>()
 
