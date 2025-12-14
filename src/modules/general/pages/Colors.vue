@@ -81,6 +81,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column } from 'primevue'
 
   import PopUpColor from '../components/PopUpColor.vue'
@@ -103,6 +104,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([{ label: t('sidebar.general') }, { label: t('sidebar.colors'), to: '/general/colors' }])
 
@@ -159,6 +161,11 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successUpdated'),
+          life: 3000
+        })
       } else {
         const { id } = await api.createColor({
           data: {
@@ -174,11 +181,22 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successSaved'),
+          life: 3000
+        })
       }
       await getColors()
       closePopUpColor()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpColor.value = false
     }
@@ -195,11 +213,22 @@
       loadingPopUpDeleteColor.value = true
       if (selectedDeleteColor.value) {
         await api.deleteColor({ id: selectedDeleteColor.value.id })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successDeleted'),
+          life: 3000
+        })
       }
       await getColors()
       closePopUpDeleteColor()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpDeleteColor.value = false
     }

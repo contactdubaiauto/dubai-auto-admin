@@ -23,6 +23,20 @@ export default {
     pageNotFoundDescription: 'The page you are looking for does not exist or you do not have access',
     backToHome: 'Back to Home'
   },
+  validation: {
+    required: 'This field is required',
+    emailRequired: 'Email is required',
+    passwordRequired: 'Password is required',
+    usernameRequired: 'Username is required'
+  },
+  toast: {
+    successSaved: 'Successfully saved',
+    successUpdated: 'Successfully updated',
+    successDeleted: 'Successfully deleted',
+    errorSaving: 'Error while saving',
+    loginSuccess: 'Login successful',
+    loginError: 'Login failed'
+  },
   sidebar: {
     applications: 'Applications',
     dealers: 'Dealers',

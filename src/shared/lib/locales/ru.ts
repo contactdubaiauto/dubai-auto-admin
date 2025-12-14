@@ -23,6 +23,20 @@ export default {
     pageNotFoundDescription: 'Страница, которую вы ищете, не существует или у вас нет доступа',
     backToHome: 'На главную'
   },
+  validation: {
+    required: 'Обязательное поле',
+    emailRequired: 'Email обязателен',
+    passwordRequired: 'Пароль обязателен',
+    usernameRequired: 'Имя пользователя обязательно'
+  },
+  toast: {
+    successSaved: 'Успешно сохранено',
+    successUpdated: 'Успешно обновлено',
+    successDeleted: 'Успешно удалено',
+    errorSaving: 'Ошибка при сохранении',
+    loginSuccess: 'Вход выполнен успешно',
+    loginError: 'Ошибка входа'
+  },
   sidebar: {
     applications: 'Заявки',
     dealers: 'Автосалоны',

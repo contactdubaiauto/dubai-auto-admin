@@ -6,10 +6,12 @@
     <div class="flex-1">
       <router-view />
     </div>
+    <Toast />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { Toast } from 'primevue'
   import Sidebar from '@/components/Sidebar.vue'
 </script>
 

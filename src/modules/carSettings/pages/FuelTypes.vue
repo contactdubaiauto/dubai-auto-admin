@@ -71,6 +71,7 @@
   import { ref, onMounted } from 'vue'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
 
   import PopUpFuelType from '../components/PopUpFuelType.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -92,6 +93,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -137,13 +139,16 @@
       loadingPopUpFuelType.value = true
       if (selectedFuelType.value) {
         await api.updateFuelType({ id: selectedFuelType.value.id, data: form })
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         await api.createFuelType({ data: form })
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
       await getFuelTypes()
       closePopUpFuelType()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpFuelType.value = false
     }
@@ -160,11 +165,13 @@
       loadingPopUpDeleteFuelType.value = true
       if (selectedDeleteFuelType.value) {
         await api.deleteFuelType({ id: selectedDeleteFuelType.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getFuelTypes()
       closePopUpDeleteFuelType()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteFuelType.value = false
     }

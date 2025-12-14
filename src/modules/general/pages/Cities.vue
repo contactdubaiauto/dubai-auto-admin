@@ -67,6 +67,7 @@
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpCity from '../components/PopUpCity.vue'
@@ -88,6 +89,7 @@
 
   const router = useRouter()
   const { t } = useI18n()
+  const toast = useToast()
 
   const breadcrumbs = ref([{ label: t('sidebar.general') }, { label: t('sidebar.cities'), to: '/general/cities' }])
 
@@ -110,6 +112,12 @@
       })
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingCities.value = false
     }
@@ -134,13 +142,29 @@
       loadingPopUpCity.value = true
       if (selectedCity.value) {
         await api.updateCity({ id: selectedCity.value.id, data: form })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successUpdated'),
+          life: 3000
+        })
       } else {
         await api.createCity({ data: form })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successSaved'),
+          life: 3000
+        })
       }
       await getCities()
       closePopUpCity()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpCity.value = false
     }
@@ -157,11 +181,22 @@
       loadingPopUpDeleteCity.value = true
       if (selectedDeleteCity.value) {
         await api.deleteCity({ id: selectedDeleteCity.value.id })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successDeleted'),
+          life: 3000
+        })
       }
       await getCities()
       closePopUpDeleteCity()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpDeleteCity.value = false
     }

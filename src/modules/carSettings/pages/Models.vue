@@ -69,6 +69,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { useRoute, useRouter } from 'vue-router'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
@@ -94,6 +95,7 @@
   const route = useRoute()
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const brandId = Number(route.params.brand) as number
 
@@ -149,13 +151,16 @@
             brand_id: brandId
           }
         })
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         await api.createModel({ brandId: brandId, data: form })
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
       await getModels()
       closePopUpModel()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpModel.value = false
     }
@@ -172,11 +177,13 @@
       loadingPopUpDeleteModel.value = true
       if (selectedDeleteModel.value) {
         await api.deleteModel({ brandId: brandId, id: selectedDeleteModel.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getModels()
       closePopUpDeleteModel()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteModel.value = false
     }

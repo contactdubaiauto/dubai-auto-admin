@@ -71,6 +71,7 @@
   import { ref, onMounted } from 'vue'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
 
   import PopUpDrivetrain from '../components/PopUpDrivetrain.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -92,6 +93,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -138,13 +140,16 @@
       loadingPopUpDrivetrain.value = true
       if (selectedDrivetrain.value) {
         await api.updateDrivetrain({ id: selectedDrivetrain.value.id, data: form })
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         await api.createDrivetrain({ data: form })
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
       await getDrivetrains()
       closePopUpDrivetrain()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDrivetrain.value = false
     }
@@ -161,11 +166,13 @@
       loadingPopUpDeleteDrivetrain.value = true
       if (selectedDeleteDrivetrain.value) {
         await api.deleteDrivetrain({ id: selectedDeleteDrivetrain.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getDrivetrains()
       closePopUpDeleteDrivetrain()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteDrivetrain.value = false
     }

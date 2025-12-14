@@ -83,6 +83,7 @@
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpBrand from '../components/PopUpBrand.vue'
@@ -106,6 +107,7 @@
   const router = useRouter()
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -170,6 +172,11 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successUpdated'),
+          life: 3000
+        })
       } else {
         const { id } = await api.createBrand({
           data: {
@@ -185,11 +192,22 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successSaved'),
+          life: 3000
+        })
       }
       await getBrands()
       closePopUpBrand()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpBrand.value = false
     }
@@ -206,11 +224,22 @@
       loadingPopUpDeleteBrand.value = true
       if (selectedDeleteBrand.value) {
         await api.deleteBrand({ id: selectedDeleteBrand.value.id })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successDeleted'),
+          life: 3000
+        })
       }
       await getBrands()
       closePopUpDeleteBrand()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpDeleteBrand.value = false
     }

@@ -3,8 +3,16 @@
     <div class="p-4 border-b border-gray-200 flex items-center justify-between h-16">
       <h2 class="text-xl font-semibold text-gray-800">Chat</h2>
       <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-600">
-          {{ isConnected ? 'Connected' : 'Reconnecting...' }}
+        <div
+          class="w-2 h-2 rounded-full"
+          :class="{
+            'bg-green-500': connectionStatus === 'connected',
+            'bg-yellow-500': connectionStatus === 'connecting' || connectionStatus === 'reconnecting',
+            'bg-red-500': connectionStatus === 'disconnected'
+          }"
+        ></div>
+        <span class="text-sm" :class="statusColor">
+          {{ statusText }}
         </span>
       </div>
     </div>
@@ -49,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted, computed } from 'vue'
   import LoadingState from '@/components/LoadingState.vue'
   import { useChatStore } from '../stores'
   import { storeToRefs } from 'pinia'
@@ -57,11 +66,50 @@
   const router = useRouter()
   const chatStore = useChatStore()
 
-  const { isConnected } = storeToRefs(chatStore)
+  const { connectionStatus } = storeToRefs(chatStore)
+
+  const statusText = computed(() => {
+    switch (connectionStatus.value) {
+      case 'connected':
+        return 'Подключено'
+      case 'connecting':
+        return 'Подключение...'
+      case 'reconnecting':
+        return 'Переподключение...'
+      case 'disconnected':
+        return 'Отключено'
+      default:
+        return 'Неизвестно'
+    }
+  })
+
+  const statusColor = computed(() => {
+    switch (connectionStatus.value) {
+      case 'connected':
+        return 'text-green-600'
+      case 'connecting':
+      case 'reconnecting':
+        return 'text-yellow-600'
+      case 'disconnected':
+        return 'text-red-600'
+      default:
+        return 'text-gray-600'
+    }
+  })
 
   function openChat(id: number) {
     router.push(`/chat/${id}`)
   }
+
+  onMounted(() => {
+    console.log('[ChatSidebar] Mounting - initializing WebSocket')
+    chatStore.initWebSocket()
+  })
+
+  onUnmounted(() => {
+    console.log('[ChatSidebar] Unmounting - disconnecting WebSocket')
+    chatStore.disconnectWebSocket()
+  })
 </script>
 
 <style scoped></style>

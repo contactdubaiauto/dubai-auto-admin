@@ -71,6 +71,7 @@
   import { ref, onMounted } from 'vue'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
 
   import PopUpTransmission from '../components/PopUpTransmission.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -96,6 +97,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -141,13 +143,16 @@
       loadingPopUpTransmission.value = true
       if (selectedTransmission.value) {
         await api.updateTransmission({ id: selectedTransmission.value.id, data: form })
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         await api.createTransmission({ data: form })
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
       await getTransmissions()
       closePopUpTransmission()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpTransmission.value = false
     }
@@ -164,11 +169,13 @@
       loadingPopUpDeleteTransmission.value = true
       if (selectedDeleteTransmission.value) {
         await api.deleteTransmission({ id: selectedDeleteTransmission.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getTransmissions()
       closePopUpDeleteTransmission()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteTransmission.value = false
     }

@@ -1,52 +1,71 @@
 <template>
   <Dialog :visible="true" modal :header="t('general.color.title')" :style="{ width: '25rem' }" @update:visible="cancel">
-    <div class="flex gap-4">
-      <div class="flex flex-col items-center gap-2">
-        <FileUpload
-          mode="basic"
-          @select="onFileSelect"
-          customUpload
-          auto
-          accept="image/*"
-          class="p-button-outlined"
-          :disabled="loading"
-          :chooseLabel="t('base.choose')"
-        />
-        <img
-          v-if="previewImage"
-          :src="previewImage"
-          class="w-32 h-32 rounded-md bg-gray-100 object-cover object-center"
-        />
-        <div v-else class="w-32 h-32 bg-gray-100 rounded-md"></div>
-      </div>
-      <div class="flex-1">
-        <div class="flex flex-col gap-2">
-          <div class="flex flex-col gap-1">
-            <label>{{ t('base.name') }} (en)</label>
-            <InputText v-model="form.name" :disabled="loading" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label>{{ t('base.name') }} (ру)</label>
-            <InputText v-model="form.name_ru" :disabled="loading" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label>{{ t('base.name') }} (ae)</label>
-            <InputText v-model="form.name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+    <Form
+      v-slot="$form"
+      :initialValues="form"
+      :resolver="resolver"
+      :validateOnBlur="true"
+      @submit="onFormSubmit"
+    >
+      <div class="flex gap-4">
+        <div class="flex flex-col items-center gap-2">
+          <FileUpload
+            mode="basic"
+            @select="onFileSelect"
+            customUpload
+            auto
+            accept="image/*"
+            class="p-button-outlined"
+            :disabled="loading"
+            :chooseLabel="t('base.choose')"
+          />
+          <img
+            v-if="previewImage"
+            :src="previewImage"
+            class="w-32 h-32 rounded-md bg-gray-100 object-cover object-center"
+          />
+          <div v-else class="w-32 h-32 bg-gray-100 rounded-md"></div>
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1">
+              <label>{{ t('base.name') }} (en) <span class="text-red-500">*</span></label>
+              <InputText name="name" :disabled="loading" />
+              <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
+                $form.name.error.message
+              }}</Message>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label>{{ t('base.name') }} (ру) <span class="text-red-500">*</span></label>
+              <InputText name="name_ru" :disabled="loading" />
+              <Message v-if="$form.name_ru?.invalid" severity="error" size="small" variant="simple">{{
+                $form.name_ru.error.message
+              }}</Message>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label>{{ t('base.name') }} (ae) <span class="text-red-500">*</span></label>
+              <InputText name="name_ae" :disabled="loading" style="direction: rtl; text-align: right;" />
+              <Message v-if="$form.name_ae?.invalid" severity="error" size="small" variant="simple">{{
+                $form.name_ae.error.message
+              }}</Message>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="cancel"></Button>
-      <Button type="button" label="Save" :loading="loading" @click="save"></Button>
-    </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel"></Button>
+        <Button type="submit" :label="t('base.save')" :loading="loading"></Button>
+      </div>
+    </Form>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue'
+  import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { Button, InputText, Dialog, FileUpload } from 'primevue'
+  import { Button, InputText, Dialog, FileUpload, Message } from 'primevue'
+  import { Form } from '@primevue/forms'
+  import { useFormValidation } from '@/shared/lib/use/useFormValidation'
 
   import type { IColorItem, IColorForm } from '../types'
 
@@ -64,37 +83,43 @@
   )
 
   const { t } = useI18n()
+  const { createNameFieldsResolver } = useFormValidation()
 
-  const form = reactive<IColorForm>({
-    image: '',
-    name: '',
-    name_ru: '',
-    name_ae: ''
+  const form = ref<IColorForm>({
+    image: props.item?.image || '',
+    name: props.item?.name || '',
+    name_ru: props.item?.name_ru || '',
+    name_ae: props.item?.name_ae || ''
   })
 
   const previewImage = ref('')
 
-  if (props.item) {
-    form.name = props.item.name
-    form.name_ru = props.item.name_ru
-    form.name_ae = props.item.name_ae
-    form.image = props.item.image
-    if (form.image) {
-      previewImage.value = `${form.image}`
-    }
+  if (props.item && props.item.image) {
+    previewImage.value = `${props.item.image}`
   }
+
+  const resolver = createNameFieldsResolver()
 
   function onFileSelect(event: any) {
     const file = event.files[0]
-    form.image = file
+    form.value.image = file
     previewImage.value = URL.createObjectURL(file)
   }
 
   function cancel() {
     emit('cancel')
   }
-  function save() {
-    emit('save', form)
+
+  function onFormSubmit({ states, valid }: any) {
+    if (valid) {
+      const formData: IColorForm = {
+        image: form.value.image,
+        name: states.name.value,
+        name_ru: states.name_ru.value,
+        name_ae: states.name_ae.value
+      }
+      emit('save', formData)
+    }
   }
 </script>
 

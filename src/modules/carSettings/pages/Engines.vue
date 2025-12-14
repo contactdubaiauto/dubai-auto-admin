@@ -71,6 +71,7 @@
   import { ref, onMounted } from 'vue'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
 
   import PopUpEngine from '../components/PopUpEngine.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
@@ -92,6 +93,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -137,13 +139,16 @@
       loadingPopUpEngine.value = true
       if (selectedEngine.value) {
         await api.updateEngine({ id: selectedEngine.value.id, data: form })
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         await api.createEngine({ data: form })
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
       await getEngines()
       closePopUpEngine()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpEngine.value = false
     }
@@ -160,11 +165,13 @@
       loadingPopUpDeleteEngine.value = true
       if (selectedDeleteEngine.value) {
         await api.deleteEngine({ id: selectedDeleteEngine.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getEngines()
       closePopUpDeleteEngine()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteEngine.value = false
     }

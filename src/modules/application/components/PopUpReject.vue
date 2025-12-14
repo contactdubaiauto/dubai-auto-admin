@@ -6,22 +6,34 @@
     @update:visible="cancel"
     :style="{ width: '25rem' }"
   >
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-col gap-1">
-        <label>{{ t('applications.message') }}</label>
-        <Textarea v-model="message" :disabled="loading" />
+    <Form
+      v-slot="$form"
+      :initialValues="form"
+      :resolver="resolver"
+      :validateOnBlur="true"
+      @submit="onFormSubmit"
+    >
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1">
+          <label>{{ t('applications.message') }} <span class="text-red-500">*</span></label>
+          <Textarea name="message" :disabled="loading" />
+          <Message v-if="$form.message?.invalid" severity="error" size="small" variant="simple">{{
+            $form.message.error.message
+          }}</Message>
+        </div>
       </div>
-    </div>
-    <div class="flex justify-end gap-2 mt-4">
-      <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
-      <Button type="button" :label="t('applications.send')" :loading="loading" @click="save"></Button>
-    </div>
+      <div class="flex justify-end gap-2 mt-4">
+        <Button type="button" :label="t('base.cancel')" severity="secondary" @click="cancel" :disabled="loading"></Button>
+        <Button type="submit" :label="t('applications.send')" :loading="loading"></Button>
+      </div>
+    </Form>
   </Dialog>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { Button, Textarea, Dialog } from 'primevue'
+  import { Button, Textarea, Dialog, Message } from 'primevue'
+  import { Form } from '@primevue/forms'
   import { useI18n } from 'vue-i18n'
 
   const emit = defineEmits(['cancel', 'save'])
@@ -37,13 +49,28 @@
 
   const { t } = useI18n()
 
-  const message = ref('')
+  const form = ref({
+    message: ''
+  })
+
+  function resolver({ values }: any) {
+    const errors = {} as any
+
+    if (!values.message || !values.message.trim()) {
+      errors.message = [{ message: t('validation.required') }]
+    }
+
+    return { errors }
+  }
 
   function cancel() {
     emit('cancel')
   }
-  function save() {
-    emit('save', message.value)
+
+  function onFormSubmit({ states, valid }: any) {
+    if (valid) {
+      emit('save', states.message.value)
+    }
   }
 </script>
 

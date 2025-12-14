@@ -81,6 +81,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpBodyType from '../components/PopUpBodyType.vue'
@@ -103,6 +104,7 @@
 
   const { t } = useI18n()
   const { getDataByLang } = useLang()
+  const toast = useToast()
 
   const breadcrumbs = ref([
     { label: t('sidebar.carSettings') },
@@ -163,6 +165,7 @@
             }
           })
         }
+        toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
         const { id } = await api.createBodyType({
           data: {
@@ -178,12 +181,14 @@
             }
           })
         }
+        toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
 
       await getBodyTypes()
       closePopUpBodyType()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpBodyType.value = false
     }
@@ -200,11 +205,13 @@
       loadingPopUpDeleteBodyType.value = true
       if (selectedDeleteBodyType.value) {
         await api.deleteBodyType({ id: selectedDeleteBodyType.value.id })
+        toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
       await getBodyTypes()
       closePopUpDeleteBodyType()
     } catch (error) {
       console.error(error)
+      toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
       loadingPopUpDeleteBodyType.value = false
     }

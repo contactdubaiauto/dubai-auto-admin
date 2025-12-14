@@ -6,70 +6,86 @@
     :style="{ width: '30rem' }"
     @update:visible="cancel"
   >
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-1">
-        <label>{{ t('settings.adminUser.username') }} <span class="text-red-500">*</span></label>
-        <InputText v-model="form.username" :disabled="loading" />
+    <Form
+      v-slot="$form"
+      :initialValues="form"
+      :resolver="resolver"
+      :validateOnBlur="true"
+      @submit="onFormSubmit"
+    >
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label>{{ t('settings.adminUser.username') }} <span class="text-red-500">*</span></label>
+          <InputText name="username" :disabled="loading" />
+          <Message v-if="$form.username?.invalid" severity="error" size="small" variant="simple">{{
+            $form.username.error.message
+          }}</Message>
+        </div>
+        
+        <div class="flex flex-col gap-1">
+          <label>{{ t('settings.adminUser.email') }} <span class="text-red-500">*</span></label>
+          <InputText name="email" type="email" :disabled="loading" />
+          <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
+            $form.email.error.message
+          }}</Message>
+        </div>
+        
+        <div class="flex flex-col gap-1">
+          <label>
+            {{ t('settings.adminUser.password') }} 
+            <span v-if="!item" class="text-red-500">*</span>
+            <span v-else class="text-gray-500 text-sm">({{ t('base.optional') }})</span>
+          </label>
+          <Password 
+            name="password"
+            :disabled="loading" 
+            toggleMask 
+            :feedback="false"
+            inputClass="w-full"
+          />
+          <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
+            $form.password.error.message
+          }}</Message>
+        </div>
+        
+        <div class="flex flex-col gap-1">
+          <label>{{ t('settings.adminUser.permissions') }}</label>
+          <MultiSelect 
+            name="permissions"
+            :options="permissionOptions"
+            optionLabel="label"
+            optionValue="value"
+            :placeholder="t('settings.adminUser.selectPermissions')"
+            :disabled="loading"
+            display="chip"
+            class="w-full"
+          />
+        </div>
       </div>
       
-      <div class="flex flex-col gap-1">
-        <label>{{ t('settings.adminUser.email') }} <span class="text-red-500">*</span></label>
-        <InputText v-model="form.email" type="email" :disabled="loading" />
-      </div>
-      
-      <div class="flex flex-col gap-1">
-        <label>
-          {{ t('settings.adminUser.password') }} 
-          <span v-if="!item" class="text-red-500">*</span>
-          <span v-else class="text-gray-500 text-sm">({{ t('base.optional') }})</span>
-        </label>
-        <Password 
-          v-model="form.password" 
-          :disabled="loading" 
-          toggleMask 
-          :feedback="false"
-          inputClass="w-full"
-        />
-      </div>
-      
-      <div class="flex flex-col gap-1">
-        <label>{{ t('settings.adminUser.permissions') }}</label>
-        <MultiSelect 
-          v-model="form.permissions" 
-          :options="permissionOptions"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="t('settings.adminUser.selectPermissions')"
+      <div class="flex justify-end gap-2 mt-4">
+        <Button 
+          type="button" 
+          :label="t('base.cancel')" 
+          severity="secondary" 
+          @click="cancel" 
           :disabled="loading"
-          display="chip"
-          class="w-full"
+        />
+        <Button 
+          type="submit"
+          :label="t('base.save')" 
+          :loading="loading"
         />
       </div>
-    </div>
-    
-    <div class="flex justify-end gap-2 mt-4">
-      <Button 
-        type="button" 
-        :label="t('base.cancel')" 
-        severity="secondary" 
-        @click="cancel" 
-        :disabled="loading"
-      />
-      <Button 
-        type="button" 
-        :label="t('base.save')" 
-        :loading="loading" 
-        @click="save"
-        :disabled="!isFormValid"
-      />
-    </div>
+    </Form>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-  import { reactive, computed } from 'vue'
+  import { ref, computed } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { Button, InputText, Dialog, Password, MultiSelect } from 'primevue'
+  import { Button, InputText, Dialog, Password, MultiSelect, Message } from 'primevue'
+  import { Form } from '@primevue/forms'
 
   import type { IAdminUser, IAdminUserForm } from '../types'
 
@@ -99,39 +115,46 @@
     { value: 'settings', label: t('sidebar.settings') }
   ])
 
-  const form = reactive<IAdminUserForm>({
-    username: '',
-    email: '',
+  const form = ref<IAdminUserForm>({
+    username: props.item?.username || '',
+    email: props.item?.email || '',
     password: '',
-    permissions: []
+    permissions: props.item?.permissions || []
   })
 
-  if (props.item) {
-    form.username = props.item.username
-    form.email = props.item.email
-    form.password = ''
-    form.permissions = props.item.permissions || []
+  function resolver({ values }: any) {
+    const errors = {} as any
+
+    if (!values.username || !values.username.trim()) {
+      errors.username = [{ message: t('validation.usernameRequired') }]
+    }
+
+    if (!values.email || !values.email.trim()) {
+      errors.email = [{ message: t('validation.emailRequired') }]
+    }
+
+    if (!props.item && (!values.password || !values.password.trim())) {
+      errors.password = [{ message: t('validation.passwordRequired') }]
+    }
+
+    return { errors }
   }
-
-  const isFormValid = computed(() => {
-    if (!form.username.trim() || !form.email.trim()) {
-      return false
-    }
-    // Пароль обязателен только при создании нового пользователя
-    if (!props.item && !form.password.trim()) {
-      return false
-    }
-    return true
-  })
 
   function cancel() {
     emit('cancel')
   }
 
-  function save() {
-    emit('save', form)
+  function onFormSubmit({ states, valid }: any) {
+    if (valid) {
+      const formData: IAdminUserForm = {
+        username: states.username.value,
+        email: states.email.value,
+        password: states.password.value,
+        permissions: states.permissions.value
+      }
+      emit('save', formData)
+    }
   }
 </script>
 
 <style scoped></style>
-
