@@ -2,7 +2,7 @@ import carSettings from '@/modules/carSettings/locales/en'
 import applications from '@/modules/application/locales/en'
 import general from '@/modules/general/locales/en'
 import settings from '@/modules/settings/locales/en'
-
+import chat from '@/modules/chat/locales/en'
 export default {
   base: {
     name: 'Name',
@@ -67,5 +67,6 @@ export default {
   carSettings: carSettings,
   applications: applications,
   general: general,
-  settings: settings
+  settings: settings,
+  chat: chat
 }

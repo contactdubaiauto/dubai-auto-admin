@@ -2,6 +2,7 @@ import carSettings from '@/modules/carSettings/locales/ru'
 import applications from '@/modules/application/locales/ru'
 import general from '@/modules/general/locales/ru'
 import settings from '@/modules/settings/locales/ru'
+import chat from '@/modules/chat/locales/ru'
 
 export default {
   base: {
@@ -67,5 +68,6 @@ export default {
   carSettings: carSettings,
   applications: applications,
   general: general,
-  settings: settings
+  settings: settings,
+  chat: chat
 }

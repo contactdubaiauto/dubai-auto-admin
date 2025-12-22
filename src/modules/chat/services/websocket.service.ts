@@ -1,13 +1,13 @@
 import { useCookies } from 'vue3-cookies'
-import type { WSMessage, WSMessageReceived } from '../types'
+import type { WSMessageReceived } from '../types'
 
 type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'reconnecting'
 
 export class WebSocketService {
   private ws: WebSocket | null = null
   private reconnectAttempts = 0
-  private maxReconnectDelay = 30000 // 30 seconds
-  private reconnectDelay = 1000 // Start with 1 second
+  private maxReconnectDelay = 30000
+  private reconnectDelay = 1000
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null
   private shouldReconnect = true
   private connectionStatus: ConnectionStatus = 'disconnected'
@@ -16,9 +16,6 @@ export class WebSocketService {
 
   constructor() {}
 
-  /**
-   * Подключение к WebSocket серверу
-   */
   connect(): void {
     if (this.ws?.readyState === WebSocket.OPEN || this.ws?.readyState === WebSocket.CONNECTING) {
       console.log('[WebSocket] Already connected or connecting')
@@ -52,9 +49,6 @@ export class WebSocketService {
     }
   }
 
-  /**
-   * Отключение от WebSocket
-   */
   disconnect(): void {
     console.log('[WebSocket] Disconnecting...')
     this.shouldReconnect = false
@@ -72,62 +66,41 @@ export class WebSocketService {
     this.setStatus('disconnected')
   }
 
-  /**
-   * Отправка сообщения через WebSocket
-   */
-  send(message: WSMessage): void {
+  send(message: any): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
       const payload = JSON.stringify(message)
       this.ws.send(payload)
-      console.log('[WebSocket] Sent:', message)
+      // console.log('[WebSocket] Sent:', message)
     } else {
       console.error('[WebSocket] Cannot send message, not connected')
     }
   }
 
-  /**
-   * Подписка на получение сообщений
-   */
   onMessage(handler: (message: WSMessageReceived) => void): () => void {
     this.messageHandlers.push(handler)
-    // Возвращаем функцию для отписки
     return () => {
       this.messageHandlers = this.messageHandlers.filter((h) => h !== handler)
     }
   }
 
-  /**
-   * Подписка на изменение статуса подключения
-   */
   onStatusChange(handler: (status: ConnectionStatus) => void): () => void {
     this.statusChangeHandlers.push(handler)
-    // Сразу вызываем с текущим статусом
     handler(this.connectionStatus)
-    // Возвращаем функцию для отписки
     return () => {
       this.statusChangeHandlers = this.statusChangeHandlers.filter((h) => h !== handler)
     }
   }
 
-  /**
-   * Получить текущий статус подключения
-   */
   getStatus(): ConnectionStatus {
     return this.connectionStatus
   }
 
-  /**
-   * Формирование WebSocket URL
-   */
   private getWebSocketUrl(token: string): string {
     const wsUrl = (import.meta.env.VITE_APP_WS_URL as string) || 'ws://localhost:8080'
     const cleanUrl = wsUrl.replace(/\/$/, '')
     return `${cleanUrl}/ws?token=${token}`
   }
 
-  /**
-   * Обработка открытия соединения
-   */
   private handleOpen(): void {
     console.log('[WebSocket] Connected')
     this.setStatus('connected')
@@ -135,9 +108,6 @@ export class WebSocketService {
     this.reconnectDelay = 1000
   }
 
-  /**
-   * Обработка закрытия соединения
-   */
   private handleClose(event: CloseEvent): void {
     console.log('[WebSocket] Disconnected:', event.code, event.reason)
     this.setStatus('disconnected')
@@ -147,27 +117,16 @@ export class WebSocketService {
     }
   }
 
-  /**
-   * Обработка ошибки
-   */
   private handleError(event: Event): void {
     console.error('[WebSocket] Error:', event)
   }
 
-  /**
-   * Обработка входящих сообщений
-   */
   private handleMessage(event: MessageEvent): void {
     try {
       const message: WSMessageReceived = JSON.parse(event.data)
-      console.log('[WebSocket] Received:', message)
+      // console.log('[WebSocket] Received:', message)
 
-      // Обработка события ping - отвечаем pong
-      if (message.event === 'ping') {
-        this.send({ event: 'ping' })
-      }
-
-      // Уведомляем всех подписчиков
+      // Обработка сообщений делегируется в store через handlers
       this.messageHandlers.forEach((handler) => {
         try {
           handler(message)
@@ -180,9 +139,6 @@ export class WebSocketService {
     }
   }
 
-  /**
-   * Планирование переподключения
-   */
   private scheduleReconnect(): void {
     if (!this.shouldReconnect) {
       return
@@ -195,7 +151,6 @@ export class WebSocketService {
     this.reconnectAttempts++
     this.setStatus('reconnecting')
 
-    // Экспоненциальная задержка с максимумом
     const delay = Math.min(this.reconnectDelay * this.reconnectAttempts, this.maxReconnectDelay)
 
     console.log(`[WebSocket] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`)
@@ -206,9 +161,6 @@ export class WebSocketService {
     }, delay)
   }
 
-  /**
-   * Установка статуса и уведомление подписчиков
-   */
   private setStatus(status: ConnectionStatus): void {
     if (this.connectionStatus !== status) {
       this.connectionStatus = status
@@ -225,7 +177,6 @@ export class WebSocketService {
   }
 }
 
-// Singleton instance
 let wsServiceInstance: WebSocketService | null = null
 
 export function getWebSocketService(): WebSocketService {

@@ -1,7 +1,7 @@
 export interface WSMessage {
   event: 'private_message' | 'ack' | 'ping'
   target_user_id?: number
-  data?: MessageData | string
+  data?: MessageData | MessageReceived | string
 }
 
 export interface WSMessageReceived {
@@ -13,6 +13,14 @@ export interface MessageData {
   message: string
   type: number
   time: string
+}
+
+export interface MessageReceived {
+  time: string
+  admin: boolean
+  message: string
+  target_user_id: number
+  type: number
 }
 
 export interface Message {
