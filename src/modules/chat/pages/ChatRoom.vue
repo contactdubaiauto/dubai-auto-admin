@@ -222,7 +222,7 @@
     try {
       loadingMessages.value = true
       const params = {
-        limit: 1000
+        limit: 50
       }
       const data: any = await api.getConversationMessages(id, params)
       chatStore.setMessagesToRoom(data, chatRoom.value)
