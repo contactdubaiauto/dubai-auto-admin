@@ -15,8 +15,14 @@
         <div class="font-semibold text-gray-800 truncate">{{ chatRoom.username }}</div>
       </div>
     </div>
-    <div ref="messagesContainer" class="flex-1 overflow-y-auto p-4">
-      <div v-if="!loadingMessages" v-for="message in messages" :key="message.id" class="w-full mb-1">
+    <div ref="messagesContainer" class="flex-1 overflow-y-auto p-4" @scroll="handleScroll">
+      <div
+        v-if="!loadingMessages"
+        v-for="message in messages"
+        :key="message.id"
+        :data-message-id="message.id"
+        class="w-full mb-1"
+      >
         <div
           v-if="message.type === 1 && message.sender_id !== 0"
           class="max-w-[600px] w-fit bg-white border border-gray-200 rounded-xl p-4 relative"
@@ -105,6 +111,8 @@
 
   const loadingMessages = ref(false)
   const uploadingImage = ref(false)
+  const loadingOlderMessages = ref(false)
+  const hasMoreMessages = ref(true)
 
   function scrollToBottom(): void {
     nextTick(() => {
@@ -114,23 +122,113 @@
     })
   }
 
+  function handleScroll(): void {
+    if (!messagesContainer.value || loadingOlderMessages.value || loadingMessages.value || !hasMoreMessages.value) {
+      return
+    }
+
+    const container = messagesContainer.value
+    const scrollTop = container.scrollTop
+    const scrollHeight = container.scrollHeight
+    const clientHeight = container.clientHeight
+
+    // Проверяем, достиг ли скролл середины (50%)
+    if (scrollTop + clientHeight >= scrollHeight * 0.5) {
+      const firstMessage = messages.value[0]
+      if (firstMessage && firstMessage.id && firstMessage.id > 0) {
+        loadOlderMessages(firstMessage.id)
+      }
+    }
+  }
+
+  async function loadOlderMessages(lastMessageId: number): Promise<void> {
+    if (loadingOlderMessages.value || !messagesContainer.value || !hasMoreMessages.value) {
+      return
+    }
+
+    try {
+      loadingOlderMessages.value = true
+
+      const container = messagesContainer.value
+      const scrollHeightBefore = container.scrollHeight
+      const scrollTopBefore = container.scrollTop
+
+      // Сохраняем первый видимый элемент (индекс первого сообщения в видимой области)
+      const firstVisibleIndex = Math.max(0, Math.floor((scrollTopBefore / scrollHeightBefore) * messages.value.length))
+      const firstVisibleMessage = messages.value[firstVisibleIndex]
+
+      const params = {
+        last_id: lastMessageId,
+        limit: 50
+      }
+
+      const data: any = await api.getConversationMessages(roomID.value, params)
+
+      if (data && data.length > 0) {
+        // Проверяем, есть ли еще сообщения для загрузки
+        if (data.length < 50) {
+          hasMoreMessages.value = false
+        }
+
+        chatStore.prependMessagesToRoom(data, chatRoom.value)
+
+        // Восстанавливаем позицию скролла с учетом новой высоты
+        nextTick(() => {
+          if (messagesContainer.value && firstVisibleMessage) {
+            // Находим элемент по ID сообщения
+            const messageElements = messagesContainer.value.querySelectorAll('[data-message-id]')
+            let targetElement: Element | null = null
+
+            for (const el of messageElements) {
+              const messageId = el.getAttribute('data-message-id')
+              if (messageId && Number(messageId) === firstVisibleMessage.id) {
+                targetElement = el
+                break
+              }
+            }
+
+            if (targetElement) {
+              // Скроллим к найденному элементу
+              targetElement.scrollIntoView({ behavior: 'auto', block: 'start' })
+            } else {
+              // Fallback: используем расчет по высоте
+              const scrollHeightAfter = messagesContainer.value.scrollHeight
+              const heightDiff = scrollHeightAfter - scrollHeightBefore
+              messagesContainer.value.scrollTop = scrollTopBefore + heightDiff
+            }
+          }
+        })
+      } else {
+        // Если нет данных, значит больше нет сообщений
+        hasMoreMessages.value = false
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке старых сообщений:', error)
+    } finally {
+      loadingOlderMessages.value = false
+    }
+  }
+
   onMounted(() => {
     chatStore.setCurrentRoomId(roomID.value)
 
     watch(
       roomID,
       (newVal) => {
+        hasMoreMessages.value = true
         chatStore.setCurrentRoomId(newVal)
         getConversationMessages(newVal)
       },
       { immediate: true }
     )
 
-    // Автоматический скролл при изменении сообщений
+    // Автоматический скролл при изменении сообщений (только если не загружаются старые сообщения)
     watch(
       messages,
       () => {
-        scrollToBottom()
+        if (!loadingOlderMessages.value) {
+          scrollToBottom()
+        }
       },
       { deep: true }
     )
@@ -221,11 +319,16 @@
   async function getConversationMessages(id: number) {
     try {
       loadingMessages.value = true
+      hasMoreMessages.value = true
       const params = {
         limit: 50
       }
       const data: any = await api.getConversationMessages(id, params)
       chatStore.setMessagesToRoom(data, chatRoom.value)
+      // Проверяем, есть ли еще сообщения
+      if (data && data.length < 50) {
+        hasMoreMessages.value = false
+      }
     } catch (error) {
       console.error(error)
     } finally {

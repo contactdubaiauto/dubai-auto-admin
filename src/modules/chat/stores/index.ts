@@ -19,6 +19,7 @@ interface IChatStore {
   onMessage: (handler: (message: WSMessageReceived) => void) => () => void
   setConversations: (conversations: any[]) => void
   setMessagesToRoom: (messages: any[], room: any) => void
+  prependMessagesToRoom: (messages: any[], room: any) => void
   setCurrentRoomId: (id: number | null) => void
   sendAck: (message: any) => void
 }
@@ -208,9 +209,36 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   function setMessagesToRoom(messages: any[], room: any): void {
     room.messages = []
     room.unread_count = 0
-    messages.forEach((message) => {
+    messages.reverse().forEach((message) => {
       const sender_id = message.sender_id === auth.user.id ? 0 : message.sender_id
       room.messages.push({
+        id: message.id,
+        message: message.message,
+        created_at: message.created_at,
+        type: message.type,
+        sender_id: sender_id
+      })
+    })
+  }
+
+  function prependMessagesToRoom(messages: any[], room: any): void {
+    // Проверяем, что сообщения не дублируются
+    const existingIds = new Set(room.messages.map((msg: any) => msg.id))
+
+    // Разворачиваем массив, если сервер возвращает от новых к старым
+    // Используем копию массива, чтобы не мутировать исходный
+    const messagesToAdd = [...messages].reverse().filter((message) => {
+      // Пропускаем сообщения, которые уже есть
+      if (existingIds.has(message.id)) {
+        return false
+      }
+      return true
+    })
+
+    // Добавляем сообщения в начало массива
+    messagesToAdd.forEach((message) => {
+      const sender_id = message.sender_id === auth.user.id ? 0 : message.sender_id
+      room.messages.unshift({
         id: message.id,
         message: message.message,
         created_at: message.created_at,
@@ -243,6 +271,7 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
     onMessage,
     setConversations,
     setMessagesToRoom,
+    prependMessagesToRoom,
     setCurrentRoomId,
     sendAck
   }
