@@ -104,6 +104,7 @@ export class WebSocketService {
   }
 
   private handleClose(event: CloseEvent): void {
+    event
     this.setStatus('disconnected')
 
     if (this.shouldReconnect) {
