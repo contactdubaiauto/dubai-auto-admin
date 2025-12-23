@@ -5,6 +5,7 @@ import settings from '@/modules/settings/locales/en'
 import chat from '@/modules/chat/locales/en'
 export default {
   base: {
+    welcome: 'Welcome to Mashynbazar',
     name: 'Name',
     actions: 'Actions',
     noData: 'No data',
@@ -21,7 +22,10 @@ export default {
     commaSeparated: 'Comma separated values',
     pageNotFound: 'Page Not Found',
     pageNotFoundDescription: 'The page you are looking for does not exist or you do not have access',
-    backToHome: 'Back to Home'
+    backToHome: 'Back to Home',
+    email: 'Email',
+    password: 'Password',
+    login: 'Login'
   },
   validation: {
     required: 'This field is required',

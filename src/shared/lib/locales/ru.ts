@@ -6,6 +6,7 @@ import chat from '@/modules/chat/locales/ru'
 
 export default {
   base: {
+    welcome: 'Добро пожаловать в Mashynbazar',
     name: 'Название',
     actions: 'Действия',
     noData: 'Нет данных',
@@ -22,7 +23,10 @@ export default {
     commaSeparated: 'Значения через запятую',
     pageNotFound: 'Страница не найдена',
     pageNotFoundDescription: 'Страница, которую вы ищете, не существует или у вас нет доступа',
-    backToHome: 'На главную'
+    backToHome: 'На главную',
+    email: 'Email',
+    password: 'Пароль',
+    login: 'Войти'
   },
   validation: {
     required: 'Обязательное поле',

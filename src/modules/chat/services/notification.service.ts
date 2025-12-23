@@ -31,37 +31,21 @@ class NotificationService {
   }
 
   async showNotification(from: string, message: string, avatar?: string, roomId?: number): Promise<void> {
-    console.log('[NotificationService] showNotification called', { from, message: message.substring(0, 50), roomId })
-
     if (!this.isSupported()) {
-      console.warn('[NotificationService] Notifications are not supported in this browser')
       return
     }
 
-    // Динамически проверяем актуальное разрешение
     const currentPermission = typeof window !== 'undefined' ? Notification.permission : 'denied'
     this.permission = currentPermission
 
-    console.log('[NotificationService] Current permission:', currentPermission)
-
-    // Если разрешение 'default', пытаемся запросить его
     if (currentPermission === 'default') {
-      console.log('[NotificationService] Permission is default, requesting permission...')
       const requestedPermission = await this.requestPermission()
-      console.log('[NotificationService] Permission requested, result:', requestedPermission)
-
       if (requestedPermission !== 'granted') {
-        console.warn(
-          '[NotificationService] Permission not granted, cannot show notification. Status:',
-          requestedPermission
-        )
         return
       }
     }
 
-    // Проверяем разрешение еще раз перед показом
     if (this.permission !== 'granted') {
-      console.warn('[NotificationService] Permission denied, cannot show notification')
       return
     }
 
@@ -69,7 +53,6 @@ class NotificationService {
     const displayMessage = messagePreview || 'Новое сообщение'
 
     try {
-      console.log('[NotificationService] Creating notification...')
       const notification = new Notification(from, {
         body: displayMessage,
         icon: avatar || '/icon.png',
@@ -77,9 +60,7 @@ class NotificationService {
         tag: `chat-${roomId || 'new'}`,
         requireInteraction: false
       })
-      console.log('[NotificationService] Notification created successfully')
 
-      // Обработка клика по уведомлению
       notification.onclick = () => {
         window.focus()
         if (roomId) {
@@ -90,12 +71,10 @@ class NotificationService {
         notification.close()
       }
 
-      // Автоматически закрываем уведомление через 5 секунд
       setTimeout(() => {
         notification.close()
       }, 5000)
 
-      // Воспроизводим звук
       if (this.soundEnabled) {
         this.playSound()
       }
@@ -110,7 +89,6 @@ class NotificationService {
     }
 
     try {
-      // Создаем AudioContext если его еще нет
       if (!this.audioContext) {
         this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       }
@@ -121,7 +99,6 @@ class NotificationService {
       oscillator.connect(gainNode)
       gainNode.connect(this.audioContext.destination)
 
-      // Настройки звука (beep)
       oscillator.frequency.value = 800
       oscillator.type = 'sine'
 
@@ -144,7 +121,6 @@ class NotificationService {
   }
 
   getPermission(): NotificationPermission {
-    // Возвращаем актуальное значение разрешения
     if (typeof window !== 'undefined' && 'Notification' in window) {
       this.permission = Notification.permission
     }

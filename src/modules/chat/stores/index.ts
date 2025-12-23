@@ -45,7 +45,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
     return rooms.value.reduce((total, room) => total + (room.unread_count || 0), 0)
   })
   function addMessageToRoom(data: any): void {
-    console.log(data)
     const findIndex = rooms.value.findIndex((room) => room.id === data.conversation_id)
     let foundRoom: any
     let lastAddedMessage: any = null
@@ -81,7 +80,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
       const messageText =
         lastAddedMessage.type === 4 ? 'Отправил изображение' : lastAddedMessage.message || 'Новое сообщение'
 
-      // Вызываем асинхронно, не блокируя основной поток
       notificationService
         .showNotification(foundRoom.username || 'Неизвестный', messageText, foundRoom.avatar, roomId)
         .catch((error) => {
@@ -152,8 +150,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   }
 
   function initWebSocket(): void {
-    console.log('[ChatStore] Initializing WebSocket...')
-
     if (unsubscribeStatus) {
       unsubscribeStatus()
     }
@@ -171,8 +167,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   }
 
   function disconnectWebSocket(): void {
-    console.log('[ChatStore] Disconnecting WebSocket...')
-
     if (unsubscribeStatus) {
       unsubscribeStatus()
       unsubscribeStatus = null

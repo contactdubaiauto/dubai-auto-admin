@@ -18,7 +18,6 @@ export class WebSocketService {
 
   connect(): void {
     if (this.ws?.readyState === WebSocket.OPEN || this.ws?.readyState === WebSocket.CONNECTING) {
-      console.log('[WebSocket] Already connected or connecting')
       return
     }
 
@@ -32,7 +31,6 @@ export class WebSocketService {
     }
 
     const wsUrl = this.getWebSocketUrl(token)
-    console.log('[WebSocket] Connecting to:', wsUrl.replace(token, '***'))
 
     try {
       this.setStatus('connecting')
@@ -50,7 +48,6 @@ export class WebSocketService {
   }
 
   disconnect(): void {
-    console.log('[WebSocket] Disconnecting...')
     this.shouldReconnect = false
 
     if (this.reconnectTimeout) {
@@ -70,7 +67,6 @@ export class WebSocketService {
     if (this.ws?.readyState === WebSocket.OPEN) {
       const payload = JSON.stringify(message)
       this.ws.send(payload)
-      // console.log('[WebSocket] Sent:', message)
     } else {
       console.error('[WebSocket] Cannot send message, not connected')
     }
@@ -102,14 +98,12 @@ export class WebSocketService {
   }
 
   private handleOpen(): void {
-    console.log('[WebSocket] Connected')
     this.setStatus('connected')
     this.reconnectAttempts = 0
     this.reconnectDelay = 1000
   }
 
   private handleClose(event: CloseEvent): void {
-    console.log('[WebSocket] Disconnected:', event.code, event.reason)
     this.setStatus('disconnected')
 
     if (this.shouldReconnect) {
@@ -150,10 +144,7 @@ export class WebSocketService {
 
     const delay = Math.min(this.reconnectDelay * this.reconnectAttempts, this.maxReconnectDelay)
 
-    console.log(`[WebSocket] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`)
-
     this.reconnectTimeout = setTimeout(() => {
-      console.log('[WebSocket] Attempting to reconnect...')
       this.connect()
     }, delay)
   }
@@ -161,7 +152,6 @@ export class WebSocketService {
   private setStatus(status: ConnectionStatus): void {
     if (this.connectionStatus !== status) {
       this.connectionStatus = status
-      console.log('[WebSocket] Status changed to:', status)
 
       this.statusChangeHandlers.forEach((handler) => {
         try {

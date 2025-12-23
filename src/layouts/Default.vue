@@ -34,11 +34,9 @@
 
   onMounted(async () => {
     if (auth.hasPermission('chat')) {
-      console.log('[Default] Initializing chat...')
       await getConversations()
       chatStore.initWebSocket()
-      
-      // Запрашиваем разрешение на показ уведомлений
+
       if (notificationService.isSupported()) {
         await notificationService.requestPermission()
       }
@@ -47,7 +45,6 @@
 
   onUnmounted(() => {
     if (auth.hasPermission('chat')) {
-      console.log('[Default] Cleaning up chat...')
       chatStore.disconnectWebSocket()
     }
   })

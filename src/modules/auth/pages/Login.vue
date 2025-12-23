@@ -9,22 +9,25 @@
       @submit="onFormSubmit"
       class="flex flex-col gap-4 w-full sm:w-80"
     >
-      <div class="w-full text-2xl font-bold text-center mb-4 text-blue-800">Masynbazar</div>
+      <div class="flex items-center gap-2 mb-4 justify-center">
+        <img src="/logo.png" alt="Mashynbazar" class="w-8 h-8 object-contain object-center" />
+        <div class="text-2xl font-bold text-blue-500">Mashynbazar</div>
+      </div>
       <div class="flex flex-col gap-1">
-        <label class="mb-1">Email <span class="text-red-500">*</span></label>
+        <label class="mb-1">{{ t('base.email') }} <span class="text-red-500">*</span></label>
         <InputText name="email" type="text" fluid :disabled="loading" />
         <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
           $form.email.error.message
         }}</Message>
       </div>
       <div class="flex flex-col gap-1">
-        <label class="mb-1">Password <span class="text-red-500">*</span></label>
+        <label class="mb-1">{{ t('base.password') }} <span class="text-red-500">*</span></label>
         <Password name="password" :feedback="false" toggleMask fluid :disabled="loading" />
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
           $form.password.error.message
         }}</Message>
       </div>
-      <Button type="submit" label="Submit" :loading="loading" fluid />
+      <Button type="submit" :label="t('base.login')" :loading="loading" fluid />
     </Form>
   </div>
 </template>
