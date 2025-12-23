@@ -46,9 +46,7 @@
           <div class="text-xs text-white absolute right-2 bottom-2 opacity-70">{{ getDate(message.created_at) }}</div>
         </div>
         <div v-if="message.type === 4 && message.sender_id !== 0" class="w-full mb-1">
-          <div
-            class="w-fit bg-white border border-gray-200 rounded-xl overflow-hidden relative hover:scale-105 transition-all duration-300 h-[300px]"
-          >
+          <div class="w-fit bg-white border border-gray-200 rounded-xl overflow-hidden relative h-[300px]">
             <img :src="message.message" alt="Image" class="max-w-full h-[300px] w-auto object-contain" />
             <div class="absolute bottom-2 right-2 bg-gray-100 border border-gray-200 rounded-md px-1">
               <span class="text-xs text-gray-800">{{ getDate(message.created_at) }}</span>

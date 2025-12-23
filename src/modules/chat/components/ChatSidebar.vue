@@ -52,7 +52,7 @@
                 <img
                   :src="getLastMessage(chatRoom.messages).message"
                   alt="Image"
-                  class="w-full h-full object-cover w-4 h-4 overflow-hidden bg-gray-200"
+                  class="w-4 h-4 object-cover overflow-hidden bg-gray-200"
                 />
                 <p>{{ t('chat.image') }}</p>
               </div>
@@ -71,13 +71,12 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, onUnmounted, computed } from 'vue'
+  import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { storeToRefs } from 'pinia'
 
   import LoadingState from '@/components/LoadingState.vue'
   import { useChatStore } from '../stores'
-  import { api } from '../api'
   import { useI18n } from 'vue-i18n'
 
   const router = useRouter()
@@ -147,25 +146,6 @@
     })
   }
 
-  onMounted(async () => {
-    console.log('[ChatSidebar] Mounting - initializing WebSocket')
-    await getConversations()
-    chatStore.initWebSocket()
-  })
-
-  onUnmounted(() => {
-    console.log('[ChatSidebar] Unmounting - disconnecting WebSocket')
-    chatStore.disconnectWebSocket()
-  })
-
-  async function getConversations() {
-    try {
-      const data = await api.getConversations()
-      chatStore.setConversations(data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 </script>
 
 <style scoped></style>

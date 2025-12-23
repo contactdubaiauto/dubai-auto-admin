@@ -3,7 +3,6 @@ import { useCookies } from 'vue3-cookies'
 import { loadLayoutMiddleware } from '@/router/middleware/loadLayout.middleware'
 import { permissionsMiddleware } from '@/router/middleware/permissions.middleware'
 import { useAuth } from '@/modules/auth/stores'
-import { useChatStore } from '@/modules/chat/stores'
 
 const routes: Array<RouteRecordRaw> = []
 
@@ -21,13 +20,11 @@ router.beforeEach(async (to, from, next) => {
 
   const { cookies } = useCookies()
   const auth = useAuth()
-  const chatStore = useChatStore()
 
   if (!auth.isAuth && cookies.get('access_token')) {
     console.log('init')
 
     await auth.getProfile()
-    chatStore.initWebSocket()
   }
 
   if (!auth.isAuth && !to.meta.noAuth) {

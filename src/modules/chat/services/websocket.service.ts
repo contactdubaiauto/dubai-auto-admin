@@ -124,9 +124,6 @@ export class WebSocketService {
   private handleMessage(event: MessageEvent): void {
     try {
       const message: WSMessageReceived = JSON.parse(event.data)
-      // console.log('[WebSocket] Received:', message)
-
-      // Обработка сообщений делегируется в store через handlers
       this.messageHandlers.forEach((handler) => {
         try {
           handler(message)

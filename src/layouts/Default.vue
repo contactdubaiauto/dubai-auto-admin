@@ -11,8 +11,46 @@
 </template>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted } from 'vue'
   import { Toast } from 'primevue'
   import Sidebar from '@/components/Sidebar.vue'
+  import { useAuth } from '@/modules/auth/stores'
+  import { useChatStore } from '@/modules/chat/stores'
+  import { getNotificationService } from '@/modules/chat/services/notification.service'
+  import { api } from '@/modules/chat/api'
+
+  const auth = useAuth()
+  const chatStore = useChatStore()
+  const notificationService = getNotificationService()
+
+  async function getConversations() {
+    try {
+      const data = await api.getConversations()
+      chatStore.setConversations(data)
+    } catch (error) {
+      console.error('[Default] Error loading conversations:', error)
+    }
+  }
+
+  onMounted(async () => {
+    if (auth.hasPermission('chat')) {
+      console.log('[Default] Initializing chat...')
+      await getConversations()
+      chatStore.initWebSocket()
+      
+      // Запрашиваем разрешение на показ уведомлений
+      if (notificationService.isSupported()) {
+        await notificationService.requestPermission()
+      }
+    }
+  })
+
+  onUnmounted(() => {
+    if (auth.hasPermission('chat')) {
+      console.log('[Default] Cleaning up chat...')
+      chatStore.disconnectWebSocket()
+    }
+  })
 </script>
 
 <style scoped lang="scss"></style>

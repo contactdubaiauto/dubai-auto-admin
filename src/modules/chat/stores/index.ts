@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Ref, ComputedRef } from 'vue'
 import { getWebSocketService } from '../services/websocket.service'
+import { getNotificationService } from '../services/notification.service'
 import type { WSMessageReceived } from '../types'
 import { useAuth } from '@/modules/auth/stores'
 
@@ -13,6 +14,7 @@ interface IChatStore {
   rooms: Ref<any[]>
   messages: Ref<WSMessageReceived[]>
   currentRoomId: Ref<number | null>
+  totalUnreadCount: ComputedRef<number>
   initWebSocket: () => void
   disconnectWebSocket: () => void
   sendMessage: (message: any) => void
@@ -34,10 +36,14 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   const rooms = ref<any[]>([])
   const currentRoomId = ref<number | null>(null)
   const wsService = getWebSocketService()
+  const notificationService = getNotificationService()
   let unsubscribeStatus: (() => void) | null = null
   let unsubscribeMessage: (() => void) | null = null
 
   const isConnected = computed(() => connectionStatus.value === 'connected')
+  const totalUnreadCount = computed(() => {
+    return rooms.value.reduce((total, room) => total + (room.unread_count || 0), 0)
+  })
   function addMessageToRoom(data: any): void {
     console.log(data)
     const findIndex = rooms.value.findIndex((room) => room.id === data.conversation_id)
@@ -61,18 +67,26 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
       lastAddedMessage = addMessagesToRoom(data.messages, foundRoom)
     }
 
-    // Отправляем sendAck если это текущая активная комната и сообщение не от текущего пользователя
     const roomId = data.conversation_id || data.id
-    if (
-      currentRoomId.value !== null &&
-      currentRoomId.value === roomId &&
-      lastAddedMessage &&
-      lastAddedMessage.sender_id !== 0
-    ) {
+    const isCurrentRoom = currentRoomId.value !== null && currentRoomId.value === roomId
+
+    if (isCurrentRoom && lastAddedMessage && lastAddedMessage.sender_id !== 0) {
       sendAck({
         target_user_id: foundRoom.user_id,
         created_at: lastAddedMessage.created_at
       })
+    }
+
+    if (!isCurrentRoom && lastAddedMessage && lastAddedMessage.sender_id !== 0) {
+      const messageText =
+        lastAddedMessage.type === 4 ? 'Отправил изображение' : lastAddedMessage.message || 'Новое сообщение'
+
+      // Вызываем асинхронно, не блокируя основной поток
+      notificationService
+        .showNotification(foundRoom.username || 'Неизвестный', messageText, foundRoom.avatar, roomId)
+        .catch((error) => {
+          console.error('[ChatStore] Error showing notification:', error)
+        })
     }
   }
   function addMessagesToRoom(messages: any[], room: any): any {
@@ -86,7 +100,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
       if (findMessage) {
         return
       }
-      // Увеличиваем unread_count только если это не текущая активная комната и сообщение не от текущего пользователя
       if (!isCurrentRoom && message.sender_id !== 0) {
         room.unread_count = room.unread_count + 1
       }
@@ -105,8 +118,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
 
   function handleMessage(message: WSMessageReceived): void {
     if (message.event === 'new_message') {
-      // console.log('[ChatStore] ⬇️ Сообщение получено:', message)
-      // sendAck(message)
       message.data?.forEach((messageItem: any) => {
         addMessageToRoom(messageItem)
       })
@@ -222,20 +233,14 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   }
 
   function prependMessagesToRoom(messages: any[], room: any): void {
-    // Проверяем, что сообщения не дублируются
     const existingIds = new Set(room.messages.map((msg: any) => msg.id))
-
-    // Разворачиваем массив, если сервер возвращает от новых к старым
-    // Используем копию массива, чтобы не мутировать исходный
     const messagesToAdd = [...messages].reverse().filter((message) => {
-      // Пропускаем сообщения, которые уже есть
       if (existingIds.has(message.id)) {
         return false
       }
       return true
     })
 
-    // Добавляем сообщения в начало массива
     messagesToAdd.forEach((message) => {
       const sender_id = message.sender_id === auth.user.id ? 0 : message.sender_id
       room.messages.unshift({
@@ -249,7 +254,6 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
   }
 
   function setCurrentRoomId(id: number | null): void {
-    // Обнуляем unread_count для комнаты, в которую зашли
     if (id !== null) {
       const room = rooms.value.find((room) => room.id === id)
       if (room) {
@@ -265,6 +269,7 @@ export const useChatStore = defineStore(NAMESPACE, (): IChatStore => {
     messages,
     rooms,
     currentRoomId,
+    totalUnreadCount,
     initWebSocket,
     disconnectWebSocket,
     sendMessage,

@@ -15,6 +15,12 @@
             >
               <span :class="item.icon" />
               <span class="ml-2">{{ item.label }}</span>
+              <span
+                v-if="item.route === '/chat' && totalUnreadCount > 0"
+                class="ml-auto px-2 py-0.5 bg-blue-600 text-white text-xs font-semibold rounded-full min-w-[1.25rem] text-center"
+              >
+                {{ totalUnreadCount > 99 ? '99+' : totalUnreadCount }}
+              </span>
             </a>
           </router-link>
           <a
@@ -61,13 +67,17 @@
   import { useCookies } from 'vue3-cookies'
 
   import { useAuth } from '@/modules/auth/stores'
+  import { useChatStore } from '@/modules/chat/stores'
+  import { storeToRefs } from 'pinia'
 
   const { cookies } = useCookies()
   const router = useRouter()
   const authStore = useAuth()
+  const chatStore = useChatStore()
   const { locale, t } = useI18n()
 
   const { user } = authStore
+  const { totalUnreadCount } = storeToRefs(chatStore)
 
   interface ILanguage {
     code: string
