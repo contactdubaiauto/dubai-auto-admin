@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { Button, DataTable, Column, Breadcrumb, Tag, Toast } from 'primevue'
   import { useToast } from 'primevue/usetoast'
@@ -108,7 +108,7 @@
   const { t } = useI18n()
   const toast = useToast()
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.settings') },
     { label: t('settings.adminUser.adminUsers'), to: '/settings/admin-users' }
   ])

@@ -16,22 +16,6 @@ export interface ICategoryForm {
   name_ae: string
 }
 
-export interface ICategoryParameter {
-  id: number
-  comtrans_category_id: number
-  comtrans_parameter_id: number
-  created_at: string
-  comtrans_parameter_name: string
-}
-
-export interface ICategoryParameterItem extends ICategoryParameter {
-  index: number
-}
-
-export interface ICategoryParameterForm {
-  comtrans_parameter_id: number
-}
-
 export interface IBrand {
   id: number
   name: string
@@ -48,7 +32,6 @@ export interface IBrandItem extends IBrand {
 }
 export interface IBrandForm {
   image: string
-  comtrans_category_id: number
   name: string
   name_ru: string
   name_ae: string
@@ -75,39 +58,19 @@ export interface IModelForm {
   name_ae: string
 }
 
-export interface IParameter {
+export interface IEngine {
   id: number
   name: string
   name_ru: string
   name_ae: string
-  comtrans_category_id: number
-  comtrans_category_name: string
   created_at: string
 }
 
-export interface IParameterItem extends IParameter {
+export interface IEngineItem extends IEngine {
   index: number
 }
-export interface IParameterForm {
-  comtrans_category_id: number
-  name: string
-  name_ru: string
-  name_ae: string
-}
 
-export interface IParameterValue {
-  id: number
-  name: string
-  name_ru: string
-  name_ae: string
-  comtrans_parameter_id: number
-  created_at: string
-}
-
-export interface IParameterValueItem extends IParameterValue {
-  index: number
-}
-export interface IParameterValueForm {
+export interface IEngineForm {
   name: string
   name_ru: string
   name_ae: string

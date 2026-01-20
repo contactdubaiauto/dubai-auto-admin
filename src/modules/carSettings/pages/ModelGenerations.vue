@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
@@ -119,7 +119,7 @@
   const brandId = route.params.brand as string
   const modelId = Number(route.params.model) as number
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.carSettings') },
     { label: t('carSettings.brand.title'), to: '/car-settings/brands' },
     { label: t('carSettings.model.title'), to: `/car-settings/brand/${brandId}/models` },

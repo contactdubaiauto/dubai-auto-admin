@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
@@ -91,7 +91,7 @@
 
   const cityId = route.params.city as string
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.general') },
     { label: t('general.region.regions'), to: `/general/city/${cityId}/regions` }
   ])

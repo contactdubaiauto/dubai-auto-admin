@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import moment from 'moment'
@@ -48,7 +48,7 @@
   const router = useRouter()
   const { t } = useI18n()
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.applications') },
     { label: t('sidebar.logistics'), to: '/application/logistics' }
   ])

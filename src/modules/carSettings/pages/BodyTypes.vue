@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
@@ -106,7 +106,7 @@
   const { getDataByLang } = useLang()
   const toast = useToast()
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.carSettings') },
     { label: t('carSettings.bodyType.bodyTypes'), to: '/car-settings/body-types' }
   ])

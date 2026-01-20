@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
   import moment from 'moment'
   import { DataTable, Column, Breadcrumb } from 'primevue'
@@ -46,7 +46,7 @@
 
   const { t } = useI18n()
 
-  const breadcrumbs = ref([{ label: t('sidebar.users') }, { label: t('sidebar.clients'), to: '/users/clients' }])
+  const breadcrumbs = computed(() => [{ label: t('sidebar.users') }, { label: t('sidebar.clients'), to: '/users/clients' }])
 
   onMounted(() => {
     getApplications()

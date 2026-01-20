@@ -3,6 +3,8 @@ import applications from '@/modules/application/locales/en'
 import general from '@/modules/general/locales/en'
 import settings from '@/modules/settings/locales/en'
 import chat from '@/modules/chat/locales/en'
+import motorcycleSettings from '@/modules/motorcycleSettings/locales/en'
+import truckSettings from '@/modules/truckSettings/locales/en'
 export default {
   base: {
     welcome: 'Welcome to Mashynbazar',
@@ -50,6 +52,7 @@ export default {
     users: 'Users',
     clients: 'Clients',
     chat: 'Chat',
+    reports: 'Complaints',
     carSettings: 'Car settings',
     brands: 'Brands',
     bodyTypes: 'Body types',
@@ -60,6 +63,7 @@ export default {
     motorcycleSettings: 'Motorcycle settings',
     categories: 'Categories',
     parameters: 'Parameters',
+    strokes: 'Strokes',
     truckSettings: 'Truck settings',
     general: 'General',
     cities: 'Cities',
@@ -72,5 +76,7 @@ export default {
   applications: applications,
   general: general,
   settings: settings,
-  chat: chat
+  chat: chat,
+  motorcycleSettings: motorcycleSettings,
+  truckSettings: truckSettings
 }

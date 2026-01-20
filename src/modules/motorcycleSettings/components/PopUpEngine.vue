@@ -2,9 +2,9 @@
   <Dialog
     :visible="true"
     modal
-    :header="t('truckSettings.model.title')"
-    :style="{ width: '25rem' }"
+    :header="t('motorcycleSettings.engine.title')"
     @update:visible="cancel"
+    :style="{ width: '25rem' }"
   >
     <Form
       v-slot="$form"
@@ -51,13 +51,13 @@
   import { useI18n } from 'vue-i18n'
   import { useFormValidation } from '@/shared/lib/use/useFormValidation'
 
-  import type { IModelItem, IModelForm } from '../types'
+  import type { IEngineForm, IEngineItem } from '../types'
 
   const emit = defineEmits(['cancel', 'save'])
 
   const props = withDefaults(
     defineProps<{
-      item?: IModelItem | null
+      item?: IEngineItem | null
       loading?: boolean
     }>(),
     {
@@ -69,8 +69,7 @@
   const { t } = useI18n()
   const { createNameFieldsResolver } = useFormValidation()
 
-  const form = ref<IModelForm>({
-    comtrans_brand_id: props.item?.comtrans_brand_id || 0,
+  const form = ref<IEngineForm>({
     name: props.item?.name || '',
     name_ru: props.item?.name_ru || '',
     name_ae: props.item?.name_ae || ''
@@ -84,8 +83,7 @@
 
   function onFormSubmit({ states, valid }: any) {
     if (valid) {
-      const formData: IModelForm = {
-        comtrans_brand_id: form.value.comtrans_brand_id,
+      const formData: IEngineForm = {
         name: states.name.value,
         name_ru: states.name_ru.value,
         name_ae: states.name_ae.value

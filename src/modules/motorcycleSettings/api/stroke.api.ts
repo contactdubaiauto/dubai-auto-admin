@@ -1,0 +1,43 @@
+import { request } from '@/shared/lib/api'
+import type { IStrokeForm } from '../types'
+
+const URL = '/api/v1/admin/moto-strokes'
+
+export default {
+  getStrokes,
+  createStroke,
+  updateStroke,
+  deleteStroke
+}
+
+async function getStrokes() {
+  try {
+    return await request({ url: URL, method: 'GET' })
+  } catch (e) {
+    throw new Error('ERROR ON GET STROKES')
+  }
+}
+
+async function createStroke({ data }: { data: IStrokeForm }) {
+  try {
+    return await request({ url: URL, data: data, method: 'POST' })
+  } catch (e) {
+    throw new Error('ERROR ON CREATE STROKE')
+  }
+}
+
+async function updateStroke({ id, data }: { id: string | number; data: IStrokeForm }) {
+  try {
+    return await request({ url: `${URL}/${id}`, data: data, method: 'PUT' })
+  } catch (e) {
+    throw new Error('ERROR ON UPDATE STROKE')
+  }
+}
+
+async function deleteStroke({ id }: { id: string | number }) {
+  try {
+    return await request({ url: `${URL}/${id}`, method: 'DELETE' })
+  } catch (e) {
+    throw new Error('ERROR ON DELETE STROKE')
+  }
+}

@@ -1,11 +1,9 @@
 const Module = () => import('./Module.vue')
 
 const Categories = () => import('./pages/Categories.vue')
-const Parameters = () => import('./pages/Parameters.vue')
 const Brands = () => import('./pages/Brands.vue')
 const Models = () => import('./pages/Models.vue')
-const CategoryParameters = () => import('./pages/CategoryParameters.vue')
-const ParameterValues = () => import('./pages/ParameterValues.vue')
+const Engines = () => import('./pages/Engines.vue')
 
 const moduleRoute = {
   path: '/truck-settings',
@@ -19,28 +17,18 @@ const moduleRoute = {
       meta: { permission: 'trucks' }
     },
     {
-      path: 'category/:category/brands',
+      path: 'brands',
       component: Brands,
       meta: { permission: 'trucks' }
     },
     {
-      path: 'category/:category/parameters',
-      component: CategoryParameters,
-      meta: { permission: 'trucks' }
-    },
-    {
-      path: 'category/:category/brand/:brand/models',
+      path: 'brand/:brand/models',
       component: Models,
       meta: { permission: 'trucks' }
     },
     {
-      path: 'parameters',
-      component: Parameters,
-      meta: { permission: 'trucks' }
-    },
-    {
-      path: 'parameter/:parameter/values',
-      component: ParameterValues,
+      path: 'engines',
+      component: Engines,
       meta: { permission: 'trucks' }
     }
   ]

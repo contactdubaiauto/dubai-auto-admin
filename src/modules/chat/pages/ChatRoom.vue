@@ -1,378 +1,353 @@
 <template>
-  <div class="w-full h-full flex flex-col">
-    <div class="bg-white h-16 border-b border-gray-200 p-4 flex items-center gap-3">
-      <Button @click="back" icon="pi pi-arrow-left" severity="secondary" />
-      <div
-        v-if="!loadingMessages"
-        class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center"
-      >
-        <img v-if="chatRoom.avatar" :src="chatRoom.avatar" alt="Avatar" class="w-full h-full object-cover" />
-        <span v-else class="text-gray-600 text-xs font-semibold">{{
-          chatRoom.username.charAt(0).toUpperCase() || 'U'
-        }}</span>
-      </div>
-      <div v-if="!loadingMessages" class="flex-1">
-        <div class="font-semibold text-gray-800 truncate">{{ chatRoom.username }}</div>
-      </div>
-    </div>
-    <div ref="messagesContainer" class="flex-1 overflow-y-auto p-4" @scroll="handleScroll">
-      <div
-        v-if="!loadingMessages"
-        v-for="message in messages"
-        :key="message.id"
-        :data-message-id="message.id"
-        class="w-full mb-1"
-      >
-        <div
-          v-if="message.type === 1 && message.sender_id !== 0"
-          class="max-w-[600px] w-fit bg-white border border-gray-200 rounded-xl p-4 relative"
-        >
-          <p class="text-gray-800 font-medium">
-            {{ message.message }}
-            <span class="text-xs text-gray-800 pl-1 opacity-0 user-select-none">{{ getDate(message.created_at) }}</span>
-          </p>
-          <div class="text-xs text-gray-800 absolute right-2 bottom-2 opacity-70">
-            {{ getDate(message.created_at) }}
-          </div>
-        </div>
-        <div
-          v-if="message.type === 1 && message.sender_id === 0"
-          class="max-w-[600px] ml-auto w-fit bg-primary-500 border border-primary-500 text-white rounded-xl p-4 relative"
-        >
-          <p class="text-white font-medium">
-            {{ message.message }}
-            <span class="text-xs text-white pl-1 opacity-0 user-select-none">{{ getDate(message.created_at) }}</span>
-          </p>
-          <div class="text-xs text-white absolute right-2 bottom-2 opacity-70">{{ getDate(message.created_at) }}</div>
-        </div>
-        <div v-if="message.type === 4 && message.sender_id !== 0" class="w-full mb-1">
-          <div class="w-fit bg-white border border-gray-200 rounded-xl overflow-hidden relative h-[300px]">
-            <img :src="message.message" alt="Image" class="max-w-full h-[300px] w-auto object-contain" />
-            <div class="absolute bottom-2 right-2 bg-gray-100 border border-gray-200 rounded-md px-1">
-              <span class="text-xs text-gray-800">{{ getDate(message.created_at) }}</span>
-            </div>
-          </div>
-        </div>
-        <div v-if="message.type === 4 && message.sender_id === 0" class="w-full mb-1">
-          <div
-            class="w-fit ml-auto bg-primary-500 border border-primary-500 rounded-xl overflow-hidden relative h-[300px]"
-          >
-            <img :src="message.message" alt="Image" class="max-w-full h-[300px] w-auto object-contain" />
-            <div class="absolute bottom-2 right-2 bg-gray-100 border border-gray-200 rounded-md px-1">
-              <span class="text-xs text-gray-800">{{ getDate(message.created_at) }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bg-white border-t border-gray-200 p-4">
-      <div class="flex items-end gap-2">
-        <Textarea
-          v-model="message"
-          placeholder="Введите сообщение..."
-          :autoResize="true"
-          rows="1"
-          class="flex-1"
-          @keydown.enter.exact.prevent="sendMessage"
-        />
-        <Button
-          icon="pi pi-image"
-          severity="secondary"
-          outlined
-          @click="selectImage"
-          aria-haspopup="true"
-          aria-controls="attachment_menu"
-        />
-        <Button icon="pi pi-send" @click="sendMessage" :disabled="!message.trim()" />
-      </div>
-      <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleImageSelect" />
-    </div>
-  </div>
+	<div class="w-full h-full flex flex-col">
+		<div class="bg-white h-16 border-b border-gray-200 p-4 flex items-center gap-3">
+			<Button @click="back" icon="pi pi-arrow-left" severity="secondary" />
+			<div v-if="!loadingMessages"
+				class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+				<span class="text-gray-600 text-xs font-semibold">{{
+					chatRoom.username.charAt(0).toUpperCase() || 'U'
+				}}</span>
+			</div>
+			<div v-if="!loadingMessages" class="flex-1">
+				<div class="font-semibold text-gray-800 truncate">{{ chatRoom.username }}</div>
+			</div>
+		</div>
+		<div ref="messagesContainer" class="flex-1 overflow-y-auto p-4" @scroll="handleScroll">
+			<div v-if="!loadingMessages" v-for="message in messages" :key="message.id" :data-message-id="message.id"
+				class="w-full mb-1">
+				<div v-if="message.type === 1 && message.sender_id !== 0"
+					class="max-w-[600px] w-fit bg-white border border-gray-200 rounded-xl p-4 relative">
+					<p class="text-gray-800 font-medium">
+						{{ message.message }}
+						<span class="text-xs text-gray-800 pl-1 opacity-0 user-select-none">{{ getDate(message.created_at) }}</span>
+					</p>
+					<div class="text-xs text-gray-800 absolute right-2 bottom-2 opacity-70">
+						{{ getDate(message.created_at) }}
+					</div>
+				</div>
+				<div v-if="message.type === 1 && message.sender_id === 0"
+					class="max-w-[600px] ml-auto w-fit bg-primary-500 border border-primary-500 text-white rounded-xl p-4 relative">
+					<p class="text-white font-medium">
+						{{ message.message }}
+						<span class="text-xs text-white pl-1 opacity-0 user-select-none">{{ getDate(message.created_at) }}</span>
+					</p>
+					<div class="text-xs text-white absolute right-2 bottom-2 opacity-70">{{ getDate(message.created_at) }}</div>
+				</div>
+				<div v-if="message.type === 4 && message.sender_id !== 0" class="w-full mb-1">
+					<div class="w-fit bg-white border border-gray-200 rounded-xl overflow-hidden relative h-[300px]">
+						<img :src="message.message" alt="Image" class="max-w-full h-[300px] w-auto object-contain" />
+						<div class="absolute bottom-2 right-2 bg-gray-100 border border-gray-200 rounded-md px-1">
+							<span class="text-xs text-gray-800">{{ getDate(message.created_at) }}</span>
+						</div>
+					</div>
+				</div>
+				<div v-if="message.type === 4 && message.sender_id === 0" class="w-full mb-1">
+					<div
+						class="w-fit ml-auto bg-primary-500 border border-primary-500 rounded-xl overflow-hidden relative h-[300px]">
+						<img :src="message.message" alt="Image" class="max-w-full h-[300px] w-auto object-contain" />
+						<div class="absolute bottom-2 right-2 bg-gray-100 border border-gray-200 rounded-md px-1">
+							<span class="text-xs text-gray-800">{{ getDate(message.created_at) }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bg-white border-t border-gray-200 p-4">
+			<div class="flex items-end gap-2">
+				<Textarea v-model="message" placeholder="Введите сообщение..." :autoResize="true" rows="1" class="flex-1"
+					@keydown.enter.exact.prevent="sendMessage" />
+				<Button icon="pi pi-image" severity="secondary" outlined @click="selectImage" aria-haspopup="true"
+					aria-controls="attachment_menu" />
+				<Button icon="pi pi-send" @click="sendMessage" :disabled="!message.trim()" />
+			</div>
+			<input ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleImageSelect" />
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-  import { useRouter, useRoute } from 'vue-router'
-  import { Button, Textarea } from 'primevue'
-  import { useChatStore } from '../stores'
-  import { api } from '../api'
+	import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+	import { useRouter, useRoute } from 'vue-router'
+	import { Button, Textarea } from 'primevue'
+	import { useChatStore } from '../stores'
+	import { api } from '../api'
 
-  const route = useRoute()
-  const router = useRouter()
-  const chatStore = useChatStore()
+	const route = useRoute()
+	const router = useRouter()
+	const chatStore = useChatStore()
 
-  const message = ref('')
-  const messagesContainer = ref<HTMLElement | null>(null)
-  const fileInput = ref<HTMLInputElement | null>(null)
+	const message = ref('')
+	const messagesContainer = ref<HTMLElement | null>(null)
+	const fileInput = ref<HTMLInputElement | null>(null)
 
-  const roomID = computed(() => Number(route.params.id))
+	const roomID = computed(() => Number(route.params.id))
 
-  const loadingMessages = ref(false)
-  const uploadingImage = ref(false)
-  const loadingOlderMessages = ref(false)
-  const hasMoreMessages = ref(true)
+	const loadingMessages = ref(false)
+	const uploadingImage = ref(false)
+	const loadingOlderMessages = ref(false)
+	const hasMoreMessages = ref(true)
 
-  function scrollToBottom(): void {
-    nextTick(() => {
-      if (messagesContainer.value) {
-        messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
-      }
-    })
-  }
+	function scrollToBottom(): void {
+		nextTick(() => {
+			if (messagesContainer.value) {
+				messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+			}
+		})
+	}
 
-  function handleScroll(): void {
-    if (!messagesContainer.value || loadingOlderMessages.value || loadingMessages.value || !hasMoreMessages.value) {
-      return
-    }
+	function handleScroll(): void {
+		if (!messagesContainer.value || loadingOlderMessages.value || loadingMessages.value || !hasMoreMessages.value) {
+			return
+		}
 
-    const container = messagesContainer.value
-    const scrollTop = container.scrollTop
-    const scrollHeight = container.scrollHeight
-    const clientHeight = container.clientHeight
+		const container = messagesContainer.value
+		const scrollTop = container.scrollTop
+		const scrollHeight = container.scrollHeight
+		const clientHeight = container.clientHeight
 
-    // Проверяем, достиг ли скролл середины (50%)
-    if (scrollTop + clientHeight >= scrollHeight * 0.5) {
-      const firstMessage = messages.value[0]
-      if (firstMessage && firstMessage.id && firstMessage.id > 0) {
-        loadOlderMessages(firstMessage.id)
-      }
-    }
-  }
+		// Проверяем, достиг ли скролл середины (50%)
+		if (scrollTop + clientHeight >= scrollHeight * 0.5) {
+			const firstMessage = messages.value[0]
+			if (firstMessage && firstMessage.id && firstMessage.id > 0) {
+				loadOlderMessages(firstMessage.id)
+			}
+		}
+	}
 
-  async function loadOlderMessages(lastMessageId: number): Promise<void> {
-    if (loadingOlderMessages.value || !messagesContainer.value || !hasMoreMessages.value) {
-      return
-    }
+	async function loadOlderMessages(lastMessageId: number): Promise<void> {
+		if (loadingOlderMessages.value || !messagesContainer.value || !hasMoreMessages.value) {
+			return
+		}
 
-    try {
-      loadingOlderMessages.value = true
+		try {
+			loadingOlderMessages.value = true
 
-      const container = messagesContainer.value
-      const scrollHeightBefore = container.scrollHeight
-      const scrollTopBefore = container.scrollTop
+			const container = messagesContainer.value
+			const scrollHeightBefore = container.scrollHeight
+			const scrollTopBefore = container.scrollTop
 
-      // Сохраняем первый видимый элемент (индекс первого сообщения в видимой области)
-      const firstVisibleIndex = Math.max(0, Math.floor((scrollTopBefore / scrollHeightBefore) * messages.value.length))
-      const firstVisibleMessage = messages.value[firstVisibleIndex]
+			// Сохраняем первый видимый элемент (индекс первого сообщения в видимой области)
+			const firstVisibleIndex = Math.max(0, Math.floor((scrollTopBefore / scrollHeightBefore) * messages.value.length))
+			const firstVisibleMessage = messages.value[firstVisibleIndex]
 
-      const params = {
-        last_id: lastMessageId,
-        limit: 50
-      }
+			const params = {
+				last_id: lastMessageId,
+				limit: 50
+			}
 
-      const data: any = await api.getConversationMessages(roomID.value, params)
+			const data: any = await api.getConversationMessages(roomID.value, params)
 
-      if (data && data.length > 0) {
-        // Проверяем, есть ли еще сообщения для загрузки
-        if (data.length < 50) {
-          hasMoreMessages.value = false
-        }
+			if (data && data.length > 0) {
+				// Проверяем, есть ли еще сообщения для загрузки
+				if (data.length < 50) {
+					hasMoreMessages.value = false
+				}
 
-        chatStore.prependMessagesToRoom(data, chatRoom.value)
+				chatStore.prependMessagesToRoom(data, chatRoom.value)
 
-        // Восстанавливаем позицию скролла с учетом новой высоты
-        nextTick(() => {
-          if (messagesContainer.value && firstVisibleMessage) {
-            // Находим элемент по ID сообщения
-            const messageElements = messagesContainer.value.querySelectorAll('[data-message-id]')
-            let targetElement: Element | null = null
+				// Восстанавливаем позицию скролла с учетом новой высоты
+				nextTick(() => {
+					if (messagesContainer.value && firstVisibleMessage) {
+						// Находим элемент по ID сообщения
+						const messageElements = messagesContainer.value.querySelectorAll('[data-message-id]')
+						let targetElement: Element | null = null
 
-            for (const el of messageElements) {
-              const messageId = el.getAttribute('data-message-id')
-              if (messageId && Number(messageId) === firstVisibleMessage.id) {
-                targetElement = el
-                break
-              }
-            }
+						for (const el of messageElements) {
+							const messageId = el.getAttribute('data-message-id')
+							if (messageId && Number(messageId) === firstVisibleMessage.id) {
+								targetElement = el
+								break
+							}
+						}
 
-            if (targetElement) {
-              // Скроллим к найденному элементу
-              targetElement.scrollIntoView({ behavior: 'auto', block: 'start' })
-            } else {
-              // Fallback: используем расчет по высоте
-              const scrollHeightAfter = messagesContainer.value.scrollHeight
-              const heightDiff = scrollHeightAfter - scrollHeightBefore
-              messagesContainer.value.scrollTop = scrollTopBefore + heightDiff
-            }
-          }
-        })
-      } else {
-        // Если нет данных, значит больше нет сообщений
-        hasMoreMessages.value = false
-      }
-    } catch (error) {
-      console.error('Ошибка при загрузке старых сообщений:', error)
-    } finally {
-      loadingOlderMessages.value = false
-    }
-  }
+						if (targetElement) {
+							// Скроллим к найденному элементу
+							targetElement.scrollIntoView({ behavior: 'auto', block: 'start' })
+						} else {
+							// Fallback: используем расчет по высоте
+							const scrollHeightAfter = messagesContainer.value.scrollHeight
+							const heightDiff = scrollHeightAfter - scrollHeightBefore
+							messagesContainer.value.scrollTop = scrollTopBefore + heightDiff
+						}
+					}
+				})
+			} else {
+				// Если нет данных, значит больше нет сообщений
+				hasMoreMessages.value = false
+			}
+		} catch (error) {
+			console.error('Ошибка при загрузке старых сообщений:', error)
+		} finally {
+			loadingOlderMessages.value = false
+		}
+	}
 
-  onMounted(() => {
-    chatStore.setCurrentRoomId(roomID.value)
+	onMounted(() => {
+		chatStore.setCurrentRoomId(roomID.value)
 
-    watch(
-      roomID,
-      (newVal) => {
-        hasMoreMessages.value = true
-        chatStore.setCurrentRoomId(newVal)
-        getConversationMessages(newVal)
-      },
-      { immediate: true }
-    )
+		watch(
+			roomID,
+			(newVal) => {
+				hasMoreMessages.value = true
+				chatStore.setCurrentRoomId(newVal)
+				getConversationMessages(newVal)
+			},
+			{ immediate: true }
+		)
 
-    // Автоматический скролл при изменении сообщений (только если не загружаются старые сообщения)
-    watch(
-      messages,
-      () => {
-        if (!loadingOlderMessages.value) {
-          scrollToBottom()
-        }
-      },
-      { deep: true }
-    )
-  })
+		// Автоматический скролл при изменении сообщений (только если не загружаются старые сообщения)
+		watch(
+			messages,
+			() => {
+				if (!loadingOlderMessages.value) {
+					scrollToBottom()
+				}
+			},
+			{ deep: true }
+		)
+	})
 
-  onUnmounted(() => {
-    chatStore.setCurrentRoomId(null)
-  })
+	onUnmounted(() => {
+		chatStore.setCurrentRoomId(null)
+	})
 
-  const chatRoom = computed(() => {
-    return (
-      chatStore.rooms.find((room) => room.id === Number(route.params.id)) || {
-        id: 0,
-        username: '',
-        avatar: '',
-        messages: []
-      }
-    )
-  })
+	const chatRoom = computed(() => {
+		return (
+			chatStore.rooms.find((room) => room.id === Number(route.params.id)) || {
+				id: 0,
+				username: '',
+				avatar: '',
+				messages: []
+			}
+		)
+	})
 
-  const messages = computed(() => {
-    const room = chatStore.rooms.find((room) => room.id === Number(route.params.id))
-    if (room) {
-      room.messages.forEach((message: any) => {
-        message.status = 1
-      })
-      return room.messages
-    }
-    return []
-  })
+	const messages = computed(() => {
+		const room = chatStore.rooms.find((room) => room.id === Number(route.params.id))
+		if (room) {
+			room.messages.forEach((message: any) => {
+				message.status = 1
+			})
+			return room.messages
+		}
+		return []
+	})
 
-  function back() {
-    router.push('/chat')
-  }
+	function back() {
+		router.push('/chat')
+	}
 
-  function selectImage() {
-    fileInput.value?.click()
-  }
+	function selectImage() {
+		fileInput.value?.click()
+	}
 
-  async function handleImageSelect(event: Event) {
-    const target = event.target as HTMLInputElement
-    const file = target.files?.[0]
+	async function handleImageSelect(event: Event) {
+		const target = event.target as HTMLInputElement
+		const file = target.files?.[0]
 
-    if (!file) {
-      return
-    }
+		if (!file) {
+			return
+		}
 
-    // Сброс input для возможности повторного выбора того же файла
-    if (target) {
-      target.value = ''
-    }
+		// Сброс input для возможности повторного выбора того же файла
+		if (target) {
+			target.value = ''
+		}
 
-    try {
-      uploadingImage.value = true
-      const response = await api.uploadFile(file)
-      const imageUrl = response.message
-      sendImageMessage(imageUrl)
-    } catch (error) {
-      console.error('Ошибка при загрузке изображения:', error)
-    } finally {
-      uploadingImage.value = false
-    }
-  }
+		try {
+			uploadingImage.value = true
+			const response = await api.uploadFile(file)
+			const imageUrl = response.message
+			sendImageMessage(imageUrl)
+		} catch (error) {
+			console.error('Ошибка при загрузке изображения:', error)
+		} finally {
+			uploadingImage.value = false
+		}
+	}
 
-  function sendImageMessage(imageUrl: string) {
-    chatStore.sendMessage({
-      event: 'private_message',
-      target_user_id: chatRoom.value.user_id,
-      data: {
-        admin: true,
-        message: imageUrl,
-        target_user_id: chatRoom.value.user_id,
-        time: new Date().toISOString(),
-        type: 4
-      }
-    })
-    chatRoom.value.messages.push({
-      id: 0,
-      message: imageUrl,
-      created_at: new Date().toISOString(),
-      type: 4,
-      sender_id: 0,
-      status: 0
-    })
-    scrollToBottom()
-  }
+	function sendImageMessage(imageUrl: string) {
+		chatStore.sendMessage({
+			event: 'private_message',
+			target_user_id: chatRoom.value.user_id,
+			data: {
+				admin: true,
+				message: imageUrl,
+				target_user_id: chatRoom.value.user_id,
+				time: new Date().toISOString(),
+				type: 4
+			}
+		})
+		chatRoom.value.messages.push({
+			id: 0,
+			message: imageUrl,
+			created_at: new Date().toISOString(),
+			type: 4,
+			sender_id: 0,
+			status: 0
+		})
+		scrollToBottom()
+	}
 
-  async function getConversationMessages(id: number) {
-    try {
-      loadingMessages.value = true
-      hasMoreMessages.value = true
-      const params = {
-        limit: 50
-      }
-      const data: any = await api.getConversationMessages(id, params)
-      chatStore.setMessagesToRoom(data, chatRoom.value)
-      // Проверяем, есть ли еще сообщения
-      if (data && data.length < 50) {
-        hasMoreMessages.value = false
-      }
-    } catch (error) {
-      console.error(error)
-    } finally {
-      loadingMessages.value = false
-      scrollToBottom()
-    }
-  }
+	async function getConversationMessages(id: number) {
+		try {
+			loadingMessages.value = true
+			hasMoreMessages.value = true
+			const params = {
+				limit: 50
+			}
+			const data: any = await api.getConversationMessages(id, params)
+			chatStore.setMessagesToRoom(data, chatRoom.value)
+			// Проверяем, есть ли еще сообщения
+			if (data && data.length < 50) {
+				hasMoreMessages.value = false
+			}
+		} catch (error) {
+			console.error(error)
+		} finally {
+			loadingMessages.value = false
+			scrollToBottom()
+		}
+	}
 
-  function sendMessage() {
-    if (!message.value.trim()) return
+	function sendMessage() {
+		if (!message.value.trim()) return
 
-    chatStore.sendMessage({
-      event: 'private_message',
-      target_user_id: chatRoom.value.user_id,
-      data: {
-        admin: true,
-        message: message.value.trim(),
-        target_user_id: chatRoom.value.user_id,
-        time: new Date().toISOString(),
-        type: 1
-      }
-    })
-    chatRoom.value.messages.push({
-      id: 0,
-      message: message.value.trim(),
-      created_at: new Date().toISOString(),
-      type: 1,
-      sender_id: 0,
-      status: 0
-    })
-    message.value = ''
-    scrollToBottom()
-  }
+		chatStore.sendMessage({
+			event: 'private_message',
+			target_user_id: chatRoom.value.user_id,
+			data: {
+				admin: true,
+				message: message.value.trim(),
+				target_user_id: chatRoom.value.user_id,
+				time: new Date().toISOString(),
+				type: 1
+			}
+		})
+		chatRoom.value.messages.push({
+			id: 0,
+			message: message.value.trim(),
+			created_at: new Date().toISOString(),
+			type: 1,
+			sender_id: 0,
+			status: 0
+		})
+		message.value = ''
+		scrollToBottom()
+	}
 
-  function getDate(date: string): string {
-    const dateObj = new Date(date)
-    return dateObj.toLocaleTimeString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      hour12: false
-    })
-  }
+	function getDate(date: string): string {
+		const dateObj = new Date(date)
+		return dateObj.toLocaleTimeString('ru-RU', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			hour12: false
+		})
+	}
 </script>
 
 <style scoped></style>

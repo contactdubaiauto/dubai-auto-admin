@@ -1,5 +1,5 @@
 <template>
-	<Dialog :visible="true" modal :header="t('truckSettings.category.title')" @update:visible="cancel"
+	<Dialog :visible="true" modal :header="t('motorcycleSettings.stroke.title')" @update:visible="cancel"
 		:style="{ width: '25rem' }">
 		<div class="flex flex-col gap-2">
 			<div class="flex flex-col gap-1">
@@ -27,7 +27,7 @@
 	import { Button, InputText, Dialog } from 'primevue'
 	import { useI18n } from 'vue-i18n'
 
-	import type { ICategoryForm, ICategoryItem } from '../types'
+	import type { IStrokeForm, IStrokeItem } from '../types'
 
 	const { t } = useI18n()
 
@@ -35,7 +35,7 @@
 
 	const props = withDefaults(
 		defineProps<{
-			item?: ICategoryItem | null
+			item?: IStrokeItem | null
 			loading?: boolean
 		}>(),
 		{
@@ -44,7 +44,7 @@
 		}
 	)
 
-	const form = reactive<ICategoryForm>({
+	const form = reactive<IStrokeForm>({
 		name: '',
 		name_ru: '',
 		name_ae: ''

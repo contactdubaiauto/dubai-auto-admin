@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { useToast } from 'primevue/usetoast'
@@ -109,7 +109,7 @@
   const { getDataByLang } = useLang()
   const toast = useToast()
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.carSettings') },
     { label: t('sidebar.brands'), to: '/car-settings/brands' }
   ])

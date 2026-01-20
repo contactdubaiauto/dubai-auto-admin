@@ -3,7 +3,8 @@ import applications from '@/modules/application/locales/ru'
 import general from '@/modules/general/locales/ru'
 import settings from '@/modules/settings/locales/ru'
 import chat from '@/modules/chat/locales/ru'
-
+import motorcycleSettings from '@/modules/motorcycleSettings/locales/ru'
+import truckSettings from '@/modules/truckSettings/locales/ru'
 export default {
   base: {
     welcome: 'Добро пожаловать в Mashynbazar',
@@ -51,6 +52,7 @@ export default {
     users: 'Пользователи',
     clients: 'Клиенты',
     chat: 'Чат',
+    reports: 'Жалобы',
     carSettings: 'Настройки авто',
     brands: 'Бренды',
     bodyTypes: 'Типы кузова',
@@ -61,6 +63,7 @@ export default {
     motorcycleSettings: 'Настройки мотоциклов',
     categories: 'Категории',
     parameters: 'Параметры',
+    strokes: 'Число тактов',
     truckSettings: 'Настройки грузовиков',
     general: 'Общее',
     cities: 'Города',
@@ -73,5 +76,7 @@ export default {
   applications: applications,
   general: general,
   settings: settings,
-  chat: chat
+  chat: chat,
+  motorcycleSettings: motorcycleSettings,
+  truckSettings: truckSettings
 }

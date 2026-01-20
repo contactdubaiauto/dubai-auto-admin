@@ -13,30 +13,12 @@ export interface ICategoryItem extends ICategory {
   index: number
 }
 
-export interface ICategoryParameter {
-  id: number
-  moto_category_id: number
-  moto_parameter_id: number
-  created_at: string
-  moto_parameter_name: string
-}
-
-export interface ICategoryParameterItem extends ICategoryParameter {
-  index: number
-}
-
-export interface ICategoryParameterForm {
-  moto_parameter_id: number
-}
-
 export interface IBrand {
   id: number
   name: string
   name_ru: string
   name_ae: string
   image: string
-  moto_category_id: number
-  moto_category_name: string
   created_at: string
 }
 
@@ -45,7 +27,6 @@ export interface IBrandItem extends IBrand {
 }
 export interface IBrandForm {
   image: string
-  moto_category_id: number
   name: string
   name_ru: string
   name_ae: string
@@ -71,39 +52,38 @@ export interface IModelForm {
   name_ae: string
 }
 
-export interface IParameter {
+
+export interface IEngine {
   id: number
   name: string
   name_ru: string
   name_ae: string
-  moto_category_id: number
-  moto_category_name: string
   created_at: string
 }
 
-export interface IParameterItem extends IParameter {
+export interface IEngineItem extends IEngine {
   index: number
 }
-export interface IParameterForm {
-  moto_category_id: number
+
+export interface IEngineForm {
   name: string
   name_ru: string
   name_ae: string
 }
 
-export interface IParameterValue {
+export interface IStroke {
   id: number
   name: string
   name_ru: string
   name_ae: string
-  moto_parameter_id: number
   created_at: string
 }
 
-export interface IParameterValueItem extends IParameterValue {
+export interface IStrokeItem extends IStroke {
   index: number
 }
-export interface IParameterValueForm {
+
+export interface IStrokeForm {
   name: string
   name_ru: string
   name_ae: string

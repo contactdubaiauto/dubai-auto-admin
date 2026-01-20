@@ -2,7 +2,7 @@
   <div class="h-full flex flex-col">
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
-        <Button @click="openPopUpDrivetrain" icon="pi pi-plus" :label="t('carSettings.drivetrain.add')" />
+        <Button @click="openPopUpEngine" icon="pi pi-plus" :label="t('motorcycleSettings.engine.add')" />
       </div>
       <div class="flex">
         <Breadcrumb :model="breadcrumbs" class="p-0">
@@ -14,9 +14,9 @@
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="drivetrains" :loading="loadingDrivetrains" rowHover stripedRows size="small">
+      <DataTable :value="engines" :loading="loadingEngines" stripedRows rowHover size="small">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column :header="t('carSettings.drivetrain.name')">
+        <Column :header="t('motorcycleSettings.engine.name')">
           <template #body="slotProps">
             {{ getDataByLang({ data: slotProps.data }) }}
           </template>
@@ -25,14 +25,14 @@
           <template #body="slotProps">
             <div class="flex gap-1">
               <Button
-                @click.stop="selectDrivetrain(slotProps.data)"
+                @click.stop="selectEngine(slotProps.data)"
                 icon="pi pi-pencil"
                 rounded
                 variant="outlined"
                 size="small"
               />
               <Button
-                @click.stop="selectDeleteDrivetrain(slotProps.data)"
+                @click.stop="selectDeleteEngine(slotProps.data)"
                 icon="pi pi-trash"
                 severity="danger"
                 rounded
@@ -51,19 +51,19 @@
       </DataTable>
     </div>
   </div>
-  <PopUpDrivetrain
-    v-if="showPopUpDrivetrain"
-    @save="saveDrivetrain"
-    @cancel="closePopUpDrivetrain"
-    :loading="loadingPopUpDrivetrain"
-    :item="selectedDrivetrain"
+  <PopUpEngine
+    v-if="showPopUpEngine"
+    @save="saveEngine"
+    @cancel="closePopUpEngine"
+    :loading="loadingPopUpEngine"
+    :item="selectedEngine"
   />
   <PopUpConfirmDelete
-    v-if="showPopUpDeleteDrivetrain"
-    :description="t('carSettings.drivetrain.confirmDelete')"
-    @delete="deleteDrivetrain"
-    @cancel="closePopUpDeleteDrivetrain"
-    :loading="loadingPopUpDeleteDrivetrain"
+    v-if="showPopUpDeleteEngine"
+    @delete="deleteEngine"
+    @cancel="closePopUpDeleteEngine"
+    :loading="loadingPopUpDeleteEngine"
+    :description="t('motorcycleSettings.engine.confirmDelete')"
   />
 </template>
 
@@ -73,22 +73,22 @@
   import { useI18n } from 'vue-i18n'
   import { useToast } from 'primevue/usetoast'
 
-  import PopUpDrivetrain from '../components/PopUpDrivetrain.vue'
+  import PopUpEngine from '../components/PopUpEngine.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
   import EmptyState from '@/components/EmptyState.vue'
   import LoadingState from '@/components/LoadingState.vue'
 
   import { usePopUp } from '@/shared/lib/use/usePopUp'
-  import { useLang } from '@/shared/lib/use/useLang'
   import { api } from '../api'
-  import type { IDrivetrain, IDrivetrainForm, IDrivetrainItem } from '../types'
+  import type { IEngine, IEngineForm, IEngineItem } from '../types'
+  import { useLang } from '@/shared/lib/use/useLang'
 
-  const { showPopUp: showPopUpDrivetrain, openPopUp: openPopUpDrivetrain, loading: loadingPopUpDrivetrain } = usePopUp()
+  const { showPopUp: showPopUpEngine, openPopUp: openPopUpEngine, loading: loadingPopUpEngine } = usePopUp()
   const {
-    showPopUp: showPopUpDeleteDrivetrain,
-    openPopUp: openPopUpDeleteDrivetrain,
-    closePopUp: closePopUpDeleteDrivetrain,
-    loading: loadingPopUpDeleteDrivetrain
+    showPopUp: showPopUpDeleteEngine,
+    openPopUp: openPopUpDeleteEngine,
+    closePopUp: closePopUpDeleteEngine,
+    loading: loadingPopUpDeleteEngine
   } = usePopUp()
 
   const { t } = useI18n()
@@ -96,85 +96,84 @@
   const toast = useToast()
 
   const breadcrumbs = computed(() => [
-    { label: t('sidebar.carSettings') },
-    { label: t('carSettings.drivetrain.drivetrains'), to: '/car-settings/drivetrains' }
+    { label: t('sidebar.motorcycleSettings') },
+    { label: t('motorcycleSettings.engine.title'), to: '/motorcycle-settings/engines' }
   ])
 
-  const drivetrains = ref<IDrivetrainItem[]>([])
-
   onMounted(() => {
-    getDrivetrains()
+    getEngines()
   })
 
-  const selectedDrivetrain = ref<IDrivetrainItem | null>(null)
-  function selectDrivetrain(item: IDrivetrainItem) {
-    selectedDrivetrain.value = item
-    openPopUpDrivetrain()
-  }
-  function closePopUpDrivetrain() {
-    selectedDrivetrain.value = null
-    showPopUpDrivetrain.value = false
-  }
-
-  const loadingDrivetrains = ref(false)
-  async function getDrivetrains() {
+  const engines = ref<IEngineItem[]>([])
+  const loadingEngines = ref(false)
+  async function getEngines() {
     try {
-      loadingDrivetrains.value = true
-      const data: IDrivetrain[] = await api.getDrivetrains()
+      loadingEngines.value = true
+      const data: IEngine[] = await api.getEngines()
 
-      drivetrains.value = data.map((drivetrain: IDrivetrain, index: number): IDrivetrainItem => {
+      engines.value = data.map((engine: IEngine, index: number): IEngineItem => {
         return {
           index: index + 1,
-          ...drivetrain
+          ...engine
         }
       })
     } catch (error) {
       console.error(error)
     } finally {
-      loadingDrivetrains.value = false
+      loadingEngines.value = false
     }
   }
 
-  async function saveDrivetrain(form: IDrivetrainForm) {
+  const selectedEngine = ref<IEngineItem | null>(null)
+  function selectEngine(item: IEngineItem) {
+    selectedEngine.value = item
+    openPopUpEngine()
+  }
+  function closePopUpEngine() {
+    selectedEngine.value = null
+    showPopUpEngine.value = false
+  }
+
+  async function saveEngine(form: IEngineForm) {
     try {
-      loadingPopUpDrivetrain.value = true
-      if (selectedDrivetrain.value) {
-        await api.updateDrivetrain({ id: selectedDrivetrain.value.id, data: form })
+      loadingPopUpEngine.value = true
+      if (selectedEngine.value) {
+        await api.updateEngine({ id: selectedEngine.value.id, data: form })
         toast.add({ severity: 'success', summary: t('toast.successUpdated'), life: 3000 })
       } else {
-        await api.createDrivetrain({ data: form })
+        await api.createEngine({ data: form })
         toast.add({ severity: 'success', summary: t('toast.successSaved'), life: 3000 })
       }
-      await getDrivetrains()
-      closePopUpDrivetrain()
+      await getEngines()
+      closePopUpEngine()
     } catch (error) {
       console.error(error)
       toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
-      loadingPopUpDrivetrain.value = false
+      loadingPopUpEngine.value = false
     }
   }
 
-  const selectedDeleteDrivetrain = ref<IDrivetrainItem>()
-  function selectDeleteDrivetrain(item: IDrivetrainItem) {
-    selectedDeleteDrivetrain.value = item
-    openPopUpDeleteDrivetrain()
+  const selectedDeleteEngine = ref<IEngineItem>()
+  function selectDeleteEngine(item: IEngineItem) {
+    selectedDeleteEngine.value = item
+    openPopUpDeleteEngine()
   }
 
-  async function deleteDrivetrain() {
+  async function deleteEngine() {
     try {
-      loadingPopUpDeleteDrivetrain.value = true
-      if (selectedDeleteDrivetrain.value) {
-        await api.deleteDrivetrain({ id: selectedDeleteDrivetrain.value.id })
+      loadingPopUpDeleteEngine.value = true
+      if (selectedDeleteEngine.value) {
+        await api.deleteEngine({ id: selectedDeleteEngine.value.id })
         toast.add({ severity: 'success', summary: t('toast.successDeleted'), life: 3000 })
       }
-      await getDrivetrains()
-      closePopUpDeleteDrivetrain()
+      await getEngines()
+      closePopUpDeleteEngine()
     } catch (error) {
       console.error(error)
       toast.add({ severity: 'error', summary: t('base.error'), detail: t('toast.errorSaving'), life: 3000 })
     } finally {
-      loadingPopUpDeleteDrivetrain.value = false
+      loadingPopUpDeleteEngine.value = false
     }
   }
 </script>

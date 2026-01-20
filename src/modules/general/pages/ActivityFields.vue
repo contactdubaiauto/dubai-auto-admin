@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
   import { useI18n } from 'vue-i18n'
 
@@ -97,7 +97,7 @@
   const { t } = useI18n()
   const { getDataByLang } = useLang()
 
-  const breadcrumbs = ref([
+  const breadcrumbs = computed(() => [
     { label: t('sidebar.general') },
     { label: t('sidebar.activityFields'), to: '/general/activity-fields' }
   ])

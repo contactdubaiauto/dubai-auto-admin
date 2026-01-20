@@ -1,11 +1,10 @@
 const Module = () => import('./Module.vue')
 
 const Categories = () => import('./pages/Categories.vue')
-const Parameters = () => import('./pages/Parameters.vue')
 const Brands = () => import('./pages/Brands.vue')
 const Models = () => import('./pages/Models.vue')
-const CategoryParameters = () => import('./pages/CategoryParameters.vue')
-const ParameterValues = () => import('./pages/ParameterValues.vue')
+const Engines = () => import('./pages/Engines.vue')
+const Strokes = () => import('./pages/Strokes.vue')
 
 const moduleRoute = {
   path: '/motorcycle-settings',
@@ -19,28 +18,23 @@ const moduleRoute = {
       meta: { permission: 'motorcycles' }
     },
     {
-      path: 'category/:category/brands',
+      path: 'brands',
       component: Brands,
       meta: { permission: 'motorcycles' }
     },
     {
-      path: 'category/:category/parameters',
-      component: CategoryParameters,
-      meta: { permission: 'motorcycles' }
-    },
-    {
-      path: 'category/:category/brand/:brand/models',
+      path: 'brand/:brand/models',
       component: Models,
       meta: { permission: 'motorcycles' }
     },
     {
-      path: 'parameters',
-      component: Parameters,
+      path: 'engines',
+      component: Engines,
       meta: { permission: 'motorcycles' }
     },
     {
-      path: 'parameter/:parameter/values',
-      component: ParameterValues,
+      path: 'strokes',
+      component: Strokes,
       meta: { permission: 'motorcycles' }
     }
   ]

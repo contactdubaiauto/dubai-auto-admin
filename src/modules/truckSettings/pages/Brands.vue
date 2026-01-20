@@ -2,16 +2,21 @@
   <div class="h-full flex flex-col">
     <div class="flex flex-col gap-4 p-4 border-b-2 border-gray-100 mb-2">
       <div class="flex justify-between w-full">
-        <Button @click="openPopUpBrand" icon="pi pi-plus" label="Add brand" />
+        <Button @click="openPopUpBrand" icon="pi pi-plus" :label="t('truckSettings.brand.add')" />
       </div>
       <div class="flex">
-        <Breadcrumb :home="home" :model="items" class="p-0" />
+        <Breadcrumb :model="breadcrumbs" class="p-0">
+          <template #item="{ item }">
+            <router-link v-if="item.to" :to="item.to">{{ item.label }}</router-link>
+            <div v-else>{{ item.label }}</div>
+          </template>
+        </Breadcrumb>
       </div>
     </div>
     <div class="flex-1 overflow-y-auto">
-      <DataTable :value="brands" stripedRows size="small" @row-click="onRowClick">
+      <DataTable :value="brands" :loading="loadingBrands" rowHover stripedRows size="small" @row-click="onRowClick">
         <Column field="index" header="№" class="w-9"></Column>
-        <Column header="Image" class="w-6">
+        <Column :header="t('truckSettings.brand.logo')" class="w-6">
           <template #body="slotProps">
             <div class="w-6 h-6 bg-gray-100 rounded-md">
               <img
@@ -22,21 +27,38 @@
             </div>
           </template>
         </Column>
-        <Column field="name" header="Name"></Column>
-        <Column header="Actions" class="w-24">
+        <Column :header="t('base.name')">
+          <template #body="slotProps">
+            {{ getDataByLang({ data: slotProps.data }) }}
+          </template>
+        </Column>
+        <Column :header="t('base.actions')" class="w-24">
           <template #body="slotProps">
             <div class="flex gap-1">
-              <Button @click.stop="selectBrand(slotProps.data)" icon="pi pi-pencil" rounded variant="outlined" />
+              <Button
+                @click.stop="selectBrand(slotProps.data)"
+                icon="pi pi-pencil"
+                rounded
+                variant="outlined"
+                size="small"
+              />
               <Button
                 @click.stop="selectDeleteBrand(slotProps.data)"
                 icon="pi pi-trash"
                 severity="danger"
                 rounded
                 variant="outlined"
+                size="small"
               />
             </div>
           </template>
         </Column>
+        <template #loading>
+          <LoadingState />
+        </template>
+        <template #empty>
+          <EmptyState />
+        </template>
       </DataTable>
     </div>
   </div>
@@ -49,24 +71,29 @@
   />
   <PopUpConfirmDelete
     v-if="showPopUpDeleteBrand"
-    description="Confirm delete brand!"
     @delete="deleteBrand"
     @cancel="closePopUpDeleteBrand"
     :loading="loadingPopUpDeleteBrand"
+    :description="t('truckSettings.brand.confirmDelete')"
   />
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { ref, computed, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
+  import { useToast } from 'primevue/usetoast'
   import { Button, DataTable, Column, Breadcrumb } from 'primevue'
 
   import PopUpBrand from '../components/PopUpBrand.vue'
   import PopUpConfirmDelete from '@/components/PopUpConfirmDelete.vue'
-  import { usePopUp } from '@/shared/lib/use/usePopUp'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
 
+  import { usePopUp } from '@/shared/lib/use/usePopUp'
   import { api } from '../api'
   import type { IBrand, IBrandForm, IBrandItem } from '../types'
+  import { useLang } from '@/shared/lib/use/useLang'
 
   const { showPopUp: showPopUpBrand, openPopUp: openPopUpBrand, loading: loadingPopUpBrand } = usePopUp()
   const {
@@ -77,18 +104,16 @@
   } = usePopUp()
 
   const router = useRouter()
-  const route = useRoute()
+  const { t } = useI18n()
+  const { getDataByLang } = useLang()
+  const toast = useToast()
 
-  const categoryId = Number(route.params.category) as number
+  const breadcrumbs = computed(() => [
+    { label: t('sidebar.truckSettings') },
+    { label: t('sidebar.brands'), to: '/truck-settings/brands' }
+  ])
 
-  const home = ref({
-    icon: 'pi pi-car',
-    label: 'Categories'
-  })
-
-  const items = ref([{ label: 'Brands' }])
-
-  const brands = ref<IBrandItem[]>([])
+  const brands = ref<IBrand[]>([])
 
   onMounted(() => {
     getBrands()
@@ -104,18 +129,26 @@
     showPopUpBrand.value = false
   }
 
+  function onRowClick({ data }: { data: IBrandItem }) {
+    router.push(`/truck-settings/brand/${data.id}/models`)
+  }
+
+  const loadingBrands = ref(false)
   async function getBrands() {
     try {
-      const data: IBrand[] = await api.getCategoryBrands({ id: categoryId })
+      loadingBrands.value = true
+      const data: IBrand[] = await api.getBrands()
 
       brands.value = data.map((brand: IBrand, index: number): IBrandItem => {
         return {
-          index: index + 1,
-          ...brand
+          ...brand,
+          index: index + 1
         }
       })
     } catch (error) {
       console.error(error)
+    } finally {
+      loadingBrands.value = false
     }
   }
 
@@ -127,7 +160,6 @@
           id: selectedBrand.value.id,
           data: {
             ...form,
-            comtrans_category_id: categoryId,
             image: typeof form.image === 'string' ? form.image : ''
           }
         })
@@ -139,11 +171,15 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successUpdated'),
+          life: 3000
+        })
       } else {
         const { id } = await api.createBrand({
           data: {
             ...form,
-            comtrans_category_id: categoryId,
             image: typeof form.image === 'string' ? form.image : ''
           }
         })
@@ -155,11 +191,22 @@
             }
           })
         }
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successSaved'),
+          life: 3000
+        })
       }
       await getBrands()
       closePopUpBrand()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpBrand.value = false
     }
@@ -176,17 +223,24 @@
       loadingPopUpDeleteBrand.value = true
       if (selectedDeleteBrand.value) {
         await api.deleteBrand({ id: selectedDeleteBrand.value.id })
+        toast.add({
+          severity: 'success',
+          summary: t('toast.successDeleted'),
+          life: 3000
+        })
       }
       await getBrands()
       closePopUpDeleteBrand()
     } catch (error) {
       console.error(error)
+      toast.add({
+        severity: 'error',
+        summary: t('base.error'),
+        detail: t('toast.errorSaving'),
+        life: 3000
+      })
     } finally {
       loadingPopUpDeleteBrand.value = false
     }
-  }
-
-  function onRowClick({ data }: { data: IBrandItem }) {
-    router.push(`/truck-settings/category/${categoryId}/brand/${data.id}/models`)
   }
 </script>
