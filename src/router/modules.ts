@@ -10,6 +10,7 @@ import auth from '@/modules/auth'
 import application from '@/modules/application'
 import chat from '@/modules/chat'
 import settings from '@/modules/settings'
+import report from '@/modules/report'
 
 registerModules({
   home,
@@ -21,5 +22,6 @@ registerModules({
   auth,
   application,
   chat,
-  settings
+  settings,
+  report
 })

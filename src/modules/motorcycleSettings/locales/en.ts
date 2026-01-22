@@ -23,5 +23,11 @@ export default {
     add: 'Add engine',
     name: 'Name',
     confirmDelete: 'Confirm engine deletion!'
+  },
+	stroke: {
+    title: 'Stroke',
+    strokes: 'Strokes',
+    add: 'Add stroke',
+    confirmDelete: 'Confirm stroke deletion!'
   }
 }

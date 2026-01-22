@@ -22,8 +22,6 @@ router.beforeEach(async (to, from, next) => {
   const auth = useAuth()
 
   if (!auth.isAuth && cookies.get('access_token')) {
-    console.log('init')
-
     await auth.getProfile()
   }
 

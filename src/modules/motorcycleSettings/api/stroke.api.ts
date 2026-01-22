@@ -1,7 +1,7 @@
 import { request } from '@/shared/lib/api'
 import type { IStrokeForm } from '../types'
 
-const URL = '/api/v1/admin/moto-strokes'
+const URL = '/api/v1/admin/number-of-cycles'
 
 export default {
   getStrokes,
