@@ -5,6 +5,7 @@ import settings from '@/modules/settings/locales/en'
 import chat from '@/modules/chat/locales/en'
 import motorcycleSettings from '@/modules/motorcycleSettings/locales/en'
 import truckSettings from '@/modules/truckSettings/locales/en'
+import report from '@/modules/report/locales/en'
 export default {
   base: {
     welcome: 'Welcome to Mashynbazar',
@@ -78,5 +79,6 @@ export default {
   settings: settings,
   chat: chat,
   motorcycleSettings: motorcycleSettings,
-  truckSettings: truckSettings
+  truckSettings: truckSettings,
+  report: report
 }
