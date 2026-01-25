@@ -6,6 +6,7 @@ import chat from '@/modules/chat/locales/ru'
 import motorcycleSettings from '@/modules/motorcycleSettings/locales/ru'
 import truckSettings from '@/modules/truckSettings/locales/ru'
 import report from '@/modules/report/locales/ru'
+import publications from '@/modules/publications/locales/ru'
 export default {
   base: {
     welcome: 'Добро пожаловать в Mashynbazar',
@@ -71,7 +72,12 @@ export default {
     colors: 'Цвета',
     activityFields: 'Сферы деятельности',
     companyTypes: 'Типы компаний',
-    settings: 'Настройки'
+    settings: 'Настройки',
+    notifications: 'Уведомления',
+    publications: 'Публикации',
+    cars: 'Автомобили',
+    motorcycles: 'Мотоциклы',
+    trucks: 'Грузовики'
   },
   carSettings: carSettings,
   applications: applications,
@@ -80,5 +86,6 @@ export default {
   chat: chat,
   motorcycleSettings: motorcycleSettings,
   truckSettings: truckSettings,
-  report: report
+  report: report,
+  publications: publications
 }

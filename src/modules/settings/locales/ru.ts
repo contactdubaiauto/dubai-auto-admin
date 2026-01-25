@@ -13,6 +13,22 @@ export default {
     successCreated: 'Администратор успешно создан!',
     successUpdated: 'Администратор успешно обновлен!',
     successDeleted: 'Администратор успешно удален!'
+  },
+  notification: {
+    notifications: 'Уведомления',
+    send: 'Отправить уведомление',
+    title: 'Заголовок',
+    description: 'Описание',
+    id: 'ID',
+    createdAt: 'Дата создания',
+    successSent: 'Уведомление успешно отправлено!',
+    role: 'Кому',
+    recipients: 'Получатели',
+    all: 'Всем пользователям',
+    user: 'Пользователям',
+    dealer: 'Автосалонам',
+    logistic: 'Логистике',
+    carService: 'Автосервисам',
+    broker: 'Брокерам'
   }
 }
-

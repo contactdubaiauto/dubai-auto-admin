@@ -73,6 +73,7 @@
 	const permissionOptions = computed(() => [
 		{ value: 'chat', label: t('sidebar.chat') },
 		{ value: 'reports', label: t('sidebar.reports') },
+		{ value: 'publications', label: t('sidebar.publications') },
 		{ value: 'application', label: t('sidebar.applications') },
 		{ value: 'user', label: t('sidebar.users') },
 		{ value: 'car', label: t('sidebar.carSettings') },

@@ -5,17 +5,29 @@ export interface IReportContacts {
 export interface IReportedUser {
   id: number
   username: string
-  avatar: string
+  avatar: string | null
   role_id: number
-  contacts: IReportContacts
+  contacts: IReportContacts | null
+  email?: string | null
+  phone?: string | null
 }
 
 export interface IReporter {
   id: number
   username: string
-  avatar: string
+  avatar: string | null
   role_id: number
-  contacts: IReportContacts
+  contacts: IReportContacts | null
+  email?: string | null
+  phone?: string | null
+}
+
+export interface IReportItem {
+  id: number
+  brand: string
+  model: string
+  price: number
+  images: string[] | null
 }
 
 export interface IReport {
@@ -27,4 +39,7 @@ export interface IReport {
   reported_user_id: number
   reported_user: IReportedUser
   reporter: IReporter
+  item_type: string | null
+  item_id: number | null
+  item: IReportItem | null
 }

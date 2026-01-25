@@ -102,6 +102,28 @@
 			permission: 'reports'
 		},
 		{
+			label: t('sidebar.publications'),
+			icon: 'pi pi-car',
+			permission: 'publications',
+			items: [
+				{
+					label: t('sidebar.cars'),
+					icon: 'pi pi-car',
+					route: '/publications/cars'
+				},
+				{
+					label: t('sidebar.motorcycles'),
+					icon: 'pi pi-car',
+					route: '/publications/motorcycles'
+				},
+				{
+					label: t('sidebar.trucks'),
+					icon: 'pi pi-car',
+					route: '/publications/trucks'
+				}
+			]
+		},
+		{
 			label: t('sidebar.applications'),
 			icon: 'pi pi-users',
 			permission: 'application',
@@ -282,6 +304,11 @@
 					label: t('sidebar.users'),
 					icon: 'pi pi-users',
 					route: '/settings/admin-users'
+				},
+				{
+					label: t('sidebar.notifications'),
+					icon: 'pi pi-bell',
+					route: '/settings/notifications'
 				}
 			]
 		}

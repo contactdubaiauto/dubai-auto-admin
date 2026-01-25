@@ -215,13 +215,15 @@
 
 	const permissionLabels: Record<string, string> = {
 		chat: 'sidebar.chat',
+		reports: 'sidebar.reports',
 		application: 'sidebar.applications',
 		user: 'sidebar.users',
 		car: 'sidebar.carSettings',
 		motorcycles: 'sidebar.motorcycleSettings',
 		trucks: 'sidebar.truckSettings',
 		general: 'sidebar.general',
-		settings: 'sidebar.settings'
+		settings: 'sidebar.settings',
+		publications: 'sidebar.publications'
 	}
 
 	function getPermissionLabel(permission: string): string {

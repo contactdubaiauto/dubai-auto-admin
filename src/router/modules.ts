@@ -11,6 +11,7 @@ import application from '@/modules/application'
 import chat from '@/modules/chat'
 import settings from '@/modules/settings'
 import report from '@/modules/report'
+import publications from '@/modules/publications'
 
 registerModules({
   home,
@@ -23,5 +24,6 @@ registerModules({
   application,
   chat,
   settings,
-  report
+  report,
+  publications
 })

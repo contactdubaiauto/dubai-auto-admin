@@ -1,6 +1,7 @@
 const Module = () => import('./Module.vue')
 
 const AdminUsers = () => import('./pages/AdminUsers.vue')
+const Notifications = () => import('./pages/Notifications.vue')
 
 const moduleRoute = {
   path: '/settings',
@@ -11,6 +12,11 @@ const moduleRoute = {
     {
       path: 'admin-users',
       component: AdminUsers,
+      meta: { permission: 'settings' }
+    },
+    {
+      path: 'notifications',
+      component: Notifications,
       meta: { permission: 'settings' }
     }
   ]
