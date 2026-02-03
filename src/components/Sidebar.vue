@@ -2,7 +2,7 @@
 	<div class="p-3 h-full w-full border-r border-gray-200 flex flex-col">
 		<div class="w-full flex items-center gap-3 mb-4">
 			<img class="w-8 h-8 object-contain object-center" src="/logo.png" />
-			<div class="text-2xl font-bold text-center text-blue-500">Mashynbazar</div>
+			<div class="text-2xl font-bold text-center text-blue-500">OfferCars</div>
 		</div>
 		<div class="flex-1 scrollbar-hide overflow-y-auto">
 			<PanelMenu :model="items" class="w-full" multiple>

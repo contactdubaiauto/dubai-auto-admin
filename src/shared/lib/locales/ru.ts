@@ -9,7 +9,7 @@ import report from '@/modules/report/locales/ru'
 import publications from '@/modules/publications/locales/ru'
 export default {
   base: {
-    welcome: 'Добро пожаловать в Mashynbazar',
+    welcome: 'Добро пожаловать в OfferCars',
     name: 'Название',
     actions: 'Действия',
     noData: 'Нет данных',
