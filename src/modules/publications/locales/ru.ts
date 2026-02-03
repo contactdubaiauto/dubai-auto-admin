@@ -11,7 +11,6 @@ export default {
     accept: 'Одобренные',
     decline: 'Отклоненные'
   },
-  userRole: 'Роль пользователя',
   carDetail: {
     info: 'Информация',
     brand: 'Марка',
