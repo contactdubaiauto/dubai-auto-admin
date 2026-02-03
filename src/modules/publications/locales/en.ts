@@ -4,6 +4,7 @@ export default {
   motorcycles: 'Motorcycles',
   trucks: 'Trucks',
   selectModerationStatus: 'Select moderation status',
+  userRole: 'User role',
   moderationStatus: {
     all: 'All',
     pending: 'Pending',
@@ -20,8 +21,7 @@ export default {
     phone: 'Phone',
     status: 'Status',
     images: 'Images',
-    back: 'Back to list',
-    userRole: 'User role'
+    back: 'Back to list'
   },
   motorcycleDetail: {
     info: 'Info',

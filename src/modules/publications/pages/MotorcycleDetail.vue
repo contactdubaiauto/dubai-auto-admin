@@ -61,11 +61,11 @@
 							</div>
 							<div v-else class="w-8	 h-8 rounded-full bg-gray-200 flex items-center justify-center">
 								<span class="text-l text-gray-600">{{ (motorcycle.owner.username || 'U').slice(0, 1).toUpperCase()
-									}}</span>
+								}}</span>
 							</div>
 							<div>
 								<div v-if="motorcycle.owner.username" class="font-semibold text-gray-800">{{ motorcycle.owner.username
-									}}
+								}}
 								</div>
 							</div>
 						</div>
@@ -133,13 +133,13 @@
 					<div>
 						<div class="text-sm text-gray-500 mb-1">{{ t('publications.crash') }}</div>
 						<div class="font-semibold text-gray-800">{{ motorcycle.crash ? t('publications.yes') : t('publications.no')
-							}}
+						}}
 						</div>
 					</div>
 					<div>
 						<div class="text-sm text-gray-500 mb-1">{{ t('publications.wheel') }}</div>
 						<div class="font-semibold text-gray-800">{{ motorcycle.wheel ? t('publications.yes') : t('publications.no')
-							}}
+						}}
 						</div>
 					</div>
 					<div>

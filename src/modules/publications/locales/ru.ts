@@ -4,6 +4,7 @@ export default {
   motorcycles: 'Мотоциклы',
   trucks: 'Грузовики',
   selectModerationStatus: 'Выберите статус модерации',
+  userRole: 'Роль пользователя',
   moderationStatus: {
     all: 'Все',
     pending: 'На модерации',
